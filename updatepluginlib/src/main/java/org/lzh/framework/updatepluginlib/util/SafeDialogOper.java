@@ -24,7 +24,7 @@ public class SafeDialogOper {
     }
 
     public static void safeShowDialog(Dialog dialog) {
-        if (dialog == null || !dialog.isShowing()) {
+        if (dialog == null || dialog.isShowing()) {
             return;
         }
         dialog.show();

@@ -1,8 +1,5 @@
 package org.lzh.framework.updatepluginlib.business;
 
-import org.lzh.framework.updatepluginlib.callback.UpdateCheckCB;
-import org.lzh.framework.updatepluginlib.callback.UpdateDownloadCB;
-
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -25,13 +22,12 @@ public class UpdateExecutor implements IUpdateExecutor{
     }
 
     @Override
-    public void check(String url, UpdateCheckCB cb) {
-        pool.execute(new CheckRunnable(url,cb));
+    public void check(final UpdateWorker worker) {
+        pool.execute(worker);
     }
 
     @Override
-    public void download(String url, UpdateDownloadCB cb) {
-        pool.execute(new DownloadRunnable(url,cb));
+    public void download(DownloadWorker worker) {
+        pool.execute(worker);
     }
-
 }

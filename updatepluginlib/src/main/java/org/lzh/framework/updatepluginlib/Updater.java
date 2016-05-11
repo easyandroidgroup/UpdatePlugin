@@ -2,38 +2,58 @@ package org.lzh.framework.updatepluginlib;
 
 import android.app.Activity;
 
+import org.lzh.framework.updatepluginlib.business.DownloadWorker;
 import org.lzh.framework.updatepluginlib.business.IUpdateExecutor;
 import org.lzh.framework.updatepluginlib.business.UpdateExecutor;
+import org.lzh.framework.updatepluginlib.business.UpdateWorker;
 import org.lzh.framework.updatepluginlib.callback.DefaultCheckCB;
+import org.lzh.framework.updatepluginlib.callback.DefaultDownloadCB;
+import org.lzh.framework.updatepluginlib.model.Update;
 
 /**
  * @author Administrator
  */
 public class Updater {
     private static Updater updater;
-    private UpdateConfig config;
     private IUpdateExecutor executor;
 
-    private Updater() {}
-
-    static Updater create(UpdateConfig config) {
-        updater = new Updater();
-        updater.executor = UpdateExecutor.getInstance();
-        updater.config = config;
-        return updater;
+    private Updater() {
+        executor = UpdateExecutor.getInstance();
     }
-
     public static Updater getInstance() {
         if (updater == null) {
-            throw new IllegalStateException("should initial UpdateConfig first,call UpdateConfig.install(Context)");
+            updater = new Updater();
         }
         return updater;
     }
 
     public void checkUpdate(Activity activity,UpdateBuilder builder) {
+        UpdateConfig.getConfig().context(activity);
+
         DefaultCheckCB checkCB = new DefaultCheckCB(activity);
         checkCB.setBuilder(builder);
-        executor.check(config.getUrl(),new DefaultCheckCB(activity));
+
+        UpdateWorker checkWorker = builder.getCheckWorker();
+        checkWorker.setUrl(builder.getUrl());
+        checkWorker.setParser(builder.getJsonParser());
+        checkWorker.setCheckCB(checkCB);
+
+        executor.check(builder.getCheckWorker());
+    }
+
+    public void downUpdate(Activity activity,Update update,UpdateBuilder builder) {
+        UpdateConfig.getConfig().context(activity);
+        DefaultDownloadCB downloadCB = new DefaultDownloadCB(activity);
+        downloadCB.setBuilder(builder);
+        downloadCB.setUpdate(update);
+        downloadCB.setDownloadCB(builder.getDownloadCB());
+
+        DownloadWorker downloadWorker = builder.getDownloadWorker();
+        downloadWorker.setUrl(update.getUpdateUrl());
+        downloadWorker.setDownloadCB(downloadCB);
+        downloadWorker.setCacheFileName(builder.getFileCreator().create(update.getVersionName()));
+
+        executor.download(downloadWorker);
     }
 
 }

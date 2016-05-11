@@ -33,7 +33,7 @@ public class NetworkUtil {
     }
 
     static NetworkInfo getNetworkInfos() {
-        Context context = UpdateConfig.getInstance().getContext();
+        Context context = UpdateConfig.getConfig().getContext();
         ConnectivityManager connManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         return connManager.getActiveNetworkInfo();
     }

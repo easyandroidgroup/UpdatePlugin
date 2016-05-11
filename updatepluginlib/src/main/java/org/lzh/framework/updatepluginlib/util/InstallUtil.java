@@ -2,6 +2,8 @@ package org.lzh.framework.updatepluginlib.util;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 
 import java.io.File;
@@ -24,5 +26,11 @@ public class InstallUtil {
         File pluginfile = new File(filename);
         intent.setDataAndType(Uri.fromFile(pluginfile), type);
         context.startActivity(intent);
+    }
+
+    public static int getApkVersion (Context context) throws PackageManager.NameNotFoundException {
+        PackageManager pm = context.getPackageManager();
+        PackageInfo packageInfo = pm.getPackageInfo(context.getPackageName(), 0);
+        return packageInfo.versionCode;
     }
 }

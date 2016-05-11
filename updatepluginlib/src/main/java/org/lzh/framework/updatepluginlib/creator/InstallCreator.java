@@ -1,5 +1,6 @@
 package org.lzh.framework.updatepluginlib.creator;
 
+import android.app.Activity;
 import android.app.Dialog;
 
 import org.lzh.framework.updatepluginlib.model.Update;
@@ -9,5 +10,5 @@ import org.lzh.framework.updatepluginlib.model.Update;
  */
 public interface InstallCreator {
 
-    Dialog create(Update update,String path);
+    Dialog create(Update update,String path,Activity activity);
 }

@@ -12,7 +12,7 @@ public class Update {
     /**
      * whether to force update,update dialog should not be disable by back key or touch outside if is true
      */
-    private int forced;
+    private boolean forced;
     /**
      * update content,
      */
@@ -38,11 +38,11 @@ public class Update {
         this.original = original;
     }
 
-    public int getForced() {
+    public boolean isForced() {
         return forced;
     }
 
-    public void setForced(int forced) {
+    public void setForced(boolean forced) {
         this.forced = forced;
     }
 

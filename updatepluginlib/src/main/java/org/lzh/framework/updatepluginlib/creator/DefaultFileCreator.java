@@ -18,7 +18,7 @@ public class DefaultFileCreator implements ApkFileCreator {
     }
 
     File getCacheDir() {
-        Context context = UpdateConfig.getInstance().getContext();
+        Context context = UpdateConfig.getConfig().getContext();
         File cacheDir = context.getExternalCacheDir();
         if (cacheDir == null) {
             cacheDir = context.getCacheDir();

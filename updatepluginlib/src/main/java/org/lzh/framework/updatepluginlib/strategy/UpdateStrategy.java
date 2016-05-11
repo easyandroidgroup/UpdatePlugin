@@ -8,4 +8,10 @@ import org.lzh.framework.updatepluginlib.model.Update;
 public interface UpdateStrategy {
 
     boolean isShowUpdateDialog(Update update);
+
+    boolean isAutoInstall();
+
+    boolean isShowInstallDialog();
+
+    boolean isShowDownloadDialog();
 }

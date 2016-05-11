@@ -1,7 +1,12 @@
 package org.lzh.framework.updatepluginlib;
 
 import android.app.Activity;
+import android.text.TextUtils;
 
+import org.lzh.framework.updatepluginlib.business.DownloadWorker;
+import org.lzh.framework.updatepluginlib.business.UpdateWorker;
+import org.lzh.framework.updatepluginlib.callback.UpdateCheckCB;
+import org.lzh.framework.updatepluginlib.callback.UpdateDownloadCB;
 import org.lzh.framework.updatepluginlib.creator.ApkFileCreator;
 import org.lzh.framework.updatepluginlib.strategy.UpdateStrategy;
 import org.lzh.framework.updatepluginlib.creator.DialogCreator;
@@ -14,6 +19,11 @@ import org.lzh.framework.updatepluginlib.model.UpdateParser;
  */
 public class UpdateBuilder {
 
+    private UpdateWorker checkWorker;
+    private DownloadWorker downloadWorker;
+    private UpdateCheckCB checkCB;
+    private UpdateDownloadCB downloadCB;
+    private String url;
     private UpdateStrategy strategy;
     private DialogCreator updateDialogCreator;
     private InstallCreator installDialogCreator;
@@ -23,6 +33,31 @@ public class UpdateBuilder {
 
     public static UpdateBuilder create() {
         return new UpdateBuilder();
+    }
+
+    public UpdateBuilder url(String url) {
+        this.url = url;
+        return this;
+    }
+
+    public UpdateBuilder checkWorker(UpdateWorker checkWorker) {
+        this.checkWorker = checkWorker;
+        return this;
+    }
+
+    public UpdateBuilder downloadWorker(DownloadWorker downloadWorker) {
+        this.downloadWorker = downloadWorker;
+        return this;
+    }
+
+    public UpdateBuilder downloadCB(UpdateDownloadCB downloadCB) {
+        this.downloadCB = downloadCB;
+        return this;
+    }
+
+    public UpdateBuilder checkCB (UpdateCheckCB checkCB) {
+        this.checkCB = checkCB;
+        return this;
     }
 
     public UpdateBuilder jsonParser (UpdateParser jsonParser) {
@@ -60,26 +95,79 @@ public class UpdateBuilder {
     }
 
     public UpdateStrategy getStrategy() {
+        if (strategy == null) {
+            strategy = UpdateConfig.getConfig().getStrategy();
+        }
         return strategy;
     }
 
+    public String getUrl() {
+        if (TextUtils.isEmpty(url)) {
+            url = UpdateConfig.getConfig().getUrl();
+        }
+        return url;
+    }
+
     public DialogCreator getUpdateDialogCreator() {
+        if (updateDialogCreator == null) {
+            updateDialogCreator = UpdateConfig.getConfig().getUpdateDialogCreator();
+        }
         return updateDialogCreator;
     }
 
     public InstallCreator getInstallDialogCreator() {
+        if (installDialogCreator == null) {
+            installDialogCreator = UpdateConfig.getConfig().getInstallDialogCreator();
+        }
         return installDialogCreator;
     }
 
     public DownloadCreator getDownloadDialogCreator() {
+        if (downloadDialogCreator == null) {
+            downloadDialogCreator = UpdateConfig.getConfig().getDownloadDialogCreator();
+        }
         return downloadDialogCreator;
     }
 
     public UpdateParser getJsonParser() {
+        if (jsonParser == null) {
+            jsonParser = UpdateConfig.getConfig().getJsonParser();
+        }
         return jsonParser;
     }
 
+    public UpdateWorker getCheckWorker() {
+        if (checkWorker == null) {
+            checkWorker = UpdateConfig.getConfig().getCheckWorker();
+        }
+        return checkWorker;
+    }
+
+    public DownloadWorker getDownloadWorker() {
+        if (downloadWorker == null) {
+            downloadWorker = UpdateConfig.getConfig().getDownloadWorker();
+        }
+        return downloadWorker;
+    }
+
     public ApkFileCreator getFileCreator() {
+        if (fileCreator == null) {
+            fileCreator = UpdateConfig.getConfig().getFileCreator();
+        }
         return fileCreator;
+    }
+
+    public UpdateCheckCB getCheckCB() {
+        if (checkCB == null) {
+            checkCB = UpdateConfig.getConfig().getCheckCB();
+        }
+        return checkCB;
+    }
+
+    public UpdateDownloadCB getDownloadCB() {
+        if (downloadCB == null) {
+            downloadCB = UpdateConfig.getConfig().getDownloadCB();
+        }
+        return downloadCB;
     }
 }
