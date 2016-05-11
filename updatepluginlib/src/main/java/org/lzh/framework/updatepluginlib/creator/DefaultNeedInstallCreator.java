@@ -20,14 +20,14 @@ public class DefaultNeedInstallCreator implements InstallCreator {
                 + ": " + update.getVersionName() + "\n\n\n"
                 + update.getUpdateContent();
         return new AlertDialog.Builder(activity)
-                .setTitle(R.string.update_title)
+                .setTitle(R.string.install_title)
                 .setMessage(updateContent)
                 .setNegativeButton(R.string.update_cancel, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         SafeDialogOper.safeDismissDialog((Dialog) dialog);
                     }
-                }).setNeutralButton(R.string.update_immediate, new DialogInterface.OnClickListener() {
+                }).setNeutralButton(R.string.install_immediate, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         SafeDialogOper.safeDismissDialog((Dialog) dialog);

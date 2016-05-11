@@ -11,7 +11,6 @@ import org.lzh.framework.updatepluginlib.util.SafeDialogOper;
 import java.lang.ref.WeakReference;
 
 /**
- * @author Administrator
  */
 public class DefaultCheckCB implements UpdateCheckCB {
 
