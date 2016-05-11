@@ -1,5 +1,5 @@
 apply plugin: 'com.android.library'
-
+apply plugin: 'bintray-release'//添加
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.3"
@@ -19,4 +19,15 @@ android {
 }
 
 dependencies {
+}
+
+//添加
+publish {
+    userOrg = 'yjfnypeu'//bintray.com用户名
+    groupId = 'org.lzh.compiler.updateplugin'//jcenter上的路径
+    artifactId = 'UpdatePlugin'//项目名称
+    publishVersion = '0.1'//版本号
+    desc = 'this is a auto update yourself app framework'//描述，不重要
+    website = 'https://github.com/yjfnypeu/UpdatePlugin'//网站，不重要；尽量模拟github上的地址，例如我这样的；当然你有地址最好了
+
 }
