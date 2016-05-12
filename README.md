@@ -109,7 +109,7 @@ downloadCB(new UpdateDownloadCB() {
 })
 ```
 
-- 自定义更新接口的访问任务，默认参考：![DefaultUpdateWorker.java](https://github.com/yjfnypeu/UpdatePlugin/blob/master/updatepluginlib/src/main/java/org/lzh/framework/updatepluginlib/business/DefaultUpdateWorker.java)
+- 自定义更新接口的访问任务，默认参考：[DefaultUpdateWorker.java](https://github.com/yjfnypeu/UpdatePlugin/blob/master/updatepluginlib/src/main/java/org/lzh/framework/updatepluginlib/business/DefaultUpdateWorker.java)
 
 ```
 checkWorker(new UpdateWorker() {
@@ -122,7 +122,7 @@ checkWorker(new UpdateWorker() {
 })
 ```
 
-- 自定义下载文件缓存,默认参考：![DefaultFileCreator](https://github.com/yjfnypeu/UpdatePlugin/blob/master/updatepluginlib/src/main/java/org/lzh/framework/updatepluginlib/creator/DefaultFileCreator.java)
+- 自定义下载文件缓存,默认参考：[DefaultFileCreator](https://github.com/yjfnypeu/UpdatePlugin/blob/master/updatepluginlib/src/main/java/org/lzh/framework/updatepluginlib/creator/DefaultFileCreator.java)
 
 ```
 .fileCreator(new ApkFileCreator() {
@@ -134,7 +134,7 @@ checkWorker(new UpdateWorker() {
 })
 ```
 
-- 自定义更新策略，默认WIFI下自动下载更新，参考：![WifiFirstStrategy](https://github.com/yjfnypeu/UpdatePlugin/blob/master/updatepluginlib/src/main/java/org/lzh/framework/updatepluginlib/strategy/WifiFirstStrategy.java)
+- 自定义更新策略，默认WIFI下自动下载更新，参考：[WifiFirstStrategy](https://github.com/yjfnypeu/UpdatePlugin/blob/master/updatepluginlib/src/main/java/org/lzh/framework/updatepluginlib/strategy/WifiFirstStrategy.java)
 
 ```
 strategy(new UpdateStrategy() {
@@ -165,7 +165,7 @@ strategy(new UpdateStrategy() {
 })
 ```
 
-- 自定义检查出更新后显示的Dialog，默认参考：![DefaultNeedUpdateCreator](https://github.com/yjfnypeu/UpdatePlugin/blob/master/updatepluginlib/src/main/java/org/lzh/framework/updatepluginlib/creator/DefaultNeedUpdateCreator.java)
+- 自定义检查出更新后显示的Dialog，默认参考：[DefaultNeedUpdateCreator](https://github.com/yjfnypeu/UpdatePlugin/blob/master/updatepluginlib/src/main/java/org/lzh/framework/updatepluginlib/creator/DefaultNeedUpdateCreator.java)
 
 ```
 updateDialogCreator(new DialogCreator() {
@@ -180,7 +180,7 @@ updateDialogCreator(new DialogCreator() {
 })
 ```
 
-- 自定义下载时的进度条Dialog,默认参考：![DefaultNeedDownloadCreator](https://github.com/yjfnypeu/UpdatePlugin/blob/master/updatepluginlib/src/main/java/org/lzh/framework/updatepluginlib/creator/DefaultNeedDownloadCreator.java)
+- 自定义下载时的进度条Dialog,默认参考：[DefaultNeedDownloadCreator](https://github.com/yjfnypeu/UpdatePlugin/blob/master/updatepluginlib/src/main/java/org/lzh/framework/updatepluginlib/creator/DefaultNeedDownloadCreator.java)
 
 ```
 .downloadDialogCreator(new DownloadCreator() {
@@ -193,7 +193,7 @@ updateDialogCreator(new DialogCreator() {
 })
 ```
 
-- 自定义下载完成后。显示的Dialog,默认参考![DefaultNeedInstallCreator](https://github.com/yjfnypeu/UpdatePlugin/blob/master/updatepluginlib/src/main/java/org/lzh/framework/updatepluginlib/creator/DefaultNeedInstallCreator.java)
+- 自定义下载完成后。显示的Dialog,默认参考[DefaultNeedInstallCreator](https://github.com/yjfnypeu/UpdatePlugin/blob/master/updatepluginlib/src/main/java/org/lzh/framework/updatepluginlib/creator/DefaultNeedInstallCreator.java)
 
 ```
 installDialogCreator(new InstallCreator() {
