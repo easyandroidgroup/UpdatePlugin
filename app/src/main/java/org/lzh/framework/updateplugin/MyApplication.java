@@ -1,10 +1,8 @@
 package org.lzh.framework.updateplugin;
 
 import android.app.Application;
-import android.widget.Toast;
 
 import org.lzh.framework.updatepluginlib.UpdateConfig;
-import org.lzh.framework.updatepluginlib.callback.EmptyCheckCB;
 import org.lzh.framework.updatepluginlib.model.Update;
 import org.lzh.framework.updatepluginlib.model.UpdateParser;
 
@@ -46,23 +44,23 @@ public class MyApplication extends Application {
                     }
                 })
                 // TODO: 2016/5/11 除了以上两个参数为必填。以下的参数均为非必填项。
-                .checkCB(new EmptyCheckCB() {
-
-                    @Override
-                    public void onCheckError(int code, String errorMsg) {
-                        Toast.makeText(MyApplication.this, "更新失败：code:" + code + ",errorMsg:" + errorMsg, Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onUserCancel() {
-                        Toast.makeText(MyApplication.this, "用户取消更新", Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void noUpdate() {
-                        Toast.makeText(MyApplication.this, "无更新", Toast.LENGTH_SHORT).show();
-                    }
-                })
+//                .checkCB(new EmptyCheckCB() {
+//
+//                    @Override
+//                    public void onCheckError(int code, String errorMsg) {
+//                        Toast.makeText(MyApplication.this, "更新失败：code:" + code + ",errorMsg:" + errorMsg, Toast.LENGTH_SHORT).show();
+//                    }
+//
+//                    @Override
+//                    public void onUserCancel() {
+//                        Toast.makeText(MyApplication.this, "用户取消更新", Toast.LENGTH_SHORT).show();
+//                    }
+//
+//                    @Override
+//                    public void noUpdate() {
+//                        Toast.makeText(MyApplication.this, "无更新", Toast.LENGTH_SHORT).show();
+//                    }
+//                })
                 /* // apk下载的回调
                 .downloadCB(new UpdateDownloadCB() {
                     @Override

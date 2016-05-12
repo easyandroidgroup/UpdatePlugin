@@ -11,9 +11,9 @@ public interface UpdateDownloadCB {
 
     void onUpdateComplete(File file);
 
-    void onUpdateProgress(long current,long total);
+    void onUpdateProgress(long current, long total);
 
-    void onUpdateError(int code,String errorMsg);
+    void onUpdateError(int code, String errorMsg);
 
 
 }

@@ -12,5 +12,5 @@ public interface IUpdateExecutor {
     /**
      * request check apk file
      */
-    void download (DownloadWorker worker);
+    void download(DownloadWorker worker);
 }

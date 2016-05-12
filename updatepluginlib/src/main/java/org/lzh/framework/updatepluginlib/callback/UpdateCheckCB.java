@@ -22,7 +22,7 @@ public interface UpdateCheckCB {
      * @param code http code
      * @param errorMsg http error msg
      */
-    void onCheckError(int code,String errorMsg);
+    void onCheckError(int code, String errorMsg);
 
     /**
      * to be invoked by user press cancel button.

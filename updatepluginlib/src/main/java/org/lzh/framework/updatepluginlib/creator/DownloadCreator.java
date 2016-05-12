@@ -9,5 +9,5 @@ import org.lzh.framework.updatepluginlib.model.Update;
  * @author Administrator
  */
 public interface DownloadCreator {
-    UpdateDownloadCB create (Update update,Activity activity);
+    UpdateDownloadCB create(Update update, Activity activity);
 }
