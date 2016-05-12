@@ -19,6 +19,10 @@ public class DefaultNeedDownloadCreator implements DownloadCreator {
         dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         dialog.setMax(100);
         dialog.setProgress(0);
+        if (update.isForced()) {
+            dialog.setCancelable(false);
+            dialog.setCanceledOnTouchOutside(false);
+        }
         SafeDialogOper.safeShowDialog(dialog);
         UpdateDownloadCB downloadCB = new UpdateDownloadCB() {
             @Override

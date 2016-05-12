@@ -5,6 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import org.lzh.framework.updatepluginlib.UpdateBuilder;
+import org.lzh.framework.updatepluginlib.model.Update;
+import org.lzh.framework.updatepluginlib.strategy.UpdateStrategy;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -18,10 +20,30 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 // UpdateBuilder中可设置的配置与UpdateConfig中一致。检查更新入口调用check方法
                 // 对于UpdateBuilder中未设置的参数。会默认使用UpdateConfig中的配置
-                UpdateBuilder.create().check(MainActivity.this);
+                UpdateBuilder.create()
+                        .strategy(new UpdateStrategy() {
+                            @Override
+                            public boolean isShowUpdateDialog(Update update) {
+                                return false;
+                            }
+
+                            @Override
+                            public boolean isAutoInstall() {
+                                return true;
+                            }
+
+                            @Override
+                            public boolean isShowInstallDialog() {
+                                return false;
+                            }
+
+                            @Override
+                            public boolean isShowDownloadDialog() {
+                                return false;
+                            }
+                        })
+                        .check(MainActivity.this);
             }
         });
-
-
     }
 }

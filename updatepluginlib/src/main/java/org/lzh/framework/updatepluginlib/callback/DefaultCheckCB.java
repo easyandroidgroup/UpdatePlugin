@@ -5,6 +5,7 @@ import android.app.Dialog;
 
 import org.lzh.framework.updatepluginlib.UpdateBuilder;
 import org.lzh.framework.updatepluginlib.Updater;
+import org.lzh.framework.updatepluginlib.creator.DialogCreator;
 import org.lzh.framework.updatepluginlib.model.Update;
 import org.lzh.framework.updatepluginlib.util.SafeDialogOper;
 
@@ -32,11 +33,16 @@ public class DefaultCheckCB implements UpdateCheckCB {
         if (checkCB != null) {
             checkCB.hasUpdate(update);
         }
-        if (!builder.getStrategy().isShowUpdateDialog(update) && !update.isForced()) {
+        if (!builder.getStrategy().isShowUpdateDialog(update)) {
             Updater.getInstance().downUpdate(actRef.get(),update,builder);
             return;
         }
-        Dialog dialog = builder.getUpdateDialogCreator().create(update,actRef.get(),builder);
+
+        DialogCreator creator = builder.getUpdateDialogCreator();
+        creator.setBuilder(builder);
+        creator.setCheckCB(this);
+        Dialog dialog = creator.create(update,actRef.get());
+
         if (update.isForced()) {
             dialog.setCanceledOnTouchOutside(false);
             dialog.setCancelable(false);
@@ -55,6 +61,13 @@ public class DefaultCheckCB implements UpdateCheckCB {
     public void onCheckError(int code, String errorMsg) {
         if (checkCB != null) {
             checkCB.onCheckError(code,errorMsg);
+        }
+    }
+
+    @Override
+    public void onUserCancel() {
+        if (checkCB != null) {
+            checkCB.onUserCancel();
         }
     }
 }

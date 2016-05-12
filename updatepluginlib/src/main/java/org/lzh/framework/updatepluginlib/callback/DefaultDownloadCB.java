@@ -5,6 +5,7 @@ import android.app.Dialog;
 
 import org.lzh.framework.updatepluginlib.UpdateBuilder;
 import org.lzh.framework.updatepluginlib.UpdateConfig;
+import org.lzh.framework.updatepluginlib.creator.InstallCreator;
 import org.lzh.framework.updatepluginlib.model.Update;
 import org.lzh.framework.updatepluginlib.util.InstallUtil;
 import org.lzh.framework.updatepluginlib.util.SafeDialogOper;
@@ -69,7 +70,9 @@ public class DefaultDownloadCB implements UpdateDownloadCB {
         }
 
         if (builder.getStrategy().isShowInstallDialog()) {
-            Dialog dialog = builder.getInstallDialogCreator().create(update, file.getAbsolutePath(),actRef.get());
+            InstallCreator creator = builder.getInstallDialogCreator();
+            creator.setCheckCB(builder.getCheckCB());
+            Dialog dialog = creator.create(update, file.getAbsolutePath(),actRef.get());
             SafeDialogOper.safeShowDialog(dialog);
         }else if (builder.getStrategy().isAutoInstall()) {
             InstallUtil.installApk(UpdateConfig.getConfig().getContext(),file.getAbsolutePath());

@@ -11,7 +11,8 @@ import org.lzh.framework.updatepluginlib.callback.DefaultDownloadCB;
 import org.lzh.framework.updatepluginlib.model.Update;
 
 /**
- * @author Administrator
+ *
+ * @author lzh
  */
 public class Updater {
     private static Updater updater;
@@ -27,6 +28,11 @@ public class Updater {
         return updater;
     }
 
+    /**
+     * check update entry.
+     * @param activity
+     * @param builder
+     */
     public void checkUpdate(Activity activity,UpdateBuilder builder) {
         UpdateConfig.getConfig().context(activity);
 

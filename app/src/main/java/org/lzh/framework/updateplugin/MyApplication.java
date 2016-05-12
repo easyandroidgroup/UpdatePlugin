@@ -1,8 +1,10 @@
 package org.lzh.framework.updateplugin;
 
 import android.app.Application;
+import android.widget.Toast;
 
 import org.lzh.framework.updatepluginlib.UpdateConfig;
+import org.lzh.framework.updatepluginlib.callback.EmptyCheckCB;
 import org.lzh.framework.updatepluginlib.model.Update;
 import org.lzh.framework.updatepluginlib.model.UpdateParser;
 
@@ -38,28 +40,30 @@ public class MyApplication extends Application {
                         update.setUpdateContent("测试更新");
                         // 此apk包是否为强制更新
                         update.setForced(false);
+                        // 是否忽略此次版本更新
+                        update.setIgnore(false);
                         return update;
                     }
                 })
                 // TODO: 2016/5/11 除了以上两个参数为必填。以下的参数均为非必填项。
-                /*// checkCB.应用更新接口的回调
-                .checkCB(new UpdateCheckCB() {
+                .checkCB(new EmptyCheckCB() {
+
                     @Override
-                    public void hasUpdate(Update update) {
-                        // TODO: 2016/5/11 有新版本APK更新的回调
+                    public void onCheckError(int code, String errorMsg) {
+                        Toast.makeText(MyApplication.this, "更新失败：code:" + code + ",errorMsg:" + errorMsg, Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onUserCancel() {
+                        Toast.makeText(MyApplication.this, "用户取消更新", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void noUpdate() {
-                        // TODO: 2016/5/11 没有新版本的回调
-                    }
-
-                    @Override
-                    public void onCheckError(int i, String s) {
-                        // TODO: 2016/5/11 检查错误的回调
+                        Toast.makeText(MyApplication.this, "无更新", Toast.LENGTH_SHORT).show();
                     }
                 })
-                // apk下载的回调
+                /* // apk下载的回调
                 .downloadCB(new UpdateDownloadCB() {
                     @Override
                     public void onUpdateStart() {

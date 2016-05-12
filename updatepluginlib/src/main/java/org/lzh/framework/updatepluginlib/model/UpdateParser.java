@@ -5,5 +5,5 @@ package org.lzh.framework.updatepluginlib.model;
  */
 public interface UpdateParser {
 
-    Update parse(String httpResponse);
+    <T extends Update> T parse(String httpResponse);
 }

@@ -10,7 +10,7 @@ public class Update {
     private String original;
 
     /**
-     * whether to force update,update dialog should not be disable by back key or touch outside if is true
+     * indicated whether or not to force update,update dialog should not be disable by back key or touch outside if set true
      */
     private boolean forced;
     /**
@@ -34,12 +34,25 @@ public class Update {
      */
     private String versionName;
 
+    /**
+     * indicated whether or not to update this version
+     */
+    private boolean ignore;
+
     public Update(String original) {
         this.original = original;
     }
 
     public boolean isForced() {
         return forced;
+    }
+
+    public boolean isIgnore() {
+        return ignore;
+    }
+
+    public void setIgnore(boolean ignore) {
+        this.ignore = ignore;
     }
 
     public void setForced(boolean forced) {
@@ -93,12 +106,14 @@ public class Update {
     @Override
     public String toString() {
         return "Update{" +
-                "forced=" + forced +
+                "original='" + original + '\'' +
+                ", forced=" + forced +
                 ", updateContent='" + updateContent + '\'' +
                 ", updateUrl='" + updateUrl + '\'' +
                 ", updateTime=" + updateTime +
                 ", versionCode=" + versionCode +
                 ", versionName='" + versionName + '\'' +
+                ", ignore=" + ignore +
                 '}';
     }
 }

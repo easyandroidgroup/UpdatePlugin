@@ -14,7 +14,7 @@ public class WifiFirstStrategy implements UpdateStrategy {
     public boolean isShowUpdateDialog(Update update) {
         isWifi = NetworkUtil.isConnectedByWifi();
         if (isWifi) {
-            return true;
+            return false;
         }
         return true;
     }
@@ -34,6 +34,9 @@ public class WifiFirstStrategy implements UpdateStrategy {
 
     @Override
     public boolean isShowDownloadDialog() {
-        return false;
+        if (isWifi) {
+            return false;
+        }
+        return true;
     }
 }

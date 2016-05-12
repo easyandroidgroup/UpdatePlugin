@@ -37,7 +37,7 @@ public abstract class UpdateWorker implements Runnable{
                 throw new IllegalArgumentException("parse response to update failed by " + parser.getClass().getCanonicalName());
             }
             int curVersion = InstallUtil.getApkVersion(UpdateConfig.getConfig().getContext());
-            if (parse.getVersionCode() > curVersion) {
+            if (parse.getVersionCode() > curVersion && !parse.isIgnore()) {
                 sendHasUpdate(parse);
             } else {
                 sendNoUpdate();
@@ -63,7 +63,6 @@ public abstract class UpdateWorker implements Runnable{
 
     private void sendNoUpdate() {
         if (checkCB == null) return;
-
         HandlerUtil.getMainHandler().post(new Runnable() {
             @Override
             public void run() {

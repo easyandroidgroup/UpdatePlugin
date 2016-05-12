@@ -14,4 +14,6 @@ public interface UpdateDownloadCB {
     void onUpdateProgress(long current,long total);
 
     void onUpdateError(int code,String errorMsg);
+
+
 }
