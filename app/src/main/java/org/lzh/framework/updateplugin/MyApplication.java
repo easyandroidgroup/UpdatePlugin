@@ -13,7 +13,7 @@ import org.lzh.framework.updatepluginlib.model.UpdateParser;
  * @author Administrator
  */
 public class MyApplication extends Application {
-    private String apkFile = "http://apk.hiapk.com/web/api.do?qt=8051&id=721";
+    private String apkFile = "http://apk.hiapk.com/appdown/com.hiapk.live?planid=2515816&seid=c711112f-cc50-0001-a55f-bfe5123fe450";
 
     @Override
     public void onCreate() {
