@@ -122,6 +122,17 @@ checkWorker(new UpdateWorker() {
 })
 ```
 
+- 自定义文件下载接口的访问任务。默认参考：[DefaultDownloadWorker](https://github.com/yjfnypeu/UpdatePlugin/blob/master/updatepluginlib/src/main/java/org/lzh/framework/updatepluginlib/business/DefaultDownloadWorker.java)
+
+```
+downloadWorker(new DownloadWorker() {
+    @Override
+    protected void download(String url, File file) throws Exception {
+        // TODO: 2016/5/11 此处运行于子线程，在此进行文件下载任务
+    }
+})
+```
+
 - 自定义下载文件缓存,默认参考：[DefaultFileCreator](https://github.com/yjfnypeu/UpdatePlugin/blob/master/updatepluginlib/src/main/java/org/lzh/framework/updatepluginlib/creator/DefaultFileCreator.java)
 
 ```

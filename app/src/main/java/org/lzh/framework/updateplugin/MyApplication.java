@@ -5,6 +5,7 @@ import android.widget.Toast;
 
 import org.lzh.framework.updatepluginlib.UpdateConfig;
 import org.lzh.framework.updatepluginlib.callback.EmptyCheckCB;
+import org.lzh.framework.updatepluginlib.callback.EmptyDownloadCB;
 import org.lzh.framework.updatepluginlib.model.Update;
 import org.lzh.framework.updatepluginlib.model.UpdateParser;
 
@@ -63,29 +64,14 @@ public class MyApplication extends Application {
                         Toast.makeText(MyApplication.this, "无更新", Toast.LENGTH_SHORT).show();
                     }
                 })
-                /* // apk下载的回调
-                .downloadCB(new UpdateDownloadCB() {
+                // apk下载的回调
+                .downloadCB(new EmptyDownloadCB(){
                     @Override
-                    public void onUpdateStart() {
-                        // TODO: 2016/5/11 下载开始 
-                    }
-
-                    @Override
-                    public void onUpdateComplete(File file) {
-                        // TODO: 2016/5/11 下载完成 
-                    }
-
-                    @Override
-                    public void onUpdateProgress(long l, long l1) {
-                        // TODO: 2016/5/11 下载进度 
-                    }
-
-                    @Override
-                    public void onUpdateError(int i, String s) {
-                        // TODO: 2016/5/11 下载apk错误 
+                    public void onUpdateError(int code, String errorMsg) {
+                        Toast.makeText(MyApplication.this, "下载失败：code:" + code + ",errorMsg:" + errorMsg, Toast.LENGTH_SHORT).show();
                     }
                 })
-                // 自定义更新接口的访问任务
+                /* // 自定义更新接口的访问任务
                 .checkWorker(new UpdateWorker() {
                     @Override
                     protected String check(String url) throws Exception {
