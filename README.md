@@ -15,7 +15,7 @@ allprojects {
 ```
 dependencies {
     ...
-    compile 'com.github.yjfnypeu:UpdatePlugin:0.2'
+    compile 'com.github.yjfnypeu:UpdatePlugin:0.3'
 }
 ```
 
@@ -347,3 +347,11 @@ UpdateBuilder.create()
 ```
 
 ![default_auto_install.gif](https://raw.githubusercontent.com/yjfnypeu/UpdatePlugin/master/screenshots/default_auto_install.gif)
+
+**Update:**
+
+- 0.3 
+
+```
+对默认的下载任务添加断点下载
+```
