@@ -12,6 +12,7 @@ import org.lzh.framework.updatepluginlib.util.SafeDialogOper;
 import java.lang.ref.WeakReference;
 
 /**
+ * default callback that check if new version exist
  */
 public class DefaultCheckCB implements UpdateCheckCB {
 
@@ -33,6 +34,7 @@ public class DefaultCheckCB implements UpdateCheckCB {
         if (checkCB != null) {
             checkCB.hasUpdate(update);
         }
+
         if (!builder.getStrategy().isShowUpdateDialog(update)) {
             Updater.getInstance().downUpdate(actRef.get(),update,builder);
             return;

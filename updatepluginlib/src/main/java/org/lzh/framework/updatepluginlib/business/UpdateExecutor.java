@@ -4,7 +4,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
- * @author Administrator
+ * The executor to check update and download new version on network
+ * @author lzh
  */
 public class UpdateExecutor implements IUpdateExecutor{
 

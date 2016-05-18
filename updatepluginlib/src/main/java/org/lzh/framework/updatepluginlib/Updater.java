@@ -29,13 +29,14 @@ public class Updater {
     }
 
     /**
-     * check update entry.
-     * @param activity
-     * @param builder
+     * check out whether or not there is a new version on internet
+     * @param activity The activity who need to show update dialog
+     * @param builder update builder that contained all config.
      */
     public void checkUpdate(Activity activity,UpdateBuilder builder) {
-        UpdateConfig.getConfig().context(activity);
 
+        UpdateConfig.getConfig().context(activity);
+        // define a default callback to receive callback from update task
         DefaultCheckCB checkCB = new DefaultCheckCB(activity);
         checkCB.setBuilder(builder);
 
@@ -47,8 +48,15 @@ public class Updater {
         executor.check(builder.getCheckWorker());
     }
 
+    /**
+     * Request to download apk.
+     * @param activity The activity who need to show download and install dialog;
+     * @param update update instance,should not be null;
+     * @param builder update builder that contained all config;
+     */
     public void downUpdate(Activity activity,Update update,UpdateBuilder builder) {
         UpdateConfig.getConfig().context(activity);
+        // define a default download callback to receive callback from download task
         DefaultDownloadCB downloadCB = new DefaultDownloadCB(activity);
         downloadCB.setBuilder(builder);
         downloadCB.setUpdate(update);

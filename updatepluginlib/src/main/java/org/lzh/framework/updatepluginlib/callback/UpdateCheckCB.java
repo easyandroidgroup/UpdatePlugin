@@ -8,12 +8,12 @@ import org.lzh.framework.updatepluginlib.model.Update;
 public interface UpdateCheckCB {
 
     /**
-     * there are a new version of APK on server
+     * There are a new version of APK on network
      */
     void hasUpdate(Update update);
 
     /**
-     * no new version for update
+     * There are no new version for update
      */
     void noUpdate();
 

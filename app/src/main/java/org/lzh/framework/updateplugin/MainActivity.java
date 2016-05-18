@@ -1,14 +1,14 @@
 package org.lzh.framework.updateplugin;
 
+import android.app.Activity;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import org.lzh.framework.updatepluginlib.UpdateBuilder;
 import org.lzh.framework.updatepluginlib.model.Update;
 import org.lzh.framework.updatepluginlib.strategy.UpdateStrategy;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity {
 
     private String apkFile = "http://apk.hiapk.com/web/api.do?qt=8051&id=721";
     @Override
