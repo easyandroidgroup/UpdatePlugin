@@ -37,7 +37,7 @@ public class DefaultDownloadWorker extends DownloadWorker {
             urlConn = null;
             return;
         }
-        RandomAccessFile raf = supportBreadpointDownload(target, httpUrl, url);
+        RandomAccessFile raf = supportBreakpointDownload(target, httpUrl, url);
 
         long offset = target.exists() ? (int) target.length() : 0;
         InputStream inputStream = urlConn.getInputStream();
@@ -72,7 +72,7 @@ public class DefaultDownloadWorker extends DownloadWorker {
         return false;
     }
 
-    private RandomAccessFile supportBreadpointDownload(File target, URL httpUrl,String url) throws IOException {
+    private RandomAccessFile supportBreakpointDownload(File target, URL httpUrl, String url) throws IOException {
 
         String range = urlConn.getHeaderField("Accept-Ranges");
         if (TextUtils.isEmpty(range) || !range.startsWith("bytes")) {
@@ -112,8 +112,8 @@ public class DefaultDownloadWorker extends DownloadWorker {
         urlConn.setRequestProperty("Content-Type","text/html; charset=UTF-8");
         urlConn.setRequestMethod("GET");
         urlConn.setConnectTimeout(10000);
-        urlConn.setDoOutput(true);
-        urlConn.setDoInput(true);
+     //   urlConn.setDoOutput(true);  这会把request method 强制变成post请求 造成下载失败
+     //   urlConn.setDoInput(true);
     }
 
     private long getLastDownloadSize(String url) {
@@ -130,13 +130,13 @@ public class DefaultDownloadWorker extends DownloadWorker {
         SharedPreferences sp = UpdateConfig.getConfig().getContext().getSharedPreferences(KEY_DOWN_SIZE, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
         editor.putLong(url,size);
-        editor.apply();
+        editor.commit(); // editor.apply() 是异步提交修改 同时修改造成死锁 ANR
     }
 
     private void saveDownloadTotalSize(String url,long totalSize) {
         SharedPreferences sp = UpdateConfig.getConfig().getContext().getSharedPreferences(KEY_DOWN_SIZE, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
         editor.putLong(url + "_total_size",totalSize);
-        editor.apply();
+        editor.commit();
     }
 }
