@@ -13,30 +13,16 @@ public class WifiFirstStrategy implements UpdateStrategy {
     @Override
     public boolean isShowUpdateDialog(Update update) {
         isWifi = NetworkUtil.isConnectedByWifi();
-        if (isWifi) {
-            return false;
-        }
-        return true;
+        return !isWifi;
     }
 
     @Override
     public boolean isAutoInstall() {
-        return false;
-    }
-
-    @Override
-    public boolean isShowInstallDialog() {
-        if (isWifi) {
-            return true;
-        }
-        return false;
+        return !isWifi;
     }
 
     @Override
     public boolean isShowDownloadDialog() {
-        if (isWifi) {
-            return false;
-        }
-        return true;
+        return !isWifi;
     }
 }

@@ -14,7 +14,6 @@ public class DefaultUpdateWorker extends UpdateWorker {
         URL getUrl = new URL(urlStr);
         HttpURLConnection urlConn = (HttpURLConnection) getUrl.openConnection();
         urlConn.setDoInput(true);
-        urlConn.setDoOutput(true);
         urlConn.setUseCaches(false);
         urlConn.setConnectTimeout(10000);
         urlConn.setRequestMethod("GET");
@@ -22,6 +21,7 @@ public class DefaultUpdateWorker extends UpdateWorker {
 
         int responseCode = urlConn.getResponseCode();
         if (responseCode < 200 || responseCode >= 300) {
+            urlConn.disconnect();
             throw new HttpException(responseCode,urlConn.getResponseMessage());
         }
 
@@ -32,6 +32,8 @@ public class DefaultUpdateWorker extends UpdateWorker {
         while ((lines = bis.readLine()) != null) {
             sb.append(lines);
         }
+
+        urlConn.disconnect();
 
         return sb.toString();
     }

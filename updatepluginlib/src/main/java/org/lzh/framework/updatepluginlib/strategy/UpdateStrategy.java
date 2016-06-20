@@ -18,11 +18,6 @@ public interface UpdateStrategy {
     boolean isAutoInstall();
 
     /**
-     * whether or not to show install dialog
-     */
-    boolean isShowInstallDialog();
-
-    /**
      * whether or not to show download dialog
      */
     boolean isShowDownloadDialog();

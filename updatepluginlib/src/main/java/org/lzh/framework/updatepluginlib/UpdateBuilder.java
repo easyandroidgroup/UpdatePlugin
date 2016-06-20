@@ -8,6 +8,7 @@ import org.lzh.framework.updatepluginlib.business.UpdateWorker;
 import org.lzh.framework.updatepluginlib.callback.UpdateCheckCB;
 import org.lzh.framework.updatepluginlib.callback.UpdateDownloadCB;
 import org.lzh.framework.updatepluginlib.creator.ApkFileCreator;
+import org.lzh.framework.updatepluginlib.model.UpdateChecker;
 import org.lzh.framework.updatepluginlib.strategy.UpdateStrategy;
 import org.lzh.framework.updatepluginlib.creator.DialogCreator;
 import org.lzh.framework.updatepluginlib.creator.DownloadCreator;
@@ -15,7 +16,8 @@ import org.lzh.framework.updatepluginlib.creator.InstallCreator;
 import org.lzh.framework.updatepluginlib.model.UpdateParser;
 
 /**
- * @author Administrator
+ *
+ * @author lzh
  */
 public class UpdateBuilder {
 
@@ -30,6 +32,7 @@ public class UpdateBuilder {
     private DownloadCreator downloadDialogCreator;
     private UpdateParser jsonParser;
     private ApkFileCreator fileCreator;
+    private UpdateChecker updateChecker;
 
     public static UpdateBuilder create() {
         return new UpdateBuilder();
@@ -37,6 +40,11 @@ public class UpdateBuilder {
 
     public UpdateBuilder url(String url) {
         this.url = url;
+        return this;
+    }
+
+    public UpdateBuilder updateChecker (UpdateChecker checker) {
+        this.updateChecker = checker;
         return this;
     }
 
@@ -106,6 +114,13 @@ public class UpdateBuilder {
             url = UpdateConfig.getConfig().getUrl();
         }
         return url;
+    }
+
+    public UpdateChecker getUpdateChecker() {
+        if (updateChecker == null) {
+            updateChecker = UpdateConfig.getConfig().getUpdateChecker();
+        }
+        return updateChecker;
     }
 
     public DialogCreator getUpdateDialogCreator() {

@@ -3,17 +3,22 @@ package org.lzh.framework.updatepluginlib.business;
 import org.lzh.framework.updatepluginlib.UpdateConfig;
 import org.lzh.framework.updatepluginlib.callback.UpdateCheckCB;
 import org.lzh.framework.updatepluginlib.model.Update;
+import org.lzh.framework.updatepluginlib.model.UpdateChecker;
 import org.lzh.framework.updatepluginlib.model.UpdateParser;
 import org.lzh.framework.updatepluginlib.util.HandlerUtil;
 import org.lzh.framework.updatepluginlib.util.InstallUtil;
 
 /**
- *
+ * 进行新版本检测接口访问的网络任务
  */
 public abstract class UpdateWorker implements Runnable{
-
+    // 新版本检测接口url，由UpdateConfig或者UpdateBuilder进行设置
     protected String url;
+    // 版本检测回调，
     protected UpdateCheckCB checkCB;
+    // 版本检测器。用于检测当前是否为需要更新的版本
+    protected UpdateChecker checker;
+    // url接口返回数据解析器。
     protected UpdateParser parser;
 
     public void setUrl(String url) {
@@ -28,6 +33,10 @@ public abstract class UpdateWorker implements Runnable{
         this.parser = parser;
     }
 
+    public void setChecker(UpdateChecker checker) {
+        this.checker = checker;
+    }
+
     @Override
     public void run() {
         try {
@@ -36,8 +45,7 @@ public abstract class UpdateWorker implements Runnable{
             if (parse == null) {
                 throw new IllegalArgumentException("parse response to update failed by " + parser.getClass().getCanonicalName());
             }
-            int curVersion = InstallUtil.getApkVersion(UpdateConfig.getConfig().getContext());
-            if (parse.getVersionCode() > curVersion && !parse.isIgnore()) {
+            if (!parse.isIgnore() && checker.check(parse)) {
                 sendHasUpdate(parse);
             } else {
                 sendNoUpdate();
@@ -49,6 +57,12 @@ public abstract class UpdateWorker implements Runnable{
         }
     }
 
+    /**
+     * access the url and get response data back
+     * @param url The url to be accessed
+     * @return response data from url
+     * @throws Exception
+     */
     protected abstract String check(String url) throws Exception;
 
     private void sendHasUpdate(final Update update) {

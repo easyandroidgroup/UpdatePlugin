@@ -28,6 +28,7 @@ public class DefaultDownloadWorker extends DownloadWorker {
 
         int responseCode = urlConn.getResponseCode();
         if (responseCode < 200 || responseCode >= 300) {
+            urlConn.disconnect();
             throw new HttpException(responseCode,urlConn.getResponseMessage());
         }
 

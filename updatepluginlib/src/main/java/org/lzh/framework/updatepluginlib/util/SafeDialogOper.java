@@ -7,34 +7,16 @@ import android.content.Context;
 import android.view.ContextThemeWrapper;
 
 /**
- * @author Administrator
+ * To safely operation dialog show and hide
+ * @author lzh
  */
 public class SafeDialogOper {
-
-    public static void safeShowDialog(DialogFragment dialog, Activity activity, String tag) {
-        if (activity == null || activity.isFinishing()) {
-            return;
-        }
-
-        if (dialog == null || dialog.isDetached()) {
-            return;
-        }
-
-        dialog.show(activity.getFragmentManager(), tag);
-    }
 
     public static void safeShowDialog(Dialog dialog) {
         if (dialog == null || dialog.isShowing()) {
             return;
         }
         dialog.show();
-    }
-
-    public static void safeDismissDialog(DialogFragment dialog) {
-        if (dialog == null || dialog.isDetached()) {
-            return;
-        }
-        dialog.dismiss();
     }
 
     public static void safeDismissDialog(Dialog dialog) {

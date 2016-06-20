@@ -17,26 +17,60 @@ import org.lzh.framework.updatepluginlib.creator.DefaultNeedUpdateCreator;
 import org.lzh.framework.updatepluginlib.creator.DialogCreator;
 import org.lzh.framework.updatepluginlib.creator.DownloadCreator;
 import org.lzh.framework.updatepluginlib.creator.InstallCreator;
+import org.lzh.framework.updatepluginlib.model.DefaultChecker;
+import org.lzh.framework.updatepluginlib.model.UpdateChecker;
 import org.lzh.framework.updatepluginlib.model.UpdateParser;
 import org.lzh.framework.updatepluginlib.strategy.UpdateStrategy;
 import org.lzh.framework.updatepluginlib.strategy.WifiFirstStrategy;
 
 /**
+ * 全局配置。在进行更新流程时。
  */
 public class UpdateConfig {
 
     private Context context;
+
     private UpdateWorker checkWorker;
+
     private DownloadWorker downloadWorker;
+    /**
+     * 检查更新接口的回调
+     */
     private UpdateCheckCB checkCB;
+    /**
+     * 下载新版本APK的回调
+     */
     private UpdateDownloadCB downloadCB;
+    /**
+     * 应用更新接口，此url会交于UpdateWorker类使用。做接口访问
+     */
     private String url;
+    /**
+     * 应用更新策略
+     */
     private UpdateStrategy strategy;
+    /**
+     * 在检查到有应用需要更新时的Dialog创建器
+     */
     private DialogCreator updateDialogCreator;
+    /**
+     * 在新版本apk应用下载完成后的Dialog创建器
+     */
     private InstallCreator installDialogCreator;
+    /**
+     * 在进行下载apk时的Dialog创建器
+     */
     private DownloadCreator downloadDialogCreator;
+    /**
+     *
+     */
     private UpdateParser jsonParser;
+    /**
+     *
+     */
     private ApkFileCreator fileCreator;
+
+    private UpdateChecker updateChecker;
 
     private static UpdateConfig config;
     public static UpdateConfig getConfig() {
@@ -46,6 +80,10 @@ public class UpdateConfig {
         return config;
     }
 
+    /**
+     * Cache application context
+     * @param context Activity context
+     */
     UpdateConfig context (Context context) {
         if (this.context == null) {
             this.context = context.getApplicationContext();
@@ -55,6 +93,11 @@ public class UpdateConfig {
 
     public UpdateConfig url(String url) {
         this.url = url;
+        return this;
+    }
+
+    public UpdateConfig updateChecker(UpdateChecker checker) {
+        this.updateChecker = checker;
         return this;
     }
 
@@ -141,6 +184,13 @@ public class UpdateConfig {
             installDialogCreator = new DefaultNeedInstallCreator();
         }
         return installDialogCreator;
+    }
+
+    public UpdateChecker getUpdateChecker() {
+        if (updateChecker == null) {
+            updateChecker = new DefaultChecker();
+        }
+        return updateChecker;
     }
 
     public DownloadCreator getDownloadDialogCreator() {

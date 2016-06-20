@@ -6,7 +6,8 @@ import org.lzh.framework.updatepluginlib.util.HandlerUtil;
 import java.io.File;
 
 /**
- * @author Administrator
+ * The task to download new version apk
+ * @author lzh
  */
 public abstract class DownloadWorker implements Runnable{
 

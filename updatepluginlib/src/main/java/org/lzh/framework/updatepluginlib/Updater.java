@@ -43,6 +43,7 @@ public class Updater {
         UpdateWorker checkWorker = builder.getCheckWorker();
         checkWorker.setUrl(builder.getUrl());
         checkWorker.setParser(builder.getJsonParser());
+        checkWorker.setChecker(builder.getUpdateChecker());
         checkWorker.setCheckCB(checkCB);
 
         executor.check(builder.getCheckWorker());

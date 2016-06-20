@@ -68,14 +68,13 @@ public class DefaultDownloadCB implements UpdateDownloadCB {
         if (getInnerCB() != null) {
             innerCB.onUpdateComplete(file);
         }
-
-        if (builder.getStrategy().isShowInstallDialog()) {
+        if (builder.getStrategy().isAutoInstall()) {
+            InstallUtil.installApk(UpdateConfig.getConfig().getContext(),file.getAbsolutePath());
+        } else {
             InstallCreator creator = builder.getInstallDialogCreator();
             creator.setCheckCB(builder.getCheckCB());
             Dialog dialog = creator.create(update, file.getAbsolutePath(),actRef.get());
             SafeDialogOper.safeShowDialog(dialog);
-        }else if (builder.getStrategy().isAutoInstall()) {
-            InstallUtil.installApk(UpdateConfig.getConfig().getContext(),file.getAbsolutePath());
         }
     }
 

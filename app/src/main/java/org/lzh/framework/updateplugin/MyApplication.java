@@ -3,6 +3,8 @@ package org.lzh.framework.updateplugin;
 import android.app.Application;
 import android.widget.Toast;
 
+import com.squareup.leakcanary.LeakCanary;
+
 import org.lzh.framework.updatepluginlib.UpdateConfig;
 import org.lzh.framework.updatepluginlib.callback.EmptyCheckCB;
 import org.lzh.framework.updatepluginlib.callback.EmptyDownloadCB;
@@ -18,6 +20,7 @@ public class MyApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        LeakCanary.install(this);
         // UpdateConfig为全局配置。当在其他页面中。使用UpdateBuilder进行检查更新时。
         // 对于没传的参数，会默认使用UpdateConfig中的全局配置
         UpdateConfig.getConfig()
@@ -40,7 +43,7 @@ public class MyApplication extends Application {
                         // 此apk包的更新内容
                         update.setUpdateContent("测试更新");
                         // 此apk包是否为强制更新
-                        update.setForced(false);
+                        update.setForced(true);
                         // 是否忽略此次版本更新
                         update.setIgnore(false);
                         return update;
