@@ -2,6 +2,7 @@ package org.lzh.framework.updatepluginlib.creator;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.util.Log;
 
 import org.lzh.framework.updatepluginlib.callback.UpdateDownloadCB;
 import org.lzh.framework.updatepluginlib.model.Update;
@@ -15,6 +16,9 @@ import java.io.File;
 public class DefaultNeedDownloadCreator implements DownloadCreator {
     @Override
     public UpdateDownloadCB create(Update update,Activity activity) {
+        if (activity == null || activity.isFinishing()) {
+            Log.e("DownDialogCreator--->","show download dialog failed:activity was recycled or finished");
+        }
         final ProgressDialog dialog = new ProgressDialog(activity);
         dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         dialog.setMax(100);
@@ -24,7 +28,7 @@ public class DefaultNeedDownloadCreator implements DownloadCreator {
             dialog.setCanceledOnTouchOutside(false);
         }
         SafeDialogOper.safeShowDialog(dialog);
-        UpdateDownloadCB downloadCB = new UpdateDownloadCB() {
+        return new UpdateDownloadCB() {
             @Override
             public void onUpdateStart() {
             }
@@ -45,6 +49,5 @@ public class DefaultNeedDownloadCreator implements DownloadCreator {
                 SafeDialogOper.safeDismissDialog(dialog);
             }
         };
-        return downloadCB;
     }
 }

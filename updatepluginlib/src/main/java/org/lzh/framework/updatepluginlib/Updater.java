@@ -1,6 +1,7 @@
 package org.lzh.framework.updatepluginlib;
 
 import android.app.Activity;
+import android.util.Log;
 
 import org.lzh.framework.updatepluginlib.business.DownloadWorker;
 import org.lzh.framework.updatepluginlib.business.IUpdateExecutor;
@@ -11,7 +12,6 @@ import org.lzh.framework.updatepluginlib.callback.DefaultDownloadCB;
 import org.lzh.framework.updatepluginlib.model.Update;
 
 /**
- *
  * @author lzh
  */
 public class Updater {
@@ -36,11 +36,16 @@ public class Updater {
     public void checkUpdate(Activity activity,UpdateBuilder builder) {
 
         UpdateConfig.getConfig().context(activity);
-        // define a default callback to receive callback from update task
+        // define a default callback to receive update event send by update task
         DefaultCheckCB checkCB = new DefaultCheckCB(activity);
         checkCB.setBuilder(builder);
 
         UpdateWorker checkWorker = builder.getCheckWorker();
+        if (checkWorker.isRunning()) {
+            Log.e("UpdatePlugin==>","Already have a update task running");
+            checkCB.onCheckError(-1,"Already have a update task running");
+            return;
+        }
         checkWorker.setUrl(builder.getUrl());
         checkWorker.setParser(builder.getJsonParser());
         checkWorker.setChecker(builder.getUpdateChecker());
@@ -64,6 +69,13 @@ public class Updater {
         downloadCB.setDownloadCB(builder.getDownloadCB());
 
         DownloadWorker downloadWorker = builder.getDownloadWorker();
+        if (downloadWorker.isRunning()) {
+            Log.e("UpdatePlugin==>","Already have a download task running");
+            downloadCB.onUpdateError(-1,"Already have a download task running");
+            return;
+        }
+
+
         downloadWorker.setUrl(update.getUpdateUrl());
         downloadWorker.setDownloadCB(downloadCB);
         downloadWorker.setCacheFileName(builder.getFileCreator().create(update.getVersionName()));

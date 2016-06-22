@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.util.Log;
 
 import org.lzh.framework.updatepluginlib.R;
 import org.lzh.framework.updatepluginlib.model.Update;
@@ -15,6 +16,11 @@ import org.lzh.framework.updatepluginlib.util.SafeDialogOper;
 public class DefaultNeedUpdateCreator extends DialogCreator {
     @Override
     public Dialog create(final Update update, final Activity activity) {
+
+        if (activity == null || activity.isFinishing()) {
+            Log.e("DialogCreator--->","Activity was recycled or finished,dialog shown failed!");
+        }
+
         String updateContent = activity.getText(R.string.update_version_name)
                 + ": " + update.getVersionName() + "\n\n\n"
                 + update.getUpdateContent();
@@ -38,6 +44,6 @@ public class DefaultNeedUpdateCreator extends DialogCreator {
                 }
             });
         }
-        return builder.show();
+        return builder.create();
     }
 }

@@ -2,8 +2,8 @@ package org.lzh.framework.updatepluginlib.util;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.Context;
+import android.util.Log;
 import android.view.ContextThemeWrapper;
 
 /**
@@ -16,6 +16,20 @@ public class SafeDialogOper {
         if (dialog == null || dialog.isShowing()) {
             return;
         }
+        Activity bindAct = null;
+        Context context = dialog.getContext();
+        if (context instanceof ContextThemeWrapper) {
+            ContextThemeWrapper contextWrapper = (ContextThemeWrapper) context;
+            bindAct = (Activity) contextWrapper.getBaseContext();
+        } else if (context instanceof Activity) {
+            bindAct = (Activity) context;
+        }
+
+        if (bindAct == null || bindAct.isFinishing()) {
+            Log.d("Dialog shown failed:","The Dialog bind's Activity was recycled or finished!");
+            return;
+        }
+
         dialog.show();
     }
 

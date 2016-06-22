@@ -23,12 +23,16 @@ public class UpdateExecutor implements IUpdateExecutor{
     }
 
     @Override
-    public void check(final UpdateWorker worker) {
+    public synchronized void check(final UpdateWorker worker) {
+        worker.setRunning(true);
         pool.execute(worker);
     }
 
     @Override
-    public void download(DownloadWorker worker) {
+    public synchronized void download(DownloadWorker worker) {
+        worker.setRunning(true);
         pool.execute(worker);
     }
+
+
 }

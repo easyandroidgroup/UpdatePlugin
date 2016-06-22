@@ -21,6 +21,9 @@ import org.lzh.framework.updatepluginlib.model.UpdateParser;
  */
 public class UpdateBuilder {
 
+    /**
+     * To see {@link UpdateWorker}
+     */
     private UpdateWorker checkWorker;
     private DownloadWorker downloadWorker;
     private UpdateCheckCB checkCB;

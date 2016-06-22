@@ -1,10 +1,9 @@
 package org.lzh.framework.updateplugin;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
-public class EmptyActivity extends Activity {
+public class EmptyActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

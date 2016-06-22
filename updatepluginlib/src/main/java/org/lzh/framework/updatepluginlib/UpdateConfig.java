@@ -18,58 +18,67 @@ import org.lzh.framework.updatepluginlib.creator.DialogCreator;
 import org.lzh.framework.updatepluginlib.creator.DownloadCreator;
 import org.lzh.framework.updatepluginlib.creator.InstallCreator;
 import org.lzh.framework.updatepluginlib.model.DefaultChecker;
+import org.lzh.framework.updatepluginlib.model.Update;
 import org.lzh.framework.updatepluginlib.model.UpdateChecker;
 import org.lzh.framework.updatepluginlib.model.UpdateParser;
 import org.lzh.framework.updatepluginlib.strategy.UpdateStrategy;
 import org.lzh.framework.updatepluginlib.strategy.WifiFirstStrategy;
 
 /**
- * 全局配置。在进行更新流程时。
+ * Global configs
  */
 public class UpdateConfig {
 
     private Context context;
 
+    /**
+     * update task
+     */
     private UpdateWorker checkWorker;
 
+    /**
+     * download task
+     */
     private DownloadWorker downloadWorker;
     /**
-     * 检查更新接口的回调
+     * The callback to receive update task info
      */
     private UpdateCheckCB checkCB;
     /**
-     * 下载新版本APK的回调
+     * The callback to receive download task info
      */
     private UpdateDownloadCB downloadCB;
     /**
-     * 应用更新接口，此url会交于UpdateWorker类使用。做接口访问
+     * The url will be used by {@link UpdateWorker} to access network
      */
     private String url;
     /**
-     * 应用更新策略
+     * The strategy on update
      */
     private UpdateStrategy strategy;
     /**
-     * 在检查到有应用需要更新时的Dialog创建器
+     * To create update dialog when should be shown,according to {@link UpdateStrategy#isShowUpdateDialog(Update)}
      */
     private DialogCreator updateDialogCreator;
     /**
-     * 在新版本apk应用下载完成后的Dialog创建器
+     * To create install dialog when should be shown,according to {@link UpdateStrategy#isAutoInstall()}
      */
     private InstallCreator installDialogCreator;
     /**
-     * 在进行下载apk时的Dialog创建器
+     * To create download dialog when should be shown,according to {@link UpdateStrategy#isShowDownloadDialog()}
      */
     private DownloadCreator downloadDialogCreator;
     /**
-     *
+     * The parser to parse response data form url to {@link Update} instance
      */
     private UpdateParser jsonParser;
     /**
-     *
+     * To create cache apk file name in download task:{@link DownloadWorker}
      */
     private ApkFileCreator fileCreator;
-
+    /**
+     * To check out whether or not there are a new version of apk should be updated
+     */
     private UpdateChecker updateChecker;
 
     private static UpdateConfig config;
@@ -91,61 +100,97 @@ public class UpdateConfig {
         return this;
     }
 
+    /**
+     * to see {@link UpdateConfig#url}
+     */
     public UpdateConfig url(String url) {
         this.url = url;
         return this;
     }
 
+    /**
+     * To see {@link UpdateConfig#updateChecker}
+     */
     public UpdateConfig updateChecker(UpdateChecker checker) {
         this.updateChecker = checker;
         return this;
     }
 
+    /**
+     * To see {@link UpdateConfig#checkWorker}
+     */
     public UpdateConfig checkWorker(UpdateWorker checkWorker) {
         this.checkWorker = checkWorker;
         return this;
     }
 
+    /**
+     * To see {@link UpdateConfig#downloadWorker}
+     */
     public UpdateConfig downloadWorker(DownloadWorker downloadWorker) {
         this.downloadWorker = downloadWorker;
         return this;
     }
 
+    /**
+     * To see {@link UpdateConfig#downloadCB}
+     */
     public UpdateConfig downloadCB(UpdateDownloadCB downloadCB) {
         this.downloadCB = downloadCB;
         return this;
     }
 
+    /**
+     * To see {@link UpdateConfig#checkCB}
+     */
     public UpdateConfig checkCB (UpdateCheckCB checkCB) {
         this.checkCB = checkCB;
         return this;
     }
 
+    /**
+     * To see {@link UpdateConfig#jsonParser}
+     */
     public UpdateConfig jsonParser (UpdateParser jsonParser) {
         this.jsonParser = jsonParser;
         return this;
     }
 
+    /**
+     * To see {@link UpdateConfig#fileCreator}
+     */
     public UpdateConfig fileCreator (ApkFileCreator fileCreator) {
         this.fileCreator = fileCreator;
         return this;
     }
 
+    /**
+     * To see {@link UpdateConfig#downloadDialogCreator}
+     */
     public UpdateConfig downloadDialogCreator (DownloadCreator downloadDialogCreator) {
         this.downloadDialogCreator = downloadDialogCreator;
         return this;
     }
 
+    /**
+     * To see {@link UpdateConfig#installDialogCreator}
+     */
     public UpdateConfig installDialogCreator (InstallCreator installDialogCreator) {
         this.installDialogCreator = installDialogCreator;
         return this;
     }
 
+    /**
+     * To see {@link UpdateConfig#updateDialogCreator}
+     */
     public UpdateConfig updateDialogCreator(DialogCreator updateDialogCreator) {
         this.updateDialogCreator = updateDialogCreator;
         return this;
     }
 
+    /**
+     * To see {@link UpdateConfig#strategy}
+     */
     public UpdateConfig strategy(UpdateStrategy strategy) {
         this.strategy = strategy;
         return this;
@@ -158,6 +203,9 @@ public class UpdateConfig {
         return context;
     }
 
+    /**
+     * @return To see {@link UpdateConfig#strategy}
+     */
     public UpdateStrategy getStrategy() {
         if (strategy == null) {
             strategy = new WifiFirstStrategy();
@@ -165,6 +213,9 @@ public class UpdateConfig {
         return strategy;
     }
 
+    /**
+     * @return To see {@link UpdateConfig#url}
+     */
     public String getUrl() {
         if (TextUtils.isEmpty(url)) {
             throw new IllegalArgumentException("url is null");
@@ -172,6 +223,9 @@ public class UpdateConfig {
         return url;
     }
 
+    /**
+     * @return To see {@link UpdateConfig#updateDialogCreator}
+     */
     public DialogCreator getUpdateDialogCreator() {
         if (updateDialogCreator == null) {
             updateDialogCreator = new DefaultNeedUpdateCreator();
@@ -179,6 +233,9 @@ public class UpdateConfig {
         return updateDialogCreator;
     }
 
+    /**
+     * @return To see {@link UpdateConfig#installDialogCreator}
+     */
     public InstallCreator getInstallDialogCreator() {
         if (installDialogCreator == null) {
             installDialogCreator = new DefaultNeedInstallCreator();
@@ -186,6 +243,9 @@ public class UpdateConfig {
         return installDialogCreator;
     }
 
+    /**
+     * @return To see {@link UpdateConfig#updateChecker}
+     */
     public UpdateChecker getUpdateChecker() {
         if (updateChecker == null) {
             updateChecker = new DefaultChecker();
@@ -193,6 +253,9 @@ public class UpdateConfig {
         return updateChecker;
     }
 
+    /**
+     * @return To see {@link UpdateConfig#downloadDialogCreator}
+     */
     public DownloadCreator getDownloadDialogCreator() {
         if (downloadDialogCreator == null) {
             downloadDialogCreator = new DefaultNeedDownloadCreator();
@@ -200,6 +263,9 @@ public class UpdateConfig {
         return downloadDialogCreator;
     }
 
+    /**
+     * @return To see {@link UpdateConfig#jsonParser}
+     */
     public UpdateParser getJsonParser() {
         if (jsonParser == null) {
             throw new IllegalStateException("update parser is null");
@@ -207,6 +273,9 @@ public class UpdateConfig {
         return jsonParser;
     }
 
+    /**
+     * @return To see {@link UpdateConfig#checkWorker}
+     */
     public UpdateWorker getCheckWorker() {
         if (checkWorker == null) {
             checkWorker = new DefaultUpdateWorker();
@@ -214,6 +283,9 @@ public class UpdateConfig {
         return checkWorker;
     }
 
+    /**
+     * @return To see {@link UpdateConfig#downloadWorker}
+     */
     public DownloadWorker getDownloadWorker() {
         if (downloadWorker == null) {
             downloadWorker = new DefaultDownloadWorker();
@@ -221,6 +293,9 @@ public class UpdateConfig {
         return downloadWorker;
     }
 
+    /**
+     * @return To see {@link UpdateConfig#fileCreator}
+     */
     public ApkFileCreator getFileCreator() {
         if (fileCreator == null) {
             fileCreator = new DefaultFileCreator();
@@ -228,10 +303,16 @@ public class UpdateConfig {
         return fileCreator;
     }
 
+    /**
+     * @return To see {@link UpdateConfig#checkCB}
+     */
     public UpdateCheckCB getCheckCB() {
         return checkCB;
     }
 
+    /**
+     * @return To see {@link UpdateConfig#downloadCB}
+     */
     public UpdateDownloadCB getDownloadCB() {
         return downloadCB;
     }

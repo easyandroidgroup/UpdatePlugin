@@ -4,24 +4,38 @@ import android.app.Activity;
 import android.app.Dialog;
 
 import org.lzh.framework.updatepluginlib.UpdateBuilder;
-import org.lzh.framework.updatepluginlib.UpdateConfig;
+import org.lzh.framework.updatepluginlib.business.DownloadWorker;
 import org.lzh.framework.updatepluginlib.creator.InstallCreator;
 import org.lzh.framework.updatepluginlib.model.Update;
-import org.lzh.framework.updatepluginlib.util.InstallUtil;
+import org.lzh.framework.updatepluginlib.strategy.UpdateStrategy;
+import org.lzh.framework.updatepluginlib.util.Recycler;
+import org.lzh.framework.updatepluginlib.util.Recycler.Recycleable;
 import org.lzh.framework.updatepluginlib.util.SafeDialogOper;
 
 import java.io.File;
 import java.lang.ref.WeakReference;
 
 /**
- * @author Administrator
+ * The default download callback to receive update event send by {@link org.lzh.framework.updatepluginlib.business.DownloadWorker}
+ * @author lzh
  */
-public class DefaultDownloadCB implements UpdateDownloadCB {
+public class DefaultDownloadCB implements UpdateDownloadCB ,Recycleable{
 
     private WeakReference<Activity> actRef = null;
     private UpdateBuilder builder;
+    /**
+     * set by {@link UpdateBuilder#downloadCB(UpdateDownloadCB)} or
+     * {@link org.lzh.framework.updatepluginlib.UpdateConfig#downloadCB(UpdateDownloadCB)}<br>
+     *
+     *
+     */
     private UpdateDownloadCB downloadCB;
     private Update update;
+    /**
+     * This callback is created by {@link org.lzh.framework.updatepluginlib.creator.DownloadCreator#create(Update, Activity)}<br>
+     *
+     *     to update UI within this callback
+     */
     private UpdateDownloadCB innerCB;
 
     public DefaultDownloadCB(Activity activity) {
@@ -41,6 +55,9 @@ public class DefaultDownloadCB implements UpdateDownloadCB {
         this.downloadCB = downloadCB;
     }
 
+    /**
+     * Receive and pass download_start event send by {@link DownloadWorker#sendUpdateStart()}
+     */
     @Override
     public void onUpdateStart() {
         if (downloadCB != null) {
@@ -59,6 +76,11 @@ public class DefaultDownloadCB implements UpdateDownloadCB {
         return innerCB;
     }
 
+    /**
+     * Receive and pass download_complete event send by {@link DownloadWorker#sendUpdateComplete(File)}
+     *
+     * When download complete,The install dialog will be create when {@link UpdateStrategy#isAutoInstall()} is return with false
+     */
     @Override
     public void onUpdateComplete(File file) {
         if (downloadCB != null) {
@@ -68,16 +90,26 @@ public class DefaultDownloadCB implements UpdateDownloadCB {
         if (getInnerCB() != null) {
             innerCB.onUpdateComplete(file);
         }
+        InstallCreator creator = builder.getInstallDialogCreator();
         if (builder.getStrategy().isAutoInstall()) {
-            InstallUtil.installApk(UpdateConfig.getConfig().getContext(),file.getAbsolutePath());
+            creator.sendToInstall(file.getAbsolutePath());
         } else {
-            InstallCreator creator = builder.getInstallDialogCreator();
             creator.setCheckCB(builder.getCheckCB());
             Dialog dialog = creator.create(update, file.getAbsolutePath(),actRef.get());
+            if (update.isForced()) {
+                dialog.setCancelable(false);
+                dialog.setCanceledOnTouchOutside(false);
+            }
+
             SafeDialogOper.safeShowDialog(dialog);
         }
+
+        Recycler.release(this);
     }
 
+    /**
+     * Receive and pass download_progress event send by {@link DownloadWorker#sendUpdateProgress(long, long)}
+     */
     @Override
     public void onUpdateProgress(long current,long total) {
         if (downloadCB != null) {
@@ -89,6 +121,9 @@ public class DefaultDownloadCB implements UpdateDownloadCB {
         }
     }
 
+    /**
+     * Receive and pass download_error event send by {@link DownloadWorker#sendUpdateError(int, String)}
+     */
     @Override
     public void onUpdateError(int code,String errorMsg) {
         if (downloadCB != null) {
@@ -98,5 +133,16 @@ public class DefaultDownloadCB implements UpdateDownloadCB {
         if (getInnerCB() != null) {
             innerCB.onUpdateError(code,errorMsg);
         }
+
+        Recycler.release(this);
+    }
+
+    @Override
+    public void release() {
+        this.actRef = null;
+        this.builder = null;
+        this.innerCB = null;
+        this.downloadCB = null;
+        this.update = null;
     }
 }

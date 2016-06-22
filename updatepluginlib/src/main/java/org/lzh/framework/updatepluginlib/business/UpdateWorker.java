@@ -1,24 +1,40 @@
 package org.lzh.framework.updatepluginlib.business;
 
-import org.lzh.framework.updatepluginlib.UpdateConfig;
 import org.lzh.framework.updatepluginlib.callback.UpdateCheckCB;
 import org.lzh.framework.updatepluginlib.model.Update;
 import org.lzh.framework.updatepluginlib.model.UpdateChecker;
 import org.lzh.framework.updatepluginlib.model.UpdateParser;
 import org.lzh.framework.updatepluginlib.util.HandlerUtil;
-import org.lzh.framework.updatepluginlib.util.InstallUtil;
+import org.lzh.framework.updatepluginlib.util.Recycler;
+import org.lzh.framework.updatepluginlib.util.Recycler.Recycleable;
 
 /**
- * 进行新版本检测接口访问的网络任务
+ * The network task to check out whether or not a new version of apk is exist
  */
-public abstract class UpdateWorker implements Runnable{
-    // 新版本检测接口url，由UpdateConfig或者UpdateBuilder进行设置
+public abstract class UpdateWorker extends UnifiedWorker implements Runnable,Recycleable{
+
+    /**
+     * To see {@link org.lzh.framework.updatepluginlib.UpdateConfig#url}
+     */
     protected String url;
-    // 版本检测回调，
+    /**
+     * The instance of {@link org.lzh.framework.updatepluginlib.callback.DefaultCheckCB}
+     */
     protected UpdateCheckCB checkCB;
-    // 版本检测器。用于检测当前是否为需要更新的版本
+
+    /**
+     * set by {@link org.lzh.framework.updatepluginlib.UpdateConfig#updateChecker(UpdateChecker)} or
+     * {@link org.lzh.framework.updatepluginlib.UpdateBuilder#updateChecker(UpdateChecker)}<br>
+     *     <br>
+     *     according to instance {@link Update} to check out whether or not should be updated
+     */
     protected UpdateChecker checker;
-    // url接口返回数据解析器。
+    /**
+     * set by {@link org.lzh.framework.updatepluginlib.UpdateConfig#jsonParser(UpdateParser)]} or
+     * {@link org.lzh.framework.updatepluginlib.UpdateBuilder#jsonParser(UpdateParser)}<br><br>
+     *
+     *     according to response data from url to create update instance
+     */
     protected UpdateParser parser;
 
     public void setUrl(String url) {
@@ -54,6 +70,8 @@ public abstract class UpdateWorker implements Runnable{
             sendOnErrorMsg(he.getCode(),he.getErrorMsg());
         } catch (Exception e) {
             sendOnErrorMsg(-1,e.getMessage());
+        } finally {
+            setRunning(false);
         }
     }
 
@@ -71,6 +89,7 @@ public abstract class UpdateWorker implements Runnable{
             @Override
             public void run() {
                 checkCB.hasUpdate(update);
+                Recycler.release(this);
             }
         });
     }
@@ -81,6 +100,7 @@ public abstract class UpdateWorker implements Runnable{
             @Override
             public void run() {
                 checkCB.noUpdate();
+                Recycler.release(this);
             }
         });
     }
@@ -91,7 +111,15 @@ public abstract class UpdateWorker implements Runnable{
             @Override
             public void run() {
                 checkCB.onCheckError(code,errorMsg);
+                Recycler.release(this);
             }
         });
+    }
+
+    @Override
+    public void release() {
+        this.checkCB = null;
+        this.checker = null;
+        this.parser = null;
     }
 }

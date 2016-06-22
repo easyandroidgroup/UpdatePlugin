@@ -1,7 +1,10 @@
 package org.lzh.framework.updatepluginlib.business;
 
 import org.lzh.framework.updatepluginlib.callback.UpdateDownloadCB;
+import org.lzh.framework.updatepluginlib.model.Update;
 import org.lzh.framework.updatepluginlib.util.HandlerUtil;
+import org.lzh.framework.updatepluginlib.util.Recycler;
+import org.lzh.framework.updatepluginlib.util.Recycler.Recycleable;
 
 import java.io.File;
 
@@ -9,14 +12,28 @@ import java.io.File;
  * The task to download new version apk
  * @author lzh
  */
-public abstract class DownloadWorker implements Runnable{
+public abstract class DownloadWorker extends UnifiedWorker implements Runnable,Recycleable{
 
+    /**
+     * The url set by {@link Update#getUpdateUrl()}
+     */
     protected String url;
+    /**
+     * The instance of {@link org.lzh.framework.updatepluginlib.callback.DefaultDownloadCB}
+     */
     protected UpdateDownloadCB downloadCB;
+    /**
+     * The file was created by {@link org.lzh.framework.updatepluginlib.creator.ApkFileCreator#create(String)}
+     */
     protected File cacheFileName;
+    protected Update update;
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public void setUpdate(Update update) {
+        this.update = update;
     }
 
     public void setCacheFileName(File cacheFileName) {
@@ -38,6 +55,8 @@ public abstract class DownloadWorker implements Runnable{
             sendUpdateError(he.getCode(),he.getErrorMsg());
         } catch (Exception e) {
             sendUpdateError(-1,e.getMessage());
+        } finally {
+            setRunning(false);
         }
     }
 
@@ -72,6 +91,7 @@ public abstract class DownloadWorker implements Runnable{
             @Override
             public void run() {
                 downloadCB.onUpdateComplete(file);
+                Recycler.release(DownloadWorker.this);
             }
         });
     }
@@ -83,7 +103,14 @@ public abstract class DownloadWorker implements Runnable{
             @Override
             public void run() {
                 downloadCB.onUpdateError(code,errorMsg);
+                Recycler.release(DownloadWorker.this);
             }
         });
+    }
+
+    @Override
+    public void release() {
+        this.downloadCB = null;
+        this.update = null;
     }
 }

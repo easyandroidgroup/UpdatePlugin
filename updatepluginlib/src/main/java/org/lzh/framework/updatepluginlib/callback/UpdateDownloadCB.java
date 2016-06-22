@@ -3,7 +3,8 @@ package org.lzh.framework.updatepluginlib.callback;
 import java.io.File;
 
 /**
- * @author Administrator
+ * The download callback
+ * @author lzh
  */
 public interface UpdateDownloadCB {
 
