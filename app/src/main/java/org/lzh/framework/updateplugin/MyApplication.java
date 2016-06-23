@@ -1,11 +1,7 @@
 package org.lzh.framework.updateplugin;
 
 import android.app.Application;
-import android.content.Context;
 import android.widget.Toast;
-
-import com.squareup.leakcanary.LeakCanary;
-import com.squareup.leakcanary.RefWatcher;
 
 import org.lzh.framework.updatepluginlib.UpdateConfig;
 import org.lzh.framework.updatepluginlib.callback.EmptyCheckCB;
