@@ -19,6 +19,7 @@ public class MainActivity extends BaseActivity {
             public void onClick(View v) {
                 // UpdateBuilder中可设置的配置与UpdateConfig中一致。检查更新入口调用check方法
                 // 对于UpdateBuilder中未设置的参数。会默认使用UpdateConfig中的配置
+
                 UpdateBuilder.create()
                         .strategy(new UpdateStrategy() {
                             @Override
@@ -37,6 +38,7 @@ public class MainActivity extends BaseActivity {
                             }
                         })
                         .check(MainActivity.this);
+
 
             }
         });

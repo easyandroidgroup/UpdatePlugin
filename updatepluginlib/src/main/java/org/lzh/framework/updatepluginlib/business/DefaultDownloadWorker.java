@@ -65,12 +65,10 @@ public class DefaultDownloadWorker extends DownloadWorker {
         long lastDownSize = getLastDownloadSize(url);
         long length = target.length();
         long lastTotalSize = getLastDownloadTotalSize(url);
-        if (lastDownSize == length
+        return lastDownSize == length
                 && lastTotalSize == lastTotalSize
                 && lastDownSize != 0
-                && lastDownSize == contentLength)
-            return true;
-        return false;
+                && lastDownSize == contentLength;
     }
 
     private RandomAccessFile supportBreakpointDownload(File target, URL httpUrl, String url) throws IOException {
@@ -113,8 +111,6 @@ public class DefaultDownloadWorker extends DownloadWorker {
         urlConn.setRequestProperty("Content-Type","text/html; charset=UTF-8");
         urlConn.setRequestMethod("GET");
         urlConn.setConnectTimeout(10000);
-     //   urlConn.setDoOutput(true);  这会把request method 强制变成post请求 造成下载失败
-     //   urlConn.setDoInput(true);
     }
 
     private long getLastDownloadSize(String url) {
@@ -131,7 +127,7 @@ public class DefaultDownloadWorker extends DownloadWorker {
         SharedPreferences sp = UpdateConfig.getConfig().getContext().getSharedPreferences(KEY_DOWN_SIZE, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
         editor.putLong(url,size);
-        editor.commit(); // editor.apply() 是异步提交修改 同时修改造成死锁 ANR
+        editor.commit();
     }
 
     private void saveDownloadTotalSize(String url,long totalSize) {

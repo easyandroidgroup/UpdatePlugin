@@ -1,7 +1,6 @@
 package org.lzh.framework.updatepluginlib.business;
 
 /**
- *
  * Created by lzh on 16-6-21.
  */
 public class UnifiedWorker {

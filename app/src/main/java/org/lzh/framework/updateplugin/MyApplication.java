@@ -18,18 +18,10 @@ import org.lzh.framework.updatepluginlib.model.UpdateParser;
  */
 public class MyApplication extends Application {
     private String apkFile = "http://apk.hiapk.com/appdown/com.hiapk.live?planid=2515816&seid=c711112f-cc50-0001-a55f-bfe5123fe450";
-    private RefWatcher refWatcher;
-
-    public static RefWatcher getRefWatcher (Context context) {
-        MyApplication application = (MyApplication) context
-                .getApplicationContext();
-        return application.refWatcher;
-    }
 
     @Override
     public void onCreate() {
         super.onCreate();
-        refWatcher = LeakCanary.install(this);
         // UpdateConfig为全局配置。当在其他页面中。使用UpdateBuilder进行检查更新时。
         // 对于没传的参数，会默认使用UpdateConfig中的全局配置
         UpdateConfig.getConfig()
