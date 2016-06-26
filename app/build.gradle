@@ -3,7 +3,9 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.3"
-
+    lintOptions {
+        abortOnError false
+    }
     defaultConfig {
         applicationId "org.lzh.framework.updateplugin"
         minSdkVersion 14
@@ -24,5 +26,6 @@ dependencies {
     testCompile 'junit:junit:4.12'
 //    compile 'com.android.support:appcompat-v7:23.3.0'
     compile project(':updatepluginlib')
-//    compile 'com.github.yjfnypeu:UpdatePlugin:0.4'
+//    compile 'com.github.yjfnypeu:UpdatePlugin:0.3'
+//    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.3'
 }

@@ -21,22 +21,22 @@ public class MainActivity extends BaseActivity {
                 // 对于UpdateBuilder中未设置的参数。会默认使用UpdateConfig中的配置
 
                 UpdateBuilder.create()
-                        .strategy(new UpdateStrategy() {
-                            @Override
-                            public boolean isShowUpdateDialog(Update update) {
-                                return false;
-                            }
-
-                            @Override
-                            public boolean isAutoInstall() {
-                                return false;
-                            }
-
-                            @Override
-                            public boolean isShowDownloadDialog() {
-                                return false;
-                            }
-                        })
+//                        .strategy(new UpdateStrategy() {
+//                            @Override
+//                            public boolean isShowUpdateDialog(Update update) {
+//                                return false;
+//                            }
+//
+//                            @Override
+//                            public boolean isAutoInstall() {
+//                                return false;
+//                            }
+//
+//                            @Override
+//                            public boolean isShowDownloadDialog() {
+//                                return false;
+//                            }
+//                        })
                         .check(MainActivity.this);
 
 

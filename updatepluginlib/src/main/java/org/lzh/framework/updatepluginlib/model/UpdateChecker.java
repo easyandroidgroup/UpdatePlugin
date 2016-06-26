@@ -1,14 +1,13 @@
 package org.lzh.framework.updatepluginlib.model;
 
 /**
- * 新版本检查器
+ * The checker to check whether or not should be updated
  * Created by lzh on 2016/6/20.
  */
 public interface UpdateChecker {
 
     /**
-     * 判断是否含有新版本
-     * @return 返回true代表需要更新。
+     * check if is a new version
      */
     boolean check(Update update);
 }
