@@ -8,6 +8,7 @@ import org.lzh.framework.updatepluginlib.UpdateConfig;
 import org.lzh.framework.updatepluginlib.callback.EmptyCheckCB;
 import org.lzh.framework.updatepluginlib.callback.EmptyDownloadCB;
 import org.lzh.framework.updatepluginlib.model.Update;
+import org.lzh.framework.updatepluginlib.model.UpdateChecker;
 import org.lzh.framework.updatepluginlib.model.UpdateParser;
 
 /**
@@ -80,6 +81,12 @@ public class MyApplication extends Application {
                         Toast.makeText(MyApplication.this, "下载失败：code:" + code + ",errorMsg:" + errorMsg, Toast.LENGTH_SHORT).show();
                     }
                 })
+//                .updateChecker(new UpdateChecker() {
+//                    @Override
+//                    public boolean check(Update update) {
+//                        return false;
+//                    }
+//                })
                 /* // 自定义更新接口的访问任务
                 .checkWorker(new UpdateWorker() {
                     @Override

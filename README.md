@@ -1,13 +1,11 @@
 可任意定制的app更新组件。
 
 引入方式：
-
-- 该框架放置于jitPack上。所以需要在根目录中添加jitPack库：
+加入jcenter依赖。
 ```
 allprojects {
     repositories {
-        ...
-        maven { url "https://www.jitpack.io" }
+        jcenter()
     }
 }
 ```
@@ -15,7 +13,7 @@ allprojects {
 ```
 dependencies {
     ...
-    compile 'com.github.yjfnypeu:UpdatePlugin:0.3'
+    compile 'org.lzh.nonview.updateplugin:UpdatePlugin:0.4'
 }
 ```
 
@@ -34,7 +32,8 @@ UpdateConfig.getConfig()
             .jsonParser(new UpdateParser() {
                 @Override
                 public Update parse(String response) {
-                    // 此处根据上面url接口返回的数据response进行update类组装。
+                    // 此处根据上面url接口返回的数据response进行update类组装。框架内部会使用此
+                    // 组装的update实例判断是否需要更新以做进一步工作
                     return update;
                 }
             })
@@ -122,13 +121,26 @@ checkWorker(new UpdateWorker() {
 })
 ```
 
+- 自定义版本检查
+```
+.updateChecker(new UpdateChecker() {
+        @Override
+        public boolean check(Update update) {
+            // 对于部分应用。是应用内定义字段来做版本对比检测的。可以定制UpdateCheker,
+            // 并在此对应用版本进行比对检测。返回true说明该update版本需要被更新。false不需要更新
+            return false;
+        }
+    })
+```
+
 - 自定义文件下载接口的访问任务。默认参考：[DefaultDownloadWorker](https://github.com/yjfnypeu/UpdatePlugin/blob/master/updatepluginlib/src/main/java/org/lzh/framework/updatepluginlib/business/DefaultDownloadWorker.java)
 
 ```
 downloadWorker(new DownloadWorker() {
     @Override
     protected void download(String url, File file) throws Exception {
-        // TODO: 2016/5/11 此处运行于子线程，在此进行文件下载任务
+        // TODO: 2016/5/11 此处运行于子线程，在此进行文件下载任务。
+        // 对于自定义的下载任务。在下载期间需要调用此类的sendUpdateProgress进行下载进度传递
     }
 })
 ```
@@ -157,14 +169,7 @@ strategy(new UpdateStrategy() {
 
     @Override
     public boolean isAutoInstall() {
-        // 下载完成后，是否自动更新。此属性与是否isShowInstallDialog互斥
-        // 当isShowInstallDialog为true时。此条无效
-        return false;
-    }
-
-    @Override
-    public boolean isShowInstallDialog() {
-        // 下载完成后。是否显示提示安装的Dialog
+        // 下载完成后，是否自动更新。若为false。则创建Dialog显示
         return false;
     }
 
@@ -211,7 +216,7 @@ installDialogCreator(new InstallCreator() {
     @Override
     public Dialog create(Update update, String s, Activity activity) {
         // 此处为下载APK完成后的回调。运行于主线程。在此创建Dialog
-        // 在用户需要立即更新时。调用InstallUtil.installApk(activity,path);
+        // 在用户需要立即更新时。调用此类中的sentToInstall();
         // 在用户需要取消更新时。调用此类中的sendUserCancel();
         return dialog;
     }
@@ -302,12 +307,6 @@ UpdateBuilder.create()
         }
 
         @Override
-        public boolean isShowInstallDialog() {
-            // 展示下载完成安装提示
-            return true;
-        }
-
-        @Override
         public boolean isShowDownloadDialog() {
             // 展示下载进度
             return true;
@@ -334,11 +333,6 @@ UpdateBuilder.create()
                             }
 
                             @Override
-                            public boolean isShowInstallDialog() {
-                                return false;
-                            }
-
-                            @Override
                             public boolean isShowDownloadDialog() {
                                 return false;
                             }
@@ -349,6 +343,15 @@ UpdateBuilder.create()
 ![default_auto_install.gif](https://raw.githubusercontent.com/yjfnypeu/UpdatePlugin/master/screenshots/default_auto_install.gif)
 
 **Update:**
+
+- 0.4
+
+```
+修复部分bug。
+修复内存泄漏问题。
+添加自定义版本检测接口
+增加了框架的健壮性。对同时调用多次更新请求做出限制。避免因此引起的崩溃
+```
 
 - 0.3 
 
