@@ -8,6 +8,7 @@ import org.lzh.framework.updatepluginlib.business.UpdateWorker;
 import org.lzh.framework.updatepluginlib.callback.UpdateCheckCB;
 import org.lzh.framework.updatepluginlib.callback.UpdateDownloadCB;
 import org.lzh.framework.updatepluginlib.creator.ApkFileCreator;
+import org.lzh.framework.updatepluginlib.model.CheckEntity;
 import org.lzh.framework.updatepluginlib.model.UpdateChecker;
 import org.lzh.framework.updatepluginlib.strategy.UpdateStrategy;
 import org.lzh.framework.updatepluginlib.creator.DialogCreator;
@@ -22,13 +23,14 @@ import org.lzh.framework.updatepluginlib.model.UpdateParser;
 public class UpdateBuilder {
 
     /**
-     * To see {@link UpdateWorker}
+     * @see UpdateWorker
      */
     private UpdateWorker checkWorker;
     private DownloadWorker downloadWorker;
     private UpdateCheckCB checkCB;
     private UpdateDownloadCB downloadCB;
     private String url;
+    private CheckEntity entity;
     private UpdateStrategy strategy;
     private DialogCreator updateDialogCreator;
     private InstallCreator installDialogCreator;
@@ -42,7 +44,12 @@ public class UpdateBuilder {
     }
 
     public UpdateBuilder url(String url) {
-        this.url = url;
+        this.entity = new CheckEntity().setUrl(url);
+        return this;
+    }
+
+    public UpdateBuilder checkEntity (CheckEntity entity) {
+        this.entity = entity;
         return this;
     }
 
@@ -117,6 +124,13 @@ public class UpdateBuilder {
             url = UpdateConfig.getConfig().getUrl();
         }
         return url;
+    }
+
+    public CheckEntity getCheckEntity () {
+        if (this.entity == null) {
+            this.entity = UpdateConfig.getConfig().getCheckEntity();
+        }
+        return this.entity;
     }
 
     public UpdateChecker getUpdateChecker() {

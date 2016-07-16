@@ -26,5 +26,5 @@ dependencies {
     testCompile 'junit:junit:4.12'
 //    compile project(':updatepluginlib')
     compile 'org.lzh.nonview.updateplugin:UpdatePlugin:0.4'
-//    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.3'
+    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.4-beta2'
 }

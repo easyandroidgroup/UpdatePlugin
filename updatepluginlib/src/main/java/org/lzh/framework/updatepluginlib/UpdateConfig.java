@@ -17,12 +17,15 @@ import org.lzh.framework.updatepluginlib.creator.DefaultNeedUpdateCreator;
 import org.lzh.framework.updatepluginlib.creator.DialogCreator;
 import org.lzh.framework.updatepluginlib.creator.DownloadCreator;
 import org.lzh.framework.updatepluginlib.creator.InstallCreator;
+import org.lzh.framework.updatepluginlib.model.CheckEntity;
 import org.lzh.framework.updatepluginlib.model.DefaultChecker;
 import org.lzh.framework.updatepluginlib.model.Update;
 import org.lzh.framework.updatepluginlib.model.UpdateChecker;
 import org.lzh.framework.updatepluginlib.model.UpdateParser;
 import org.lzh.framework.updatepluginlib.strategy.UpdateStrategy;
 import org.lzh.framework.updatepluginlib.strategy.WifiFirstStrategy;
+
+import java.util.IllegalFormatCodePointException;
 
 /**
  * Global configs
@@ -48,10 +51,14 @@ public class UpdateConfig {
      * The callback to receive download task info
      */
     private UpdateDownloadCB downloadCB;
+//    /**
+//     * The url will be used by {@link UpdateWorker} to access network
+//     */
+//    private String url;
     /**
-     * The url will be used by {@link UpdateWorker} to access network
+     * The entity will be used by {@link UpdateWorker} to access network
      */
-    private String url;
+    private CheckEntity entity;
     /**
      * The strategy on update
      */
@@ -104,7 +111,15 @@ public class UpdateConfig {
      * to see {@link UpdateConfig#url}
      */
     public UpdateConfig url(String url) {
-        this.url = url;
+        this.entity = new CheckEntity().setUrl(url);
+        return this;
+    }
+
+    /**
+     * @see UpdateConfig#entity
+     */
+    public UpdateConfig checkEntity (CheckEntity entity) {
+        this.entity = entity;
         return this;
     }
 
@@ -192,7 +207,7 @@ public class UpdateConfig {
      * To see {@link UpdateConfig#strategy}
      */
     public UpdateConfig strategy(UpdateStrategy strategy) {
-        this.strategy = strategy;
+         this.strategy = strategy;
         return this;
     }
 
@@ -213,14 +228,25 @@ public class UpdateConfig {
         return strategy;
     }
 
+//    /**
+//     *
+//     */
+//    @Deprecated
+//    public String getUrl() {
+//        if (this.entity == null || TextUtils.isEmpty(this.entity.getUrl())) {
+//            throw new IllegalArgumentException("url is null");
+//        }
+//        return this.entity.getUrl();
+//    }
+
     /**
-     * @return To see {@link UpdateConfig#url}
+     * @return To see {@linkplain UpdateConfig#entity}
      */
-    public String getUrl() {
-        if (TextUtils.isEmpty(url)) {
-            throw new IllegalArgumentException("url is null");
+    public CheckEntity getCheckEntity () {
+        if (this.entity == null || TextUtils.isEmpty(this.entity.getUrl())) {
+            throw new IllegalArgumentException("Do not set url in CheckEntity");
         }
-        return url;
+        return this.entity;
     }
 
     /**

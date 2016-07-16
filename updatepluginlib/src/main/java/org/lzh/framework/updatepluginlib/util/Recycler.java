@@ -23,7 +23,7 @@ public class Recycler {
 
     public interface Recycleable {
         /**
-         * release all of member vars by handle
+         * release all of members in class
          */
         void release ();
     }

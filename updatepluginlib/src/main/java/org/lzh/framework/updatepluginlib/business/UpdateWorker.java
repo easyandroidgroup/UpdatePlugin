@@ -1,6 +1,7 @@
 package org.lzh.framework.updatepluginlib.business;
 
 import org.lzh.framework.updatepluginlib.callback.UpdateCheckCB;
+import org.lzh.framework.updatepluginlib.model.CheckEntity;
 import org.lzh.framework.updatepluginlib.model.Update;
 import org.lzh.framework.updatepluginlib.model.UpdateChecker;
 import org.lzh.framework.updatepluginlib.model.UpdateParser;
@@ -16,7 +17,9 @@ public abstract class UpdateWorker extends UnifiedWorker implements Runnable,Rec
     /**
      * To see {@link org.lzh.framework.updatepluginlib.UpdateConfig#url}
      */
-    protected String url;
+//    protected String url;
+
+    protected CheckEntity entity;
     /**
      * The instance of {@link org.lzh.framework.updatepluginlib.callback.DefaultCheckCB}
      */
@@ -37,8 +40,8 @@ public abstract class UpdateWorker extends UnifiedWorker implements Runnable,Rec
      */
     protected UpdateParser parser;
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setEntity(CheckEntity entity) {
+        this.entity = entity;
     }
 
     public void setCheckCB(UpdateCheckCB checkCB) {
@@ -56,7 +59,7 @@ public abstract class UpdateWorker extends UnifiedWorker implements Runnable,Rec
     @Override
     public void run() {
         try {
-            String response = check(url);
+            String response = check(entity);
             Update parse = parser.parse(response);
             if (parse == null) {
                 throw new IllegalArgumentException("parse response to update failed by " + parser.getClass().getCanonicalName());
@@ -81,7 +84,7 @@ public abstract class UpdateWorker extends UnifiedWorker implements Runnable,Rec
      * @return response data from url
      * @throws Exception
      */
-    protected abstract String check(String url) throws Exception;
+    protected abstract String check(CheckEntity url) throws Exception;
 
     private void sendHasUpdate(final Update update) {
         if (checkCB == null) return;
