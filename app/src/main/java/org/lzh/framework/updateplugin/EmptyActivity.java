@@ -9,7 +9,7 @@ public class EmptyActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_empty);
-        MyApplication.getRefWatcher(this).watch(this);
+//        MyApplication.getRefWatcher(this).watch(this);
     }
 
     @Override

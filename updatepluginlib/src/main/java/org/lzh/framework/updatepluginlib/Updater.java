@@ -34,7 +34,6 @@ public class Updater {
      * @param builder update builder that contained all config.
      */
     public void checkUpdate(Activity activity,UpdateBuilder builder) {
-
         UpdateConfig.getConfig().context(activity);
         // define a default callback to receive update event send by update task
         DefaultCheckCB checkCB = new DefaultCheckCB(activity);
@@ -42,11 +41,11 @@ public class Updater {
 
         UpdateWorker checkWorker = builder.getCheckWorker();
         if (checkWorker.isRunning()) {
-            Log.e("UpdatePlugin==>","Already have a update task running");
+            Log.e("Updater","Already have a update task running");
             checkCB.onCheckError(-1,"Already have a update task running");
             return;
         }
-        checkWorker.setUrl(builder.getUrl());
+        checkWorker.setEntity(builder.getCheckEntity());
         checkWorker.setParser(builder.getJsonParser());
         checkWorker.setChecker(builder.getUpdateChecker());
         checkWorker.setCheckCB(checkCB);
@@ -70,7 +69,8 @@ public class Updater {
 
         DownloadWorker downloadWorker = builder.getDownloadWorker();
         if (downloadWorker.isRunning()) {
-            Log.e("UpdatePlugin==>","Already have a download task running");
+            Log.e("Updater","Already have a download task running");
+
             downloadCB.onUpdateError(-1,"Already have a download task running");
             return;
         }

@@ -1,20 +1,19 @@
 package org.lzh.framework.updatepluginlib;
 
 import android.app.Activity;
-import android.text.TextUtils;
 
 import org.lzh.framework.updatepluginlib.business.DownloadWorker;
 import org.lzh.framework.updatepluginlib.business.UpdateWorker;
 import org.lzh.framework.updatepluginlib.callback.UpdateCheckCB;
 import org.lzh.framework.updatepluginlib.callback.UpdateDownloadCB;
 import org.lzh.framework.updatepluginlib.creator.ApkFileCreator;
-import org.lzh.framework.updatepluginlib.model.CheckEntity;
-import org.lzh.framework.updatepluginlib.model.UpdateChecker;
-import org.lzh.framework.updatepluginlib.strategy.UpdateStrategy;
 import org.lzh.framework.updatepluginlib.creator.DialogCreator;
 import org.lzh.framework.updatepluginlib.creator.DownloadCreator;
 import org.lzh.framework.updatepluginlib.creator.InstallCreator;
+import org.lzh.framework.updatepluginlib.model.CheckEntity;
+import org.lzh.framework.updatepluginlib.model.UpdateChecker;
 import org.lzh.framework.updatepluginlib.model.UpdateParser;
+import org.lzh.framework.updatepluginlib.strategy.UpdateStrategy;
 
 /**
  *
@@ -117,13 +116,6 @@ public class UpdateBuilder {
             strategy = UpdateConfig.getConfig().getStrategy();
         }
         return strategy;
-    }
-
-    public String getUrl() {
-        if (TextUtils.isEmpty(url)) {
-            url = UpdateConfig.getConfig().getUrl();
-        }
-        return url;
     }
 
     public CheckEntity getCheckEntity () {

@@ -70,8 +70,10 @@ public abstract class UpdateWorker extends UnifiedWorker implements Runnable,Rec
                 sendNoUpdate();
             }
         } catch (HttpException he) {
+            he.printStackTrace();
             sendOnErrorMsg(he.getCode(),he.getErrorMsg());
         } catch (Exception e) {
+            e.printStackTrace();
             sendOnErrorMsg(-1,e.getMessage());
         } finally {
             setRunning(false);
