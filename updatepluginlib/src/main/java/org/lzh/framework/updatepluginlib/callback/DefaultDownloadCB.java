@@ -96,7 +96,7 @@ public class DefaultDownloadCB implements UpdateDownloadCB ,Recycleable{
         } else {
             creator.setCheckCB(builder.getCheckCB());
             Dialog dialog = creator.create(update, file.getAbsolutePath(),actRef.get());
-            if (update.isForced()) {
+            if (update.isForced() && dialog != null) {
                 dialog.setCancelable(false);
                 dialog.setCanceledOnTouchOutside(false);
             }
