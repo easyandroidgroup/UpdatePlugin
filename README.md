@@ -15,7 +15,7 @@ allprojects {
 ```
 dependencies {
     ...
-    compile 'org.lzh.nonview.updateplugin:UpdatePlugin:0.4'
+    compile 'org.lzh.nonview.updateplugin:UpdatePlugin:0.5'
 }
 ```
 
@@ -293,7 +293,7 @@ UpdateBuilder.create().check(MainActivity.this);
 
 此处使用默认的更新策略：WIFI下自动更新。流量环境下提示再下载提示更新：
 
-![default_strategy](https://raw.githubusercontent.com/yjfnypeu/UpdatePlugin/master/screenshots/default_strategy.gif)
+![default_strategy](./screenshots/default_strategy.gif)
 
 再使用自定义策略：
 
@@ -320,7 +320,7 @@ UpdateBuilder.create()
     .check(MainActivity.this);
 ```
 
-![default_all_dialog_show.gif](https://raw.githubusercontent.com/yjfnypeu/UpdatePlugin/master/screenshots/default_all_dialog_show.gif)
+![default_all_dialog_show.gif](./screenshots/default_all_dialog_show.gif)
 
 再来一个。直接下载完成后。自动弹出安装页面
 
@@ -345,9 +345,12 @@ UpdateBuilder.create()
                         .check(MainActivity.this);
 ```
 
-![default_auto_install.gif](https://raw.githubusercontent.com/yjfnypeu/UpdatePlugin/master/screenshots/default_auto_install.gif)
+![default_auto_install.gif](./screenshots/default_auto_install.gif)
 
 **Update:**
+
+- 0.5
+对检查更新接口添加post请求
 
 - 0.4
 
