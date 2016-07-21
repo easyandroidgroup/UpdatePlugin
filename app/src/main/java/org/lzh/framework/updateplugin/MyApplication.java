@@ -6,6 +6,8 @@ import android.widget.Toast;
 import org.lzh.framework.updatepluginlib.UpdateConfig;
 import org.lzh.framework.updatepluginlib.callback.EmptyCheckCB;
 import org.lzh.framework.updatepluginlib.callback.EmptyDownloadCB;
+import org.lzh.framework.updatepluginlib.model.CheckEntity;
+import org.lzh.framework.updatepluginlib.model.HttpMethod;
 import org.lzh.framework.updatepluginlib.model.Update;
 import org.lzh.framework.updatepluginlib.model.UpdateParser;
 

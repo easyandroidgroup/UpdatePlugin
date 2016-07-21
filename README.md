@@ -28,8 +28,11 @@ dependencies {
 // UpdateConfig为全局配置。当在其他页面中。使用UpdateBuilder进行检查更新时。
 // 对于没传的参数，会默认使用UpdateConfig中的全局配置
 UpdateConfig.getConfig()
-            // 必填：数据更新接口
+            // url 与 checkEntity方法可任选一种填写，且至少必填一种。
+            // 数据更新接口数据，此时默认为使用GET请求
             .url(url)
+            // 同url方法。CheckEntity方法可填写url,params,method。可在此设置为post请求
+            .checkEntity(checkEntity)
             // 必填：用于从数据更新接口获取的数据response中。解析出Update实例。以便框架内部处理
             .jsonParser(new UpdateParser() {
                 @Override
@@ -110,7 +113,7 @@ downloadCB(new UpdateDownloadCB() {
 })
 ```
 
-- 自定义更新接口的访问任务，默认参考：[DefaultUpdateWorker.java](https://github.com/yjfnypeu/UpdatePlugin/blob/master/updatepluginlib/src/main/java/org/lzh/framework/updatepluginlib/business/DefaultUpdateWorker.java)
+- 自定义更新接口的访问任务，默认参考：[DefaultUpdateWorker.java](./updatepluginlib/src/main/java/org/lzh/framework/updatepluginlib/business/DefaultUpdateWorker.java)
 
 ```
 checkWorker(new UpdateWorker() {
@@ -135,7 +138,7 @@ checkWorker(new UpdateWorker() {
     })
 ```
 
-- 自定义文件下载接口的访问任务。默认参考：[DefaultDownloadWorker](https://github.com/yjfnypeu/UpdatePlugin/blob/master/updatepluginlib/src/main/java/org/lzh/framework/updatepluginlib/business/DefaultDownloadWorker.java)
+- 自定义文件下载接口的访问任务。默认参考：[DefaultDownloadWorker](./updatepluginlib/src/main/java/org/lzh/framework/updatepluginlib/business/DefaultDownloadWorker.java)
 
 ```
 downloadWorker(new DownloadWorker() {
@@ -147,7 +150,7 @@ downloadWorker(new DownloadWorker() {
 })
 ```
 
-- 自定义下载文件缓存,默认参考：[DefaultFileCreator](https://github.com/yjfnypeu/UpdatePlugin/blob/master/updatepluginlib/src/main/java/org/lzh/framework/updatepluginlib/creator/DefaultFileCreator.java)
+- 自定义下载文件缓存,默认参考：[DefaultFileCreator](./updatepluginlib/src/main/java/org/lzh/framework/updatepluginlib/creator/DefaultFileCreator.java)
 
 ```
 .fileCreator(new ApkFileCreator() {
@@ -159,7 +162,7 @@ downloadWorker(new DownloadWorker() {
 })
 ```
 
-- 自定义更新策略，默认WIFI下自动下载更新，参考：[WifiFirstStrategy](https://github.com/yjfnypeu/UpdatePlugin/blob/master/updatepluginlib/src/main/java/org/lzh/framework/updatepluginlib/strategy/WifiFirstStrategy.java)
+- 自定义更新策略，默认WIFI下自动下载更新，参考：[WifiFirstStrategy](./updatepluginlib/src/main/java/org/lzh/framework/updatepluginlib/strategy/WifiFirstStrategy.java)
 
 ```
 strategy(new UpdateStrategy() {
@@ -183,7 +186,7 @@ strategy(new UpdateStrategy() {
 })
 ```
 
-- 自定义检查出更新后显示的Dialog，默认参考：[DefaultNeedUpdateCreator](https://github.com/yjfnypeu/UpdatePlugin/blob/master/updatepluginlib/src/main/java/org/lzh/framework/updatepluginlib/creator/DefaultNeedUpdateCreator.java)
+- 自定义检查出更新后显示的Dialog，默认参考：[DefaultNeedUpdateCreator](./updatepluginlib/src/main/java/org/lzh/framework/updatepluginlib/creator/DefaultNeedUpdateCreator.java)
 
 ```
 updateDialogCreator(new DialogCreator() {
@@ -198,7 +201,7 @@ updateDialogCreator(new DialogCreator() {
 })
 ```
 
-- 自定义下载时的进度条Dialog,默认参考：[DefaultNeedDownloadCreator](https://github.com/yjfnypeu/UpdatePlugin/blob/master/updatepluginlib/src/main/java/org/lzh/framework/updatepluginlib/creator/DefaultNeedDownloadCreator.java)
+- 自定义下载时的进度条Dialog,默认参考：[DefaultNeedDownloadCreator](./updatepluginlib/src/main/java/org/lzh/framework/updatepluginlib/creator/DefaultNeedDownloadCreator.java)
 
 ```
 .downloadDialogCreator(new DownloadCreator() {
@@ -211,7 +214,7 @@ updateDialogCreator(new DialogCreator() {
 })
 ```
 
-- 自定义下载完成后。显示的Dialog,默认参考[DefaultNeedInstallCreator](https://github.com/yjfnypeu/UpdatePlugin/blob/master/updatepluginlib/src/main/java/org/lzh/framework/updatepluginlib/creator/DefaultNeedInstallCreator.java)
+- 自定义下载完成后。显示的Dialog,默认参考[DefaultNeedInstallCreator](./updatepluginlib/src/main/java/org/lzh/framework/updatepluginlib/creator/DefaultNeedInstallCreator.java)
 
 ```
 installDialogCreator(new InstallCreator() {
