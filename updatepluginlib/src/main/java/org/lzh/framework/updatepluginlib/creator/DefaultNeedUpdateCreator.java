@@ -19,6 +19,7 @@ public class DefaultNeedUpdateCreator extends DialogCreator {
 
         if (activity == null || activity.isFinishing()) {
             Log.e("DialogCreator--->","Activity was recycled or finished,dialog shown failed!");
+            throw new IllegalStateException("Activity was recycled or finished,dialog shown failed!");
         }
 
         String updateContent = activity.getText(R.string.update_version_name)

@@ -4,10 +4,12 @@ import android.app.Application;
 import android.widget.Toast;
 
 import org.lzh.framework.updatepluginlib.UpdateConfig;
-import org.lzh.framework.updatepluginlib.callback.EmptyDownloadCB;
 import org.lzh.framework.updatepluginlib.callback.UpdateCheckCB;
+import org.lzh.framework.updatepluginlib.callback.UpdateDownloadCB;
 import org.lzh.framework.updatepluginlib.model.Update;
 import org.lzh.framework.updatepluginlib.model.UpdateParser;
+
+import java.io.File;
 
 /**
  * @author Administrator
@@ -49,7 +51,7 @@ public class MyApplication extends Application {
                         // 此apk包的更新内容
                         update.setUpdateContent("测试更新");
                         // 此apk包是否为强制更新
-                        update.setForced(true);
+                        update.setForced(false);
                         // 是否显示忽略此次版本更新按钮
                         update.setIgnore(true);
                         return update;
@@ -84,7 +86,22 @@ public class MyApplication extends Application {
                     }
                 })
                 // apk下载的回调
-                .downloadCB(new EmptyDownloadCB(){
+                .downloadCB(new UpdateDownloadCB(){
+                    @Override
+                    public void onUpdateStart() {
+                        Toast.makeText(MyApplication.this, "下载开始", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onUpdateComplete(File file) {
+                        Toast.makeText(MyApplication.this, "下载完成", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onUpdateProgress(long current, long total) {
+
+                    }
+
                     @Override
                     public void onUpdateError(int code, String errorMsg) {
                         Toast.makeText(MyApplication.this, "下载失败：code:" + code + ",errorMsg:" + errorMsg, Toast.LENGTH_SHORT).show();
@@ -100,7 +117,7 @@ public class MyApplication extends Application {
                 .checkWorker(new UpdateWorker() {
                     @Override
                     protected String check(String url) throws Exception {
-                        // TODO: 2016/5/11 此处运行于子线程。在此进行更新接口访问 
+                        // TODO: 2016/5/11 此处运行于子线程。在此进行更新接口访问
                         return null;
                     }
                 })
@@ -108,7 +125,7 @@ public class MyApplication extends Application {
                 .downloadWorker(new DownloadWorker() {
                     @Override
                     protected void download(String url, File file) throws Exception {
-                        // TODO: 2016/5/11 此处运行于子线程，在此进行文件下载任务 
+                        // TODO: 2016/5/11 此处运行于子线程，在此进行文件下载任务
                     }
                 })
                 // 自定义下载文件缓存,默认下载至系统自带的缓存目录下
@@ -149,7 +166,7 @@ public class MyApplication extends Application {
                 .updateDialogCreator(new DialogCreator() {
                     @Override
                     public Dialog create(Update update, Activity activity, UpdateBuilder updateBuilder) {
-                        // TODO: 2016/5/11 此处为检查出有新版本需要更新时的回调。运行于主线程，在此进行更新Dialog的创建 
+                        // TODO: 2016/5/11 此处为检查出有新版本需要更新时的回调。运行于主线程，在此进行更新Dialog的创建
                         return null;
                     }
                 })

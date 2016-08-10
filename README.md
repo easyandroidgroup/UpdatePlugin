@@ -1,7 +1,5 @@
 可任意定制的app更新组件。
 
-
-
 引入方式：
 加入jcenter依赖。
 ```
@@ -15,7 +13,7 @@ allprojects {
 ```
 dependencies {
     ...
-    compile 'org.lzh.nonview.updateplugin:UpdatePlugin:0.5'
+    compile 'org.lzh.nonview.updateplugin:UpdatePlugin:0.6'
 }
 ```
 
@@ -77,12 +75,17 @@ checkCB(new UpdateCheckCB() {
 
     @Override
     public void onCheckError(int i, String s) {
-        // 检查错误的回调
+        // 更新检查错误的回调
     }
     
     @Override 
     public void onUserCancel() {
         // 用于取消更新时的回调
+    }
+
+    @Override
+    public void onCheckIgnore(Update update) {
+        // 用户点击忽略此版本更新时的回调
     }
 })
 ```
@@ -196,6 +199,7 @@ updateDialogCreator(new DialogCreator() {
         // 对于用户自定义的Dialog。用户可自行在此更新update中的数据对Dialog进行展示。
         // 在用户需要立即更新时。调用此类中的sendDownloadRequest(update,activity);
         // 在用户需要取消更新时。调用此类中的sendUserCancel();
+        // 在用户需要忽略此版本更新时。调用此类中的sendCheckIgnore(update);
         return dialog;
     }
 })
@@ -223,6 +227,7 @@ installDialogCreator(new InstallCreator() {
         // 此处为下载APK完成后的回调。运行于主线程。在此创建Dialog
         // 在用户需要立即更新时。调用此类中的sentToInstall();
         // 在用户需要取消更新时。调用此类中的sendUserCancel();
+        // 在用户需要忽略此版本更新时。调用此类中的sendCheckIgnore(update);
         return dialog;
     }
 })
@@ -258,7 +263,7 @@ public class MyApplication extends Application {
                         update.setUpdateContent("测试更新");
                         // 此apk包是否为强制更新
                         update.setForced(true);
-                        // 是否忽略此次版本更新
+                        // 是否显示忽略此次版本更新
                         update.setIgnore(false);
                         return update;
                     }
@@ -326,31 +331,38 @@ UpdateBuilder.create()
 
 ```
 UpdateBuilder.create()
-                        .strategy(new UpdateStrategy() {
-                            @Override
-                            public boolean isShowUpdateDialog(Update update) {
-                                return false;
-                            }
+    .strategy(new UpdateStrategy() {
+        @Override
+        public boolean isShowUpdateDialog(Update update) {
+            return false;
+        }
 
-                            @Override
-                            public boolean isAutoInstall() {
-                                return true;
-                            }
+        @Override
+        public boolean isAutoInstall() {
+            return true;
+        }
 
-                            @Override
-                            public boolean isShowDownloadDialog() {
-                                return false;
-                            }
-                        })
-                        .check(MainActivity.this);
+        @Override
+        public boolean isShowDownloadDialog() {
+            return false;
+        }
+    })
+    .check(MainActivity.this);
 ```
 
 ![default_auto_install.gif](./screenshots/default_auto_install.gif)
 
 **Update:**
 
+- 0.6
+```
+对更新Dialog添加忽略此版本更新选项。UpdateCheckCB接口增加onCheckIgnore方法
+对框架本身的Dialog做back键与点击窗口外消失功能的屏弊
+```
 - 0.5
+```
 对检查更新接口添加post请求
+```
 
 - 0.4
 
@@ -361,10 +373,5 @@ UpdateBuilder.create()
 增加了框架的健壮性。对同时调用多次更新请求做出限制。避免因此引起的崩溃
 ```
 
-- 0.3 
-
-```
-对默认的下载任务添加断点下载
-```
 
 ###新创建一个QQ群以做交流.欢迎各位加入交流分享:108895031

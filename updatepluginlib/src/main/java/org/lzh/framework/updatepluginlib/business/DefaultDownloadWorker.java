@@ -66,7 +66,7 @@ public class DefaultDownloadWorker extends DownloadWorker {
         long length = target.length();
         long lastTotalSize = getLastDownloadTotalSize(url);
         return lastDownSize == length
-                && lastTotalSize == lastTotalSize
+                && lastTotalSize == lastDownSize
                 && lastDownSize != 0
                 && lastDownSize == contentLength;
     }
