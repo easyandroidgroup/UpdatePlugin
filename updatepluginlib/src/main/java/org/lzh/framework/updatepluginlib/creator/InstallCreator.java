@@ -44,6 +44,13 @@ public abstract class InstallCreator implements Recycleable{
         Recycler.release(this);
     }
 
+    public void sendCheckIgnore(Update update) {
+        if (this.checkCB != null) {
+            this.checkCB.onCheckIgnore(update);
+        }
+        Recycler.release(this);
+    }
+
     @Override
     public void release() {
         this.checkCB = null;

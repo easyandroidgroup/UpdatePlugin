@@ -28,4 +28,9 @@ public interface UpdateCheckCB {
      * to be invoked by user press cancel button.
      */
     void onUserCancel();
+
+    /**
+     * to be invoked by user press ignore button.
+     */
+    void onCheckIgnore(Update update);
 }

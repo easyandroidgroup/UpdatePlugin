@@ -97,6 +97,15 @@ public class DefaultCheckCB implements UpdateCheckCB,Recycleable {
     }
 
     @Override
+    public void onCheckIgnore(Update update) {
+        if (checkCB != null) {
+            checkCB.onCheckIgnore(update);
+        }
+
+        Recycler.release(this);
+    }
+
+    @Override
     public void release() {
         this.actRef = null;
         this.builder = null;

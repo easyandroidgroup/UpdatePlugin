@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.view.View;
 
 import org.lzh.framework.updatepluginlib.UpdateBuilder;
+import org.lzh.framework.updatepluginlib.model.Update;
+import org.lzh.framework.updatepluginlib.strategy.UpdateStrategy;
 
 public class MainActivity extends BaseActivity {
     int index = 0;
@@ -19,6 +21,22 @@ public class MainActivity extends BaseActivity {
                 // 对于UpdateBuilder中未设置的参数。会默认使用UpdateConfig中的配置
 
                 UpdateBuilder.create()
+                        .strategy(new UpdateStrategy() {
+                            @Override
+                            public boolean isShowUpdateDialog(Update update) {
+                                return true;
+                            }
+
+                            @Override
+                            public boolean isAutoInstall() {
+                                return false;
+                            }
+
+                            @Override
+                            public boolean isShowDownloadDialog() {
+                                return true;
+                            }
+                        })
                         .check(MainActivity.this);
 
 
@@ -32,5 +50,11 @@ public class MainActivity extends BaseActivity {
                 finish();
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        System.out.println("requestCode = [" + requestCode + "], resultCode = [" + resultCode + "], data = [" + data + "]");
     }
 }

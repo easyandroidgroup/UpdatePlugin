@@ -1,5 +1,6 @@
 package org.lzh.framework.updatepluginlib.util;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -13,6 +14,8 @@ import java.io.File;
  */
 public class InstallUtil {
 
+    public static final int REQUEST_INSTALL = 0x010101;
+
     /**
      * install apk
      * @param context the context is used to send install apk broadcast;
@@ -25,6 +28,9 @@ public class InstallUtil {
         String type = "application/vnd.android.package-archive";
         File pluginfile = new File(filename);
         intent.setDataAndType(Uri.fromFile(pluginfile), type);
+        if (context instanceof Activity) {
+            ((Activity) context).startActivityForResult(intent,REQUEST_INSTALL);
+        }
         context.startActivity(intent);
     }
 

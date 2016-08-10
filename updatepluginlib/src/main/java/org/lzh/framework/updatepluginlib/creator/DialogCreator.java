@@ -53,6 +53,13 @@ public abstract class DialogCreator implements Recycleable{
         Recycler.release(this);
     }
 
+    public void sendUserIgnore(Update update) {
+        if (this.checkCB != null) {
+            this.checkCB.onCheckIgnore(update);
+        }
+        Recycler.release(this);
+    }
+
     @Override
     public void release() {
         this.builder = null;

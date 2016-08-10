@@ -64,7 +64,7 @@ public abstract class UpdateWorker extends UnifiedWorker implements Runnable,Rec
             if (parse == null) {
                 throw new IllegalArgumentException("parse response to update failed by " + parser.getClass().getCanonicalName());
             }
-            if (!parse.isIgnore() && checker.check(parse)) {
+            if (checker.check(parse)) {
                 sendHasUpdate(parse);
             } else {
                 sendNoUpdate();

@@ -27,13 +27,22 @@ public class DefaultNeedUpdateCreator extends DialogCreator {
         AlertDialog.Builder builder =  new AlertDialog.Builder(activity)
                 .setMessage(updateContent)
                 .setTitle(R.string.update_title)
-                .setNeutralButton(R.string.update_immediate, new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.update_immediate, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         sendDownloadRequest(update,activity);
                         SafeDialogOper.safeDismissDialog((Dialog) dialog);
                     }
                 });
+        if (update.isIgnore() && !update.isForced()) {
+            builder.setNeutralButton(R.string.update_ignore, new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    sendUserIgnore(update);
+                    SafeDialogOper.safeDismissDialog((Dialog) dialog);
+                }
+            });
+        }
 
         if (!update.isForced()) {
             builder.setNegativeButton(R.string.update_cancel, new DialogInterface.OnClickListener() {
@@ -44,6 +53,7 @@ public class DefaultNeedUpdateCreator extends DialogCreator {
                 }
             });
         }
+        builder.setCancelable(false);
         return builder.create();
     }
 }

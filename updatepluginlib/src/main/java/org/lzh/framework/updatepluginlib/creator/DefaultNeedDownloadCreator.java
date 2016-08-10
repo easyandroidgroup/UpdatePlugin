@@ -29,6 +29,7 @@ public class DefaultNeedDownloadCreator implements DownloadCreator {
             dialog.setCancelable(false);
             dialog.setCanceledOnTouchOutside(false);
         }
+        dialog.setCancelable(false);
         SafeDialogOper.safeShowDialog(dialog);
         return new UpdateDownloadCB() {
             @Override

@@ -4,10 +4,8 @@ import android.app.Application;
 import android.widget.Toast;
 
 import org.lzh.framework.updatepluginlib.UpdateConfig;
-import org.lzh.framework.updatepluginlib.callback.EmptyCheckCB;
 import org.lzh.framework.updatepluginlib.callback.EmptyDownloadCB;
-import org.lzh.framework.updatepluginlib.model.CheckEntity;
-import org.lzh.framework.updatepluginlib.model.HttpMethod;
+import org.lzh.framework.updatepluginlib.callback.UpdateCheckCB;
 import org.lzh.framework.updatepluginlib.model.Update;
 import org.lzh.framework.updatepluginlib.model.UpdateParser;
 
@@ -15,7 +13,8 @@ import org.lzh.framework.updatepluginlib.model.UpdateParser;
  * @author Administrator
  */
 public class MyApplication extends Application {
-    private String apkFile = "http://apk.hiapk.com/appdown/com.hiapk.live?planid=2515816&seid=c711112f-cc50-0001-a55f-bfe5123fe450";
+    private String apkFile = "http://api.p.tgnet.com/Client/Download";
+//    private String apkFile = "http://apk.hiapk.com/appdown/com.hiapk.live?planid=2515816&seid=c711112f-cc50-0001-a55f-bfe5123fe450";
 //    private RefWatcher refWatcher;
 //
 //    public static RefWatcher getRefWatcher (Context context) {
@@ -50,14 +49,14 @@ public class MyApplication extends Application {
                         // 此apk包的更新内容
                         update.setUpdateContent("测试更新");
                         // 此apk包是否为强制更新
-                        update.setForced(false);
-                        // 是否忽略此次版本更新
-                        update.setIgnore(false);
+                        update.setForced(true);
+                        // 是否显示忽略此次版本更新按钮
+                        update.setIgnore(true);
                         return update;
                     }
                 })
                 // TODO: 2016/5/11 除了以上两个参数为必填。以下的参数均为非必填项。
-                .checkCB(new EmptyCheckCB() {
+                .checkCB(new UpdateCheckCB() {
 
                     @Override
                     public void onCheckError(int code, String errorMsg) {
@@ -67,6 +66,16 @@ public class MyApplication extends Application {
                     @Override
                     public void onUserCancel() {
                         Toast.makeText(MyApplication.this, "用户取消更新", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onCheckIgnore(Update update) {
+                        Toast.makeText(MyApplication.this, "用户忽略此版本更新", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void hasUpdate(Update update) {
+                        Toast.makeText(MyApplication.this, "检查到有更新", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
