@@ -23,7 +23,7 @@ public class DefaultNeedInstallCreator extends InstallCreator {
     public Dialog create(final Update update, final String path, final Activity activity) {
         if (activity == null || activity.isFinishing()) {
             Log.e("DownDialogCreator--->","show install dialog failed:activity was recycled or finished");
-            throw new IllegalStateException("Activity was recycled or finished,dialog shown failed!");
+            return null;
         }
         activityRef = new WeakReference<>(activity);
         String updateContent = activity.getText(R.string.update_version_name)

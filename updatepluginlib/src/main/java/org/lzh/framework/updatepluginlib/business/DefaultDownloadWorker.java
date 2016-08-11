@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.text.TextUtils;
 
 import org.lzh.framework.updatepluginlib.UpdateConfig;
+import org.lzh.framework.updatepluginlib.util.UpdatePreference;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,7 +18,6 @@ import java.net.URL;
  * @author Administrator
  */
 public class DefaultDownloadWorker extends DownloadWorker {
-    public static final String KEY_DOWN_SIZE = "update_download_size";
     HttpURLConnection urlConn;
     @Override
     protected void download(String url, File target) throws Exception{
@@ -49,7 +49,7 @@ public class DefaultDownloadWorker extends DownloadWorker {
         while ((length = inputStream.read(buffer)) != -1) {
             raf.write(buffer, 0, length);
             offset += length;
-            saveDownloadSize(url,offset);
+            UpdatePreference.saveDownloadSize(url,offset);
             long end = System.currentTimeMillis();
             if (end - start > 1000) {
                 sendUpdateProgress(offset,contentLength);
@@ -62,9 +62,9 @@ public class DefaultDownloadWorker extends DownloadWorker {
     }
 
     private boolean checkIsDownAll(File target,String url,long contentLength) {
-        long lastDownSize = getLastDownloadSize(url);
+        long lastDownSize = UpdatePreference.getLastDownloadSize(url);
         long length = target.length();
-        long lastTotalSize = getLastDownloadTotalSize(url);
+        long lastTotalSize = UpdatePreference.getLastDownloadTotalSize(url);
         return lastDownSize == length
                 && lastTotalSize == lastDownSize
                 && lastDownSize != 0
@@ -79,11 +79,11 @@ public class DefaultDownloadWorker extends DownloadWorker {
             return new RandomAccessFile(target,"rw");
         }
 
-        long lastDownSize = getLastDownloadSize(url);
+        long lastDownSize = UpdatePreference.getLastDownloadSize(url);
         long length = target.length();
-        long lastTotalSize = getLastDownloadTotalSize(url);
+        long lastTotalSize = UpdatePreference.getLastDownloadTotalSize(url);
         long contentLength = Long.parseLong(urlConn.getHeaderField("Content-Length"));
-        saveDownloadTotalSize(url,contentLength);
+        UpdatePreference.saveDownloadTotalSize(url,contentLength);
         if (lastTotalSize != contentLength
                 || lastDownSize != length
                 || lastDownSize > contentLength) {
@@ -113,27 +113,4 @@ public class DefaultDownloadWorker extends DownloadWorker {
         urlConn.setConnectTimeout(10000);
     }
 
-    private long getLastDownloadSize(String url) {
-        SharedPreferences sp = UpdateConfig.getConfig().getContext().getSharedPreferences(KEY_DOWN_SIZE, Context.MODE_PRIVATE);
-        return sp.getLong(url,0);
-    }
-
-    private long getLastDownloadTotalSize (String url) {
-        SharedPreferences sp = UpdateConfig.getConfig().getContext().getSharedPreferences(KEY_DOWN_SIZE, Context.MODE_PRIVATE);
-        return sp.getLong(url + "_total_size",0);
-    }
-
-    private void saveDownloadSize (String url,long size) {
-        SharedPreferences sp = UpdateConfig.getConfig().getContext().getSharedPreferences(KEY_DOWN_SIZE, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sp.edit();
-        editor.putLong(url,size);
-        editor.commit();
-    }
-
-    private void saveDownloadTotalSize(String url,long totalSize) {
-        SharedPreferences sp = UpdateConfig.getConfig().getContext().getSharedPreferences(KEY_DOWN_SIZE, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sp.edit();
-        editor.putLong(url + "_total_size",totalSize);
-        editor.commit();
-    }
 }

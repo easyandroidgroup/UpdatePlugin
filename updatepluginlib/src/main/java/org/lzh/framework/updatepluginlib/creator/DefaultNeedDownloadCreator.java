@@ -18,7 +18,7 @@ public class DefaultNeedDownloadCreator implements DownloadCreator {
     public UpdateDownloadCB create(Update update,Activity activity) {
         if (activity == null || activity.isFinishing()) {
             Log.e("DownDialogCreator--->","show download dialog failed:activity was recycled or finished");
-            throw new IllegalStateException("Activity was recycled or finished,dialog shown failed!");
+            return null;
         }
         final ProgressDialog dialog = new ProgressDialog(activity);
         dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
@@ -29,7 +29,7 @@ public class DefaultNeedDownloadCreator implements DownloadCreator {
         SafeDialogOper.safeShowDialog(dialog);
         return new UpdateDownloadCB() {
             @Override
-            public void onUpdateStart() {
+            public void  onUpdateStart() {
             }
 
             @Override

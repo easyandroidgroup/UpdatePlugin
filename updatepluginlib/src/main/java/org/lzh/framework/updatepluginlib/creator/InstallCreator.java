@@ -9,6 +9,7 @@ import org.lzh.framework.updatepluginlib.model.Update;
 import org.lzh.framework.updatepluginlib.util.InstallUtil;
 import org.lzh.framework.updatepluginlib.util.Recycler;
 import org.lzh.framework.updatepluginlib.util.Recycler.Recycleable;
+import org.lzh.framework.updatepluginlib.util.UpdatePreference;
 
 /**
  *
@@ -48,6 +49,7 @@ public abstract class InstallCreator implements Recycleable{
         if (this.checkCB != null) {
             this.checkCB.onCheckIgnore(update);
         }
+        UpdatePreference.saveIgnoreVersion(update.getVersionCode());
         Recycler.release(this);
     }
 

@@ -63,8 +63,8 @@ public class DefaultDownloadCB implements UpdateDownloadCB ,Recycleable{
         if (downloadCB != null) {
             downloadCB.onUpdateStart();
         }
-
-        if (getInnerCB() != null) {
+        innerCB = getInnerCB();
+        if (innerCB != null) {
             innerCB.onUpdateStart();
         }
     }
@@ -87,7 +87,7 @@ public class DefaultDownloadCB implements UpdateDownloadCB ,Recycleable{
             downloadCB.onUpdateComplete(file);
         }
 
-        if (getInnerCB() != null) {
+        if (innerCB != null) {
             innerCB.onUpdateComplete(file);
         }
         InstallCreator creator = builder.getInstallDialogCreator();
@@ -96,11 +96,6 @@ public class DefaultDownloadCB implements UpdateDownloadCB ,Recycleable{
         } else {
             creator.setCheckCB(builder.getCheckCB());
             Dialog dialog = creator.create(update, file.getAbsolutePath(),actRef.get());
-            if (update.isForced() && dialog != null) {
-                dialog.setCancelable(false);
-                dialog.setCanceledOnTouchOutside(false);
-            }
-
             SafeDialogOper.safeShowDialog(dialog);
         }
 
@@ -116,7 +111,7 @@ public class DefaultDownloadCB implements UpdateDownloadCB ,Recycleable{
             downloadCB.onUpdateProgress(current,total);
         }
 
-        if (getInnerCB() != null) {
+        if (innerCB != null) {
             innerCB.onUpdateProgress(current,total);
         }
     }
@@ -130,7 +125,7 @@ public class DefaultDownloadCB implements UpdateDownloadCB ,Recycleable{
             downloadCB.onUpdateError(code,errorMsg);
         }
 
-        if (getInnerCB() != null) {
+        if (innerCB != null) {
             innerCB.onUpdateError(code,errorMsg);
         }
 

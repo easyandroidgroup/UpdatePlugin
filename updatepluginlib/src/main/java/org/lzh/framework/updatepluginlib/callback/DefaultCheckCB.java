@@ -50,7 +50,6 @@ public class DefaultCheckCB implements UpdateCheckCB,Recycleable {
         creator.setBuilder(builder);
         creator.setCheckCB(builder.getCheckCB());
         Dialog dialog = creator.create(update,actRef.get());
-
         SafeDialogOper.safeShowDialog(dialog);
 
         Recycler.release(this);
