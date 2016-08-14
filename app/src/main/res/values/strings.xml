@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">UpdatePlugin</string>
+    <string name="start_update">启动更新</string>
+    <string name="made_network_task">定制网络更新任务</string>
+    <string name="default_update">使用默认更新</string>
+    <string name="custom_task">使用自定义网络任务进行更新</string>
+    <string name="custom_checker">使用自定义的更新检查器</string>
+    <string name="custom_dialog">使用自定义的Dialog</string>
+    <string name="custom_strategy">使用自定义更新策略</string>
+    <string name="custom_file_creator">使用自定义下载文件创建器指定下载文件名</string>
 </resources>

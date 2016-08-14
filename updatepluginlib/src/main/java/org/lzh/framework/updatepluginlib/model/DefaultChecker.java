@@ -15,7 +15,8 @@ public class DefaultChecker implements UpdateChecker {
         try {
             int curVersion = InstallUtil.getApkVersion(UpdateConfig.getConfig().getContext());
             if (update.getVersionCode() > curVersion &&
-                    !UpdatePreference.getIgnoreVersions().contains(String.valueOf(update.getVersionCode()))) {
+                    (update.isForced()||
+                    !UpdatePreference.getIgnoreVersions().contains(String.valueOf(update.getVersionCode())))) {
                 return true;
             }
         } catch (Exception e) {

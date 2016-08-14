@@ -5,14 +5,39 @@
     android:orientation="vertical">
 
     <Button
-        android:id="@+id/update"
+        android:id="@+id/default_update"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="update" />
+        android:text="@string/default_update" />
 
     <Button
-        android:id="@+id/finishAndToNext"
-        android:text="finish and to next"
+        android:id="@+id/custom_task"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:text="@string/custom_task" />
+
+    <Button
+        android:id="@+id/custom_checker"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/custom_checker" />
+
+    <Button
+        android:id="@+id/custom_dialog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/custom_dialog" />
+
+    <Button
+        android:id="@+id/custom_strategy"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/custom_strategy" />
+
+    <Button
+        android:id="@+id/custom_file_creator"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/custom_file_creator" />
+
 </LinearLayout>
