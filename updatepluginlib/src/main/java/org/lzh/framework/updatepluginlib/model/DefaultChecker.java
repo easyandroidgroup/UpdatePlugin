@@ -1,7 +1,5 @@
 package org.lzh.framework.updatepluginlib.model;
 
-import android.content.pm.PackageManager;
-
 import org.lzh.framework.updatepluginlib.UpdateConfig;
 import org.lzh.framework.updatepluginlib.util.InstallUtil;
 import org.lzh.framework.updatepluginlib.util.UpdatePreference;
