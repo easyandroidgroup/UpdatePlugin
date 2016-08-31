@@ -354,6 +354,11 @@ UpdateBuilder.create()
 
 **Update:**
 
+- 0.7
+```
+新增内置Activity替换接口.用作解决当需要显示Dialog的时候,内置Activity为nul或者finished后时不能正确显示的问题
+```
+
 - 0.6
 ```
 对更新Dialog添加忽略此版本更新选项。UpdateCheckCB接口增加onCheckIgnore方法

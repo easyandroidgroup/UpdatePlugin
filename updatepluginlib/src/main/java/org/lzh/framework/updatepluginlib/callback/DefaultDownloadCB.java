@@ -26,14 +26,11 @@ public class DefaultDownloadCB implements UpdateDownloadCB ,Recycleable{
     /**
      * set by {@link UpdateBuilder#downloadCB(UpdateDownloadCB)} or
      * {@link org.lzh.framework.updatepluginlib.UpdateConfig#downloadCB(UpdateDownloadCB)}<br>
-     *
-     *
      */
     private UpdateDownloadCB downloadCB;
     private Update update;
     /**
      * This callback is created by {@link org.lzh.framework.updatepluginlib.creator.DownloadCreator#create(Update, Activity)}<br>
-     *
      *     to update UI within this callback
      */
     private UpdateDownloadCB innerCB;
@@ -60,6 +57,10 @@ public class DefaultDownloadCB implements UpdateDownloadCB ,Recycleable{
      */
     @Override
     public void onUpdateStart() {
+        // replace activity when necessary
+        if (builder.getReplaceCB() != null) {
+            actRef = new WeakReference<>(builder.getReplaceCB().replace(actRef.get()));
+        }
         if (downloadCB != null) {
             downloadCB.onUpdateStart();
         }
@@ -90,12 +91,18 @@ public class DefaultDownloadCB implements UpdateDownloadCB ,Recycleable{
         if (innerCB != null) {
             innerCB.onUpdateComplete(file);
         }
+
+        Activity current = actRef.get();
+        if (builder.getReplaceCB() != null) {
+            current = builder.getReplaceCB().replace(current);
+        }
+
         InstallCreator creator = builder.getInstallDialogCreator();
         if (builder.getStrategy().isAutoInstall()) {
             creator.sendToInstall(file.getAbsolutePath());
         } else {
             creator.setCheckCB(builder.getCheckCB());
-            Dialog dialog = creator.create(update, file.getAbsolutePath(),actRef.get());
+            Dialog dialog = creator.create(update, file.getAbsolutePath(),current);
             SafeDialogOper.safeShowDialog(dialog);
         }
 

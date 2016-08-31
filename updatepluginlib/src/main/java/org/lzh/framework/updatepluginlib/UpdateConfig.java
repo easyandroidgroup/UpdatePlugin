@@ -7,6 +7,7 @@ import org.lzh.framework.updatepluginlib.business.DefaultDownloadWorker;
 import org.lzh.framework.updatepluginlib.business.DefaultUpdateWorker;
 import org.lzh.framework.updatepluginlib.business.DownloadWorker;
 import org.lzh.framework.updatepluginlib.business.UpdateWorker;
+import org.lzh.framework.updatepluginlib.callback.ActivityReplaceCB;
 import org.lzh.framework.updatepluginlib.callback.UpdateCheckCB;
 import org.lzh.framework.updatepluginlib.callback.UpdateDownloadCB;
 import org.lzh.framework.updatepluginlib.creator.ApkFileCreator;
@@ -24,8 +25,6 @@ import org.lzh.framework.updatepluginlib.model.UpdateChecker;
 import org.lzh.framework.updatepluginlib.model.UpdateParser;
 import org.lzh.framework.updatepluginlib.strategy.UpdateStrategy;
 import org.lzh.framework.updatepluginlib.strategy.WifiFirstStrategy;
-
-import java.util.IllegalFormatCodePointException;
 
 /**
  * Global configs
@@ -87,6 +86,11 @@ public class UpdateConfig {
      * To check out whether or not there are a new version of apk should be updated
      */
     private UpdateChecker updateChecker;
+
+    /**
+     * To replace activity when current is finished or should shown dialog with a new activity
+     */
+    private ActivityReplaceCB replaceCB;
 
     private static UpdateConfig config;
     public static UpdateConfig getConfig() {
@@ -208,6 +212,14 @@ public class UpdateConfig {
      */
     public UpdateConfig strategy(UpdateStrategy strategy) {
          this.strategy = strategy;
+        return this;
+    }
+
+    /**
+     * @return To see {@link UpdateConfig#replaceCB}
+     */
+    public UpdateConfig replaceCB(ActivityReplaceCB replaceCB) {
+        this.replaceCB = replaceCB;
         return this;
     }
 
@@ -342,4 +354,12 @@ public class UpdateConfig {
     public UpdateDownloadCB getDownloadCB() {
         return downloadCB;
     }
+
+    /**
+     * @return To see {@link UpdateConfig#replaceCB}
+     */
+    public ActivityReplaceCB getReplaceCB () {
+        return replaceCB;
+    }
 }
+

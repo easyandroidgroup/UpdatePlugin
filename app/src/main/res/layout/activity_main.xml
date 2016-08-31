@@ -40,4 +40,10 @@
         android:layout_height="wrap_content"
         android:text="@string/custom_file_creator" />
 
+    <Button
+        android:id="@+id/custom_activity_replace"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/show_update_dialog_in_another_activity" />
+
 </LinearLayout>

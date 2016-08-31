@@ -1,10 +1,12 @@
 package org.lzh.framework.updateplugin;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
 import org.lzh.framework.updateplugin.update.AllDialogShowStrategy;
+import org.lzh.framework.updateplugin.update.CustomActivityReplaceCB;
 import org.lzh.framework.updateplugin.update.CustomApkFileCreator;
 import org.lzh.framework.updateplugin.update.CustomDownloadWorker;
 import org.lzh.framework.updateplugin.update.CustomNeedDownloadCreator;
@@ -26,6 +28,7 @@ public class SampleActivity extends Activity implements View.OnClickListener{
         findViewById(R.id.custom_dialog).setOnClickListener(this);
         findViewById(R.id.custom_file_creator).setOnClickListener(this);
         findViewById(R.id.custom_strategy).setOnClickListener(this);
+        findViewById(R.id.custom_activity_replace).setOnClickListener(this);
     }
 
     // 使用默认配置进行更新
@@ -45,6 +48,7 @@ public class SampleActivity extends Activity implements View.OnClickListener{
     void useCustomChecker () {
         UpdateBuilder.create()
                 .updateChecker(new CustomUpdateChecker())
+                .strategy(new AllDialogShowStrategy())
                 .check(this);
     }
 
@@ -71,6 +75,15 @@ public class SampleActivity extends Activity implements View.OnClickListener{
                 .check(this);
     }
 
+    // 当前页面进行检查更新.同时跳转到AnotherActivity,使用replaceCB替换需要显示Dialog时的Activity实例
+    void useCustomReplace() {
+        UpdateBuilder.create()
+                .replaceCB(new CustomActivityReplaceCB())
+                .strategy(new AllDialogShowStrategy())//让所有流程的Dialog全显示.用作展示流程
+                .check(this);
+        startActivity(new Intent(this,AnotherActivity.class));
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -91,6 +104,9 @@ public class SampleActivity extends Activity implements View.OnClickListener{
                 break;
             case R.id.custom_task:
                 useCustomTask();
+                break;
+            case R.id.custom_activity_replace:
+                useCustomReplace();
                 break;
         }
     }
