@@ -13,7 +13,7 @@ allprojects {
 ```
 dependencies {
     ...
-    compile 'org.lzh.nonview.updateplugin:UpdatePlugin:0.7'
+    compile 'org.lzh.nonview.updateplugin:UpdatePlugin:0.7.1'
 }
 ```
 
