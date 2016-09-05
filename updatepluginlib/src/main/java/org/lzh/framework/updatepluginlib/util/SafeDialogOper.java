@@ -16,14 +16,7 @@ public class SafeDialogOper {
         if (dialog == null || dialog.isShowing()) {
             return;
         }
-        Activity bindAct = null;
-        Context context = dialog.getContext();
-        if (context instanceof ContextThemeWrapper) {
-            ContextThemeWrapper contextWrapper = (ContextThemeWrapper) context;
-            bindAct = (Activity) contextWrapper.getBaseContext();
-        } else if (context instanceof Activity) {
-            bindAct = (Activity) context;
-        }
+        Activity bindAct = getActivity(dialog);
 
         if (bindAct == null || bindAct.isFinishing()) {
             Log.d("Dialog shown failed:","The Dialog bind's Activity was recycled or finished!");
@@ -33,20 +26,29 @@ public class SafeDialogOper {
         dialog.show();
     }
 
+    private static Activity getActivity(Dialog dialog) {
+        Activity bindAct = null;
+        Context context = dialog.getContext();
+        do {
+            if (context instanceof Activity) {
+                bindAct = (Activity) context;
+                break;
+            } else if (context instanceof ContextThemeWrapper) {
+                context = ((ContextThemeWrapper) context).getBaseContext();
+            } else {
+                break;
+            }
+        } while (true);
+        return bindAct;
+    }
+
     public static void safeDismissDialog(Dialog dialog) {
         if (dialog == null || !dialog.isShowing()) {
             return;
         }
 
-        Context context = dialog.getContext();
-        Activity activity = null;
-        if (context instanceof ContextThemeWrapper) {
-            ContextThemeWrapper contextWrapper = (ContextThemeWrapper) context;
-            activity = (Activity) contextWrapper.getBaseContext();
-        } else if (context instanceof Activity) {
-            activity = (Activity) context;
-        }
-        if (activity != null && !activity.isFinishing()) {
+        Activity bindAct = getActivity(dialog);
+        if (bindAct != null && !bindAct.isFinishing()) {
             dialog.dismiss();
         }
     }
