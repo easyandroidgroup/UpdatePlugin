@@ -16,7 +16,7 @@ allprojects {
 ```
 dependencies {
     ...
-    compile 'org.lzh.nonview.updateplugin:UpdatePlugin:0.7.1'
+    compile 'org.lzh.nonview.updateplugin:UpdatePlugin:0.8'
 }
 ```
 
@@ -58,6 +58,12 @@ OK。最简单的用法就这么点。当然。如果需要查看其他配置请
 
 流程图中的UpdateWorker/UpdateParser/UpdateChecker等均为框架提供的对外接口,如需要对框架根据自己的业务需要进行定制,均可实现这些接口并设置到UpdateConfig或者UpdateBuilder中进行定制使用,
 
+###更新日志：
+- 0.8
+```
+添加InstallChecker接口。用于部分场景下能方便的对apk安装前进行预校验
+优化自带文件下载器。修复由于接口不支持断点下载时。对上一次完整下载后再次下载时验证失败导致的重新下载apk问题
+```
 
 ###联系作者
 email: 470368500@qq.com
