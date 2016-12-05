@@ -98,10 +98,12 @@ public class DefaultDownloadCB implements UpdateDownloadCB ,Recycleable{
         }
 
         InstallCreator creator = builder.getInstallDialogCreator();
+        creator.setCheckCB(builder.getCheckCB());
+        creator.setInstallChecker(builder.getInstallChecker());
+        creator.setUpdate(update);
         if (builder.getStrategy().isAutoInstall()) {
             creator.sendToInstall(file.getAbsolutePath());
         } else {
-            creator.setCheckCB(builder.getCheckCB());
             Dialog dialog = creator.create(update, file.getAbsolutePath(),current);
             SafeDialogOper.safeShowDialog(dialog);
         }

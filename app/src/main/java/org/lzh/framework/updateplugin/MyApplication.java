@@ -24,7 +24,7 @@ public class MyApplication extends Application {
         // 对于没传的参数，会默认使用UpdateConfig中的全局配置
         UpdateConfig.getConfig()
                 // 必填：数据更新接口,url与checkEntity两种方式任选一种填写
-                .url("http://www.baidu.com")
+                .url("https://www.baidu.com")
 //                .checkEntity(new CheckEntity().setMethod(HttpMethod.GET).setUrl("http://www.baidu.com"))
                 // 必填：用于从数据更新接口获取的数据response中。解析出Update实例。以便框架内部处理
                 .jsonParser(new UpdateParser() {

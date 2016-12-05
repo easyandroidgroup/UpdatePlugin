@@ -17,6 +17,7 @@ import org.lzh.framework.updatepluginlib.creator.DefaultNeedInstallCreator;
 import org.lzh.framework.updatepluginlib.creator.DefaultNeedUpdateCreator;
 import org.lzh.framework.updatepluginlib.creator.DialogCreator;
 import org.lzh.framework.updatepluginlib.creator.DownloadCreator;
+import org.lzh.framework.updatepluginlib.creator.InstallChecker;
 import org.lzh.framework.updatepluginlib.creator.InstallCreator;
 import org.lzh.framework.updatepluginlib.model.CheckEntity;
 import org.lzh.framework.updatepluginlib.model.DefaultChecker;
@@ -88,6 +89,11 @@ public class UpdateConfig {
     private UpdateChecker updateChecker;
 
     /**
+     * To check out if the apk file is validly.
+     */
+    private InstallChecker installChecker;
+
+    /**
      * To replace activity when current is finished or should shown dialog with a new activity
      */
     private ActivityReplaceCB replaceCB;
@@ -132,6 +138,11 @@ public class UpdateConfig {
      */
     public UpdateConfig updateChecker(UpdateChecker checker) {
         this.updateChecker = checker;
+        return this;
+    }
+
+    public UpdateConfig installChecker (InstallChecker checker) {
+        this.installChecker = checker;
         return this;
     }
 
@@ -289,6 +300,10 @@ public class UpdateConfig {
             updateChecker = new DefaultChecker();
         }
         return updateChecker;
+    }
+
+    public InstallChecker getInstallChecker () {
+        return installChecker;
     }
 
     /**
