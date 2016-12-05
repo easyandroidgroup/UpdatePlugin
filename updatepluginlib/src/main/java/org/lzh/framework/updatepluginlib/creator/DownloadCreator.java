@@ -18,6 +18,7 @@ public interface DownloadCreator {
      * @param update The update instance created by {@link org.lzh.framework.updatepluginlib.model.UpdateParser#parse(String)}
      * @param activity The activity instance,cause it is be saved with weak ref,so the context
      *                will be null or finished sometimes when you finish you activity before,
+     * @return A {@link UpdateDownloadCB} instance to update ui
      */
     UpdateDownloadCB create(Update update, Activity activity);
 }

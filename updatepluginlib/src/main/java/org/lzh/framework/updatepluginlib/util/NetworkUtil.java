@@ -13,6 +13,7 @@ public class NetworkUtil {
 
     /**
      * Whether or not to connect to the Internet
+     * @return true if is connected
      */
     public static boolean isConnected () {
         NetworkInfo info = getNetworkInfos();
@@ -24,6 +25,7 @@ public class NetworkUtil {
 
     /**
      * Determine whether to use wifi
+     * @return true if is connected by wifi
      */
     public static boolean isConnectedByWifi() {
         NetworkInfo info = getNetworkInfos();

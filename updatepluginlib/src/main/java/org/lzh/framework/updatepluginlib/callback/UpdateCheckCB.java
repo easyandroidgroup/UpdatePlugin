@@ -9,6 +9,7 @@ public interface UpdateCheckCB {
 
     /**
      * There are a new version of APK on network
+     * @param update Update entity
      */
     void hasUpdate(Update update);
 
@@ -31,6 +32,7 @@ public interface UpdateCheckCB {
 
     /**
      * to be invoked by user press ignore button.
+     * @param update Update entity
      */
     void onCheckIgnore(Update update);
 }

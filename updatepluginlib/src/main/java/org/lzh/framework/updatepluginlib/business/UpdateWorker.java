@@ -33,7 +33,7 @@ public abstract class UpdateWorker extends UnifiedWorker implements Runnable,Rec
      */
     protected UpdateChecker checker;
     /**
-     * set by {@link org.lzh.framework.updatepluginlib.UpdateConfig#jsonParser(UpdateParser)]} or
+     * set by {@link org.lzh.framework.updatepluginlib.UpdateConfig#jsonParser(UpdateParser)} or
      * {@link org.lzh.framework.updatepluginlib.UpdateBuilder#jsonParser(UpdateParser)}<br><br>
      *
      *     according to response data from url to create update instance
@@ -84,7 +84,7 @@ public abstract class UpdateWorker extends UnifiedWorker implements Runnable,Rec
      * access the url and get response data back
      * @param url The url to be accessed
      * @return response data from url
-     * @throws Exception
+     * @throws Exception some error occurs when checked
      */
     protected abstract String check(CheckEntity url) throws Exception;
 

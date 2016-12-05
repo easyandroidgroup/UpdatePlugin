@@ -8,6 +8,8 @@ public interface UpdateChecker {
 
     /**
      * check if is a new version
+     * @param update The update entity to be checked
+     * @return true if is valid
      */
     boolean check(Update update);
 }

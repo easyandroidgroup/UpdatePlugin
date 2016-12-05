@@ -117,25 +117,16 @@ public class UpdateConfig {
         return this;
     }
 
-    /**
-     * to see {@link UpdateConfig#url}
-     */
     public UpdateConfig url(String url) {
         this.entity = new CheckEntity().setUrl(url);
         return this;
     }
 
-    /**
-     * @see UpdateConfig#entity
-     */
     public UpdateConfig checkEntity (CheckEntity entity) {
         this.entity = entity;
         return this;
     }
 
-    /**
-     * To see {@link UpdateConfig#updateChecker}
-     */
     public UpdateConfig updateChecker(UpdateChecker checker) {
         this.updateChecker = checker;
         return this;
@@ -146,89 +137,56 @@ public class UpdateConfig {
         return this;
     }
 
-    /**
-     * To see {@link UpdateConfig#checkWorker}
-     */
     public UpdateConfig checkWorker(UpdateWorker checkWorker) {
         this.checkWorker = checkWorker;
         return this;
     }
 
-    /**
-     * To see {@link UpdateConfig#downloadWorker}
-     */
     public UpdateConfig downloadWorker(DownloadWorker downloadWorker) {
         this.downloadWorker = downloadWorker;
         return this;
     }
 
-    /**
-     * To see {@link UpdateConfig#downloadCB}
-     */
     public UpdateConfig downloadCB(UpdateDownloadCB downloadCB) {
         this.downloadCB = downloadCB;
         return this;
     }
 
-    /**
-     * To see {@link UpdateConfig#checkCB}
-     */
     public UpdateConfig checkCB (UpdateCheckCB checkCB) {
         this.checkCB = checkCB;
         return this;
     }
 
-    /**
-     * To see {@link UpdateConfig#jsonParser}
-     */
     public UpdateConfig jsonParser (UpdateParser jsonParser) {
         this.jsonParser = jsonParser;
         return this;
     }
 
-    /**
-     * To see {@link UpdateConfig#fileCreator}
-     */
     public UpdateConfig fileCreator (ApkFileCreator fileCreator) {
         this.fileCreator = fileCreator;
         return this;
     }
 
-    /**
-     * To see {@link UpdateConfig#downloadDialogCreator}
-     */
     public UpdateConfig downloadDialogCreator (DownloadCreator downloadDialogCreator) {
         this.downloadDialogCreator = downloadDialogCreator;
         return this;
     }
 
-    /**
-     * To see {@link UpdateConfig#installDialogCreator}
-     */
     public UpdateConfig installDialogCreator (InstallCreator installDialogCreator) {
         this.installDialogCreator = installDialogCreator;
         return this;
     }
 
-    /**
-     * To see {@link UpdateConfig#updateDialogCreator}
-     */
     public UpdateConfig updateDialogCreator(DialogCreator updateDialogCreator) {
         this.updateDialogCreator = updateDialogCreator;
         return this;
     }
 
-    /**
-     * To see {@link UpdateConfig#strategy}
-     */
     public UpdateConfig strategy(UpdateStrategy strategy) {
          this.strategy = strategy;
         return this;
     }
 
-    /**
-     * @return To see {@link UpdateConfig#replaceCB}
-     */
     public UpdateConfig replaceCB(ActivityReplaceCB replaceCB) {
         this.replaceCB = replaceCB;
         return this;
@@ -241,9 +199,6 @@ public class UpdateConfig {
         return context;
     }
 
-    /**
-     * @return To see {@link UpdateConfig#strategy}
-     */
     public UpdateStrategy getStrategy() {
         if (strategy == null) {
             strategy = new WifiFirstStrategy();
@@ -262,9 +217,6 @@ public class UpdateConfig {
 //        return this.entity.getUrl();
 //    }
 
-    /**
-     * @return To see {@linkplain UpdateConfig#entity}
-     */
     public CheckEntity getCheckEntity () {
         if (this.entity == null || TextUtils.isEmpty(this.entity.getUrl())) {
             throw new IllegalArgumentException("Do not set url in CheckEntity");
@@ -272,9 +224,6 @@ public class UpdateConfig {
         return this.entity;
     }
 
-    /**
-     * @return To see {@link UpdateConfig#updateDialogCreator}
-     */
     public DialogCreator getUpdateDialogCreator() {
         if (updateDialogCreator == null) {
             updateDialogCreator = new DefaultNeedUpdateCreator();
@@ -282,9 +231,6 @@ public class UpdateConfig {
         return updateDialogCreator;
     }
 
-    /**
-     * @return To see {@link UpdateConfig#installDialogCreator}
-     */
     public InstallCreator getInstallDialogCreator() {
         if (installDialogCreator == null) {
             installDialogCreator = new DefaultNeedInstallCreator();
@@ -292,9 +238,6 @@ public class UpdateConfig {
         return installDialogCreator;
     }
 
-    /**
-     * @return To see {@link UpdateConfig#updateChecker}
-     */
     public UpdateChecker getUpdateChecker() {
         if (updateChecker == null) {
             updateChecker = new DefaultChecker();
@@ -306,9 +249,6 @@ public class UpdateConfig {
         return installChecker;
     }
 
-    /**
-     * @return To see {@link UpdateConfig#downloadDialogCreator}
-     */
     public DownloadCreator getDownloadDialogCreator() {
         if (downloadDialogCreator == null) {
             downloadDialogCreator = new DefaultNeedDownloadCreator();
@@ -316,9 +256,6 @@ public class UpdateConfig {
         return downloadDialogCreator;
     }
 
-    /**
-     * @return To see {@link UpdateConfig#jsonParser}
-     */
     public UpdateParser getJsonParser() {
         if (jsonParser == null) {
             throw new IllegalStateException("update parser is null");
@@ -326,9 +263,6 @@ public class UpdateConfig {
         return jsonParser;
     }
 
-    /**
-     * @return To see {@link UpdateConfig#checkWorker}
-     */
     public UpdateWorker getCheckWorker() {
         if (checkWorker == null) {
             checkWorker = new DefaultUpdateWorker();
@@ -336,9 +270,6 @@ public class UpdateConfig {
         return checkWorker;
     }
 
-    /**
-     * @return To see {@link UpdateConfig#downloadWorker}
-     */
     public DownloadWorker getDownloadWorker() {
         if (downloadWorker == null) {
             downloadWorker = new DefaultDownloadWorker();
@@ -346,9 +277,6 @@ public class UpdateConfig {
         return downloadWorker;
     }
 
-    /**
-     * @return To see {@link UpdateConfig#fileCreator}
-     */
     public ApkFileCreator getFileCreator() {
         if (fileCreator == null) {
             fileCreator = new DefaultFileCreator();
@@ -356,23 +284,14 @@ public class UpdateConfig {
         return fileCreator;
     }
 
-    /**
-     * @return To see {@link UpdateConfig#checkCB}
-     */
     public UpdateCheckCB getCheckCB() {
         return checkCB;
     }
 
-    /**
-     * @return To see {@link UpdateConfig#downloadCB}
-     */
     public UpdateDownloadCB getDownloadCB() {
         return downloadCB;
     }
 
-    /**
-     * @return To see {@link UpdateConfig#replaceCB}
-     */
     public ActivityReplaceCB getReplaceCB () {
         return replaceCB;
     }

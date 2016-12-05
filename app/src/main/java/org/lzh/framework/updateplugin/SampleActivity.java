@@ -35,12 +35,7 @@ public class SampleActivity extends Activity implements View.OnClickListener{
 
     // 使用默认配置进行更新
     void useDefaultUpdate() {
-        UpdateBuilder.create().installChecker(new InstallChecker() {
-            @Override
-            public boolean check(Update update, String file) {
-                return false;
-            }
-        }).check(this);
+        UpdateBuilder.create().check(this);
     }
 
     // 使用自定义网络任务进行更新。

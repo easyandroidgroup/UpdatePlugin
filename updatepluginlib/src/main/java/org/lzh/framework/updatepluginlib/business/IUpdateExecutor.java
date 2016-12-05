@@ -11,6 +11,7 @@ public interface IUpdateExecutor {
 
     /**
      * request download new version apk
+     * @param worker The DownloadWorker task
      */
     void download(DownloadWorker worker);
 }
