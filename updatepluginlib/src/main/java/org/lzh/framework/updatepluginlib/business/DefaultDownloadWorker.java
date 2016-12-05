@@ -39,6 +39,9 @@ public class DefaultDownloadWorker extends DownloadWorker {
             return;
         }
         RandomAccessFile raf = supportBreakpointDownload(target, httpUrl, url);
+        if (contentLength > 0) {
+            UpdatePreference.saveDownloadTotalSize(url,contentLength);
+        }
 
         long offset = target.exists() ? (int) target.length() : 0;
         InputStream inputStream = urlConn.getInputStream();

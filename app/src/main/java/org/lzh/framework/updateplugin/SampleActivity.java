@@ -15,6 +15,8 @@ import org.lzh.framework.updateplugin.update.CustomNeedUpdateCreator;
 import org.lzh.framework.updateplugin.update.CustomUpdateChecker;
 import org.lzh.framework.updateplugin.update.CustomUpdateWorker;
 import org.lzh.framework.updatepluginlib.UpdateBuilder;
+import org.lzh.framework.updatepluginlib.creator.InstallChecker;
+import org.lzh.framework.updatepluginlib.model.Update;
 
 public class SampleActivity extends Activity implements View.OnClickListener{
 
@@ -33,7 +35,12 @@ public class SampleActivity extends Activity implements View.OnClickListener{
 
     // 使用默认配置进行更新
     void useDefaultUpdate() {
-        UpdateBuilder.create().check(this);
+        UpdateBuilder.create().installChecker(new InstallChecker() {
+            @Override
+            public boolean check(Update update, String file) {
+                return false;
+            }
+        }).check(this);
     }
 
     // 使用自定义网络任务进行更新。
