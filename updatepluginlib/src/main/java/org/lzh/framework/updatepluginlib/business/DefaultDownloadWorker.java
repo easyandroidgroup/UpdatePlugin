@@ -48,16 +48,20 @@ public class DefaultDownloadWorker extends DownloadWorker {
         byte[] buffer = new byte[8 * 1024];
         int length;
         long start = System.currentTimeMillis();
-
-        while ((length = inputStream.read(buffer)) != -1) {
-            raf.write(buffer, 0, length);
-            offset += length;
-            UpdatePreference.saveDownloadSize(url,offset);
-            long end = System.currentTimeMillis();
-            if (end - start > 1000) {
-                sendUpdateProgress(offset,contentLength);
+        try {
+            while ((length = inputStream.read(buffer)) != -1) {
+                raf.write(buffer, 0, length);
+                offset += length;
+                long end = System.currentTimeMillis();
+                if (end - start > 1000) {
+                    sendUpdateProgress(offset,contentLength);
+                }
             }
+        } finally {
+            //
+            UpdatePreference.saveDownloadSize(url,offset);
         }
+
 
         urlConn.disconnect();
         raf.close();
