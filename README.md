@@ -13,10 +13,13 @@ allprojects {
 }
 ```
 - 在要使用的项目的build.gradle中。添加依赖：
+
+LastestVersion= [ ![Download](https://api.bintray.com/packages/yjfnypeu/maven/UpdatePlugin/images/download.svg) ](https://bintray.com/yjfnypeu/maven/UpdatePlugin/_latestVersion)
+
 ```
 dependencies {
     ...
-    compile 'org.lzh.nonview.updateplugin:UpdatePlugin:0.8'
+    compile "org.lzh.nonview.updateplugin:UpdatePlugin:$LastestVersion"
 }
 ```
 
@@ -59,6 +62,10 @@ OK。最简单的用法就这么点。当然。如果需要查看其他配置请
 流程图中的UpdateWorker/UpdateParser/UpdateChecker等均为框架提供的对外接口,如需要对框架根据自己的业务需要进行定制,均可实现这些接口并设置到UpdateConfig或者UpdateBuilder中进行定制使用,
 
 ###更新日志：
+- 0.9
+```
+优化apk下载速度。
+```
 - 0.8
 ```
 添加InstallChecker接口。用于部分场景下能方便的对apk安装前进行预校验
