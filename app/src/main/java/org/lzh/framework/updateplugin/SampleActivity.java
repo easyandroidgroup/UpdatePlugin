@@ -1,5 +1,6 @@
 package org.lzh.framework.updateplugin;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,6 +19,10 @@ import org.lzh.framework.updatepluginlib.UpdateBuilder;
 import org.lzh.framework.updatepluginlib.creator.InstallChecker;
 import org.lzh.framework.updatepluginlib.model.Update;
 
+import permissions.dispatcher.NeedsPermission;
+import permissions.dispatcher.RuntimePermissions;
+
+@RuntimePermissions
 public class SampleActivity extends Activity implements View.OnClickListener{
 
     @Override
@@ -31,6 +36,13 @@ public class SampleActivity extends Activity implements View.OnClickListener{
         findViewById(R.id.custom_file_creator).setOnClickListener(this);
         findViewById(R.id.custom_strategy).setOnClickListener(this);
         findViewById(R.id.custom_activity_replace).setOnClickListener(this);
+
+        SampleActivityPermissionsDispatcher.requestPermissionWithCheck(this);
+    }
+
+    @NeedsPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+    void requestPermission() {
+
     }
 
     // 使用默认配置进行更新

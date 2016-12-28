@@ -14,8 +14,8 @@ public class CustomApkFileCreator implements ApkFileCreator {
     @Override
     public File create(String versionName) {
         // 根据传入的versionName创建下载时使用的文件名
-        File path = new File(Environment.getExternalStorageDirectory().getPath() + "updatePlugin");
-        path.mkdirs();
+        File path = new File(Environment.getExternalStorageDirectory().getPath() + "/updatePlugin");
+        boolean mkdirs = path.mkdirs();
         return new File(path,"ver_" + versionName);
     }
 }

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 
 import java.io.File;
 
@@ -27,7 +28,15 @@ public class InstallUtil {
         intent.setAction(Intent.ACTION_VIEW);
         String type = "application/vnd.android.package-archive";
         File pluginfile = new File(filename);
-        intent.setDataAndType(Uri.fromFile(pluginfile), type);
+        Uri uri;
+        if (Build.VERSION.SDK_INT >= 24) {
+            // Adaptive with api version 24+
+            uri = UpdateInstallProvider.getUriByFile(pluginfile);
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+        } else {
+            uri = Uri.fromFile(pluginfile);
+        }
+        intent.setDataAndType(uri, type);
         if (context instanceof Activity) {
             ((Activity) context).startActivityForResult(intent,REQUEST_INSTALL);
         }

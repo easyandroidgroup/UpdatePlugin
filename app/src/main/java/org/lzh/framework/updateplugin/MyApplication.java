@@ -15,7 +15,7 @@ import java.io.File;
  * @author Administrator
  */
 public class MyApplication extends Application {
-    private String apkFile = "http://api.p.tgnet.com/Client/Download";
+    private String apkFile = "http://m.shouji.360tpcdn.com/151023/2acc9ecca7ca75e925b9131f964f169f/com.baidu.tieba_mini_101253632.apk";
 
     @Override
     public void onCreate() {
