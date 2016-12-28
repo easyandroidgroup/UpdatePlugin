@@ -62,6 +62,11 @@ OK。最简单的用法就这么点。当然。如果需要查看其他配置请
 流程图中的UpdateWorker/UpdateParser/UpdateChecker等均为框架提供的对外接口,如需要对框架根据自己的业务需要进行定制,均可实现这些接口并设置到UpdateConfig或者UpdateBuilder中进行定制使用,
 
 ###更新日志：
+- 1.0
+```
+兼容Android 7.0+
+最低版本兼容到8
+```
 - 0.9
 ```
 优化apk下载速度。
