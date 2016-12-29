@@ -6,10 +6,10 @@ android:
   components:
     - platform-tools
     - tools
-    - build-tools-25.0.1
-    - android-25
-    - android-25
-    - sys-img-armeabi-v7a-android-25
+    - build-tools-23.0.3
+    - android-22
+    - android-23
+    - sys-img-armeabi-v7a-android-23
     - extra-android-m2repository
 
 before_script:
