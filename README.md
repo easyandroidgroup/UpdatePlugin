@@ -62,7 +62,7 @@ OK。最简单的用法就这么点。当然。如果需要查看其他配置请
 流程图中的UpdateWorker/UpdateParser/UpdateChecker等均为框架提供的对外接口,如需要对框架根据自己的业务需要进行定制,均可实现这些接口并设置到UpdateConfig或者UpdateBuilder中进行定制使用,
 
 ###更新日志：
-- 1.1
+- 1.1.0
 ```
 修复多个项目集成使用时安装时出现INSTALL_FAILED_CONFLICTING_PROVIDER错误
 ```
