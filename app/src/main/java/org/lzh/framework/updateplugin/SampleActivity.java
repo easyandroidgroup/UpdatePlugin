@@ -15,6 +15,7 @@ import org.lzh.framework.updateplugin.update.CustomNeedInstallCreator;
 import org.lzh.framework.updateplugin.update.CustomNeedUpdateCreator;
 import org.lzh.framework.updateplugin.update.CustomUpdateChecker;
 import org.lzh.framework.updateplugin.update.CustomUpdateWorker;
+import org.lzh.framework.updateplugin.update.NotificationDownloadCreator;
 import org.lzh.framework.updatepluginlib.UpdateBuilder;
 import org.lzh.framework.updatepluginlib.creator.InstallChecker;
 import org.lzh.framework.updatepluginlib.model.Update;
@@ -47,7 +48,9 @@ public class SampleActivity extends Activity implements View.OnClickListener{
 
     // 使用默认配置进行更新
     void useDefaultUpdate() {
-        UpdateBuilder.create().check(this);
+        UpdateBuilder.create()
+                .downloadDialogCreator(new NotificationDownloadCreator())
+                .check(this);
     }
 
     // 使用自定义网络任务进行更新。
