@@ -7,6 +7,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
+import android.text.TextUtils;
 
 import java.io.File;
 
@@ -16,7 +17,7 @@ import java.io.File;
 public class InstallUtil {
 
     public static final int REQUEST_INSTALL = 0x010101;
-
+    public static String DEFAULT_AUTHOR = null;
     /**
      * install apk
      * @param context the context is used to send install apk broadcast;
@@ -31,7 +32,7 @@ public class InstallUtil {
         Uri uri;
         if (Build.VERSION.SDK_INT >= 24) {
             // Adaptive with api version 24+
-            uri = UpdateInstallProvider.getUriByFile(pluginfile);
+            uri = UpdateInstallProvider.getUriByFile(pluginfile,getAuthor(context));
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         } else {
             uri = Uri.fromFile(pluginfile);
@@ -41,6 +42,13 @@ public class InstallUtil {
             ((Activity) context).startActivityForResult(intent,REQUEST_INSTALL);
         }
         context.startActivity(intent);
+    }
+
+    private static String getAuthor(Context context) {
+        if (TextUtils.isEmpty(DEFAULT_AUTHOR)) {
+            DEFAULT_AUTHOR = context.getPackageName();
+        }
+        return DEFAULT_AUTHOR;
     }
 
     public static int getApkVersion (Context context) throws PackageManager.NameNotFoundException {

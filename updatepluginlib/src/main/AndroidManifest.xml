@@ -8,7 +8,7 @@
         android:supportsRtl="true">
         <provider
             android:name=".util.UpdateInstallProvider"
-            android:authorities="com.lzh.updateplugin.provider"
+            android:authorities="${applicationId}.provider"
             android:exported="false"
             android:grantUriPermissions="true">
         </provider>

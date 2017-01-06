@@ -56,14 +56,13 @@ public class UpdateInstallProvider extends ContentProvider {
         return ParcelFileDescriptor.open(file, fileMode);
     }
 
-    public static Uri getUriByFile (File file) {
+    public static Uri getUriByFile (File file,String author) {
         String path;
         try {
             path = file.getCanonicalPath();
         } catch (IOException e) {
             throw new IllegalArgumentException("Failed to resolve canonical path for " + file);
         }
-        String author = "com.lzh.updateplugin.provider";
         Uri uri =  new Uri.Builder().scheme("content")
                 .authority(author).encodedPath(path).build();
         mCache.put(uri,file);
