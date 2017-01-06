@@ -46,7 +46,7 @@ public class InstallUtil {
 
     private static String getAuthor(Context context) {
         if (TextUtils.isEmpty(DEFAULT_AUTHOR)) {
-            DEFAULT_AUTHOR = context.getPackageName();
+            DEFAULT_AUTHOR = context.getPackageName() + ".provider";
         }
         return DEFAULT_AUTHOR;
     }
