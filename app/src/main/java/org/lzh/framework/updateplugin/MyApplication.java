@@ -23,6 +23,8 @@ public class MyApplication extends Application {
         // UpdateConfig为全局配置。当在其他页面中。使用UpdateBuilder进行检查更新时。
         // 对于没传的参数，会默认使用UpdateConfig中的全局配置
         UpdateConfig.getConfig()
+                // 必填：初始化一个Application框架内使用
+                .init(this)
                 // 必填：数据更新接口,url与checkEntity两种方式任选一种填写
                 .url("https://www.baidu.com")
 //                .checkEntity(new CheckEntity().setMethod(HttpMethod.GET).setUrl("http://www.baidu.com"))

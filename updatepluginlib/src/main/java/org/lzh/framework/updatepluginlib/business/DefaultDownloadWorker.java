@@ -1,10 +1,7 @@
 package org.lzh.framework.updatepluginlib.business;
 
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.text.TextUtils;
 
-import org.lzh.framework.updatepluginlib.UpdateConfig;
 import org.lzh.framework.updatepluginlib.util.UpdatePreference;
 
 import java.io.File;
@@ -18,7 +15,7 @@ import java.net.URL;
  * @author Administrator
  */
 public class DefaultDownloadWorker extends DownloadWorker {
-    HttpURLConnection urlConn;
+    private HttpURLConnection urlConn;
     @Override
     protected void download(String url, File target) throws Exception{
         URL httpUrl = new URL(url);

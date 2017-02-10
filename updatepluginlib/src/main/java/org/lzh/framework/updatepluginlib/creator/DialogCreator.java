@@ -7,14 +7,13 @@ import org.lzh.framework.updatepluginlib.UpdateBuilder;
 import org.lzh.framework.updatepluginlib.Updater;
 import org.lzh.framework.updatepluginlib.callback.UpdateCheckCB;
 import org.lzh.framework.updatepluginlib.model.Update;
-import org.lzh.framework.updatepluginlib.util.Recycler;
-import org.lzh.framework.updatepluginlib.util.Recycler.Recycleable;
+import org.lzh.framework.updatepluginlib.util.Recyclable;
 import org.lzh.framework.updatepluginlib.util.UpdatePreference;
 
 /**
  *
  */
-public abstract class DialogCreator implements Recycleable{
+public abstract class DialogCreator implements Recyclable {
     private UpdateBuilder builder;
     private UpdateCheckCB checkCB;
     public void setBuilder(UpdateBuilder builder) {
@@ -37,11 +36,10 @@ public abstract class DialogCreator implements Recycleable{
     /**
      * invoked this method when you want to start download task
      * @param update should not be null,
-     * @param activity The activity instance to show download dialog
      */
-    public void sendDownloadRequest(Update update,Activity activity) {
-        Updater.getInstance().downUpdate(activity,update,builder);
-        Recycler.release(this);
+    public void sendDownloadRequest(Update update) {
+        Updater.getInstance().downUpdate(update,builder);
+        release();
     }
 
     /**
@@ -51,7 +49,7 @@ public abstract class DialogCreator implements Recycleable{
         if (this.checkCB != null) {
             this.checkCB.onUserCancel();
         }
-        Recycler.release(this);
+        release();
     }
 
     public void sendUserIgnore(Update update) {
@@ -59,7 +57,7 @@ public abstract class DialogCreator implements Recycleable{
             this.checkCB.onCheckIgnore(update);
         }
         UpdatePreference.saveIgnoreVersion(update.getVersionCode());
-        Recycler.release(this);
+        release();
     }
 
     @Override

@@ -16,8 +16,8 @@ import java.io.File;
  */
 public class InstallUtil {
 
-    public static final int REQUEST_INSTALL = 0x010101;
-    public static String DEFAULT_AUTHOR = null;
+    private static final int REQUEST_INSTALL = 0x010101;
+    private static String DEFAULT_AUTHOR = null;
     /**
      * install apk
      * @param context the context is used to send install apk broadcast;

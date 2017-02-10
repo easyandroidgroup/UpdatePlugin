@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.view.View;
 
 import org.lzh.framework.updateplugin.update.AllDialogShowStrategy;
-import org.lzh.framework.updateplugin.update.CustomActivityReplaceCB;
 import org.lzh.framework.updateplugin.update.CustomApkFileCreator;
 import org.lzh.framework.updateplugin.update.CustomDownloadWorker;
 import org.lzh.framework.updateplugin.update.CustomNeedDownloadCreator;
@@ -17,8 +16,6 @@ import org.lzh.framework.updateplugin.update.CustomUpdateChecker;
 import org.lzh.framework.updateplugin.update.CustomUpdateWorker;
 import org.lzh.framework.updateplugin.update.NotificationDownloadCreator;
 import org.lzh.framework.updatepluginlib.UpdateBuilder;
-import org.lzh.framework.updatepluginlib.creator.InstallChecker;
-import org.lzh.framework.updatepluginlib.model.Update;
 
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.RuntimePermissions;
@@ -50,7 +47,7 @@ public class SampleActivity extends Activity implements View.OnClickListener{
     void useDefaultUpdate() {
         UpdateBuilder.create()
                 .downloadDialogCreator(new NotificationDownloadCreator())
-                .check(this);
+                .check();
     }
 
     // 使用自定义网络任务进行更新。
@@ -58,7 +55,7 @@ public class SampleActivity extends Activity implements View.OnClickListener{
         UpdateBuilder.create()
                 .checkWorker(new CustomUpdateWorker())// 设置自定义的更新任务
                 .downloadWorker(new CustomDownloadWorker()) // 设置自定义的下载任务
-                .check(this);
+                .check();
     }
 
     // 使用自定义的更新检查器。
@@ -66,7 +63,7 @@ public class SampleActivity extends Activity implements View.OnClickListener{
         UpdateBuilder.create()
                 .updateChecker(new CustomUpdateChecker())
                 .strategy(new AllDialogShowStrategy())
-                .check(this);
+                .check();
     }
 
     // 使用自定义的Dialog作为显示效果
@@ -75,29 +72,28 @@ public class SampleActivity extends Activity implements View.OnClickListener{
                 .updateDialogCreator(new CustomNeedUpdateCreator())
                 .downloadDialogCreator(new CustomNeedDownloadCreator())
                 .installDialogCreator(new CustomNeedInstallCreator())
-                .check(this);
+                .check();
     }
 
     // 使用自定义更新策略
     void useCustomUpdateStrataty () {
         UpdateBuilder.create()
                 .strategy(new AllDialogShowStrategy())
-                .check(this);
+                .check();
     }
 
     // 使用自定义下载文件创建器指定下载文件名
     void useCustomApkFileCreator () {
         UpdateBuilder.create()
                 .fileCreator(new CustomApkFileCreator())
-                .check(this);
+                .check();
     }
 
     // 当前页面进行检查更新.同时跳转到AnotherActivity,使用replaceCB替换需要显示Dialog时的Activity实例
     void useCustomReplace() {
-        UpdateBuilder.create()
-                .replaceCB(new CustomActivityReplaceCB())
-                .strategy(new AllDialogShowStrategy())//让所有流程的Dialog全显示.用作展示流程
-                .check(this);
+        UpdateBuilder builder = UpdateBuilder.create()
+                .strategy(new AllDialogShowStrategy());
+        builder.check();
         startActivity(new Intent(this,AnotherActivity.class));
     }
 

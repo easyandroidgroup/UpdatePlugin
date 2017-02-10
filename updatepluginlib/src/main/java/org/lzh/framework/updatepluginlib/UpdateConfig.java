@@ -7,7 +7,6 @@ import org.lzh.framework.updatepluginlib.business.DefaultDownloadWorker;
 import org.lzh.framework.updatepluginlib.business.DefaultUpdateWorker;
 import org.lzh.framework.updatepluginlib.business.DownloadWorker;
 import org.lzh.framework.updatepluginlib.business.UpdateWorker;
-import org.lzh.framework.updatepluginlib.callback.ActivityReplaceCB;
 import org.lzh.framework.updatepluginlib.callback.UpdateCheckCB;
 import org.lzh.framework.updatepluginlib.callback.UpdateDownloadCB;
 import org.lzh.framework.updatepluginlib.creator.ApkFileCreator;
@@ -26,6 +25,7 @@ import org.lzh.framework.updatepluginlib.model.UpdateChecker;
 import org.lzh.framework.updatepluginlib.model.UpdateParser;
 import org.lzh.framework.updatepluginlib.strategy.UpdateStrategy;
 import org.lzh.framework.updatepluginlib.strategy.WifiFirstStrategy;
+import org.lzh.framework.updatepluginlib.util.ActivityManager;
 
 /**
  * Global configs
@@ -51,10 +51,6 @@ public class UpdateConfig {
      * The callback to receive download task info
      */
     private UpdateDownloadCB downloadCB;
-//    /**
-//     * The url will be used by {@link UpdateWorker} to access network
-//     */
-//    private String url;
     /**
      * The entity will be used by {@link UpdateWorker} to access network
      */
@@ -93,11 +89,6 @@ public class UpdateConfig {
      */
     private InstallChecker installChecker;
 
-    /**
-     * To replace activity when current is finished or should shown dialog with a new activity
-     */
-    private ActivityReplaceCB replaceCB;
-
     private static UpdateConfig config;
     public static UpdateConfig getConfig() {
         if (config == null) {
@@ -107,12 +98,13 @@ public class UpdateConfig {
     }
 
     /**
-     * Cache application context
+     * Cache a application context.
      * @param context Activity context
      */
-    UpdateConfig context (Context context) {
+    public UpdateConfig init(Context context) {
         if (this.context == null) {
             this.context = context.getApplicationContext();
+            ActivityManager.get().registerSelf(this.context);
         }
         return this;
     }
@@ -187,11 +179,6 @@ public class UpdateConfig {
         return this;
     }
 
-    public UpdateConfig replaceCB(ActivityReplaceCB replaceCB) {
-        this.replaceCB = replaceCB;
-        return this;
-    }
-
     public Context getContext() {
         if (context == null) {
             throw new RuntimeException("should call UpdateConfig.install first");
@@ -205,17 +192,6 @@ public class UpdateConfig {
         }
         return strategy;
     }
-
-//    /**
-//     *
-//     */
-//    @Deprecated
-//    public String getUrl() {
-//        if (this.entity == null || TextUtils.isEmpty(this.entity.getUrl())) {
-//            throw new IllegalArgumentException("url is null");
-//        }
-//        return this.entity.getUrl();
-//    }
 
     public CheckEntity getCheckEntity () {
         if (this.entity == null || TextUtils.isEmpty(this.entity.getUrl())) {
@@ -290,10 +266,6 @@ public class UpdateConfig {
 
     public UpdateDownloadCB getDownloadCB() {
         return downloadCB;
-    }
-
-    public ActivityReplaceCB getReplaceCB () {
-        return replaceCB;
     }
 }
 

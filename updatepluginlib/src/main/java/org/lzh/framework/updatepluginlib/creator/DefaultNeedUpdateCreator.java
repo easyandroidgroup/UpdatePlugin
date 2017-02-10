@@ -15,7 +15,7 @@ import org.lzh.framework.updatepluginlib.util.SafeDialogOper;
  */
 public class DefaultNeedUpdateCreator extends DialogCreator {
     @Override
-    public Dialog create(final Update update, final Activity activity) {
+    public Dialog create(final Update update, Activity activity) {
 
         if (activity == null || activity.isFinishing()) {
             Log.e("DialogCreator--->","Activity was recycled or finished,dialog shown failed!");
@@ -31,7 +31,7 @@ public class DefaultNeedUpdateCreator extends DialogCreator {
                 .setPositiveButton(R.string.update_immediate, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        sendDownloadRequest(update,activity);
+                        sendDownloadRequest(update);
                         SafeDialogOper.safeDismissDialog((Dialog) dialog);
                     }
                 });

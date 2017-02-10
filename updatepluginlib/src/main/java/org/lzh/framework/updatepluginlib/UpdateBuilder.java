@@ -1,10 +1,7 @@
 package org.lzh.framework.updatepluginlib;
 
-import android.app.Activity;
-
 import org.lzh.framework.updatepluginlib.business.DownloadWorker;
 import org.lzh.framework.updatepluginlib.business.UpdateWorker;
-import org.lzh.framework.updatepluginlib.callback.ActivityReplaceCB;
 import org.lzh.framework.updatepluginlib.callback.UpdateCheckCB;
 import org.lzh.framework.updatepluginlib.callback.UpdateDownloadCB;
 import org.lzh.framework.updatepluginlib.creator.ApkFileCreator;
@@ -40,7 +37,6 @@ public class UpdateBuilder {
     private ApkFileCreator fileCreator;
     private UpdateChecker updateChecker;
     private InstallChecker installChecker;
-    private ActivityReplaceCB replaceCB;
 
     public static UpdateBuilder create() {
         return new UpdateBuilder();
@@ -116,13 +112,8 @@ public class UpdateBuilder {
         return this;
     }
 
-    public UpdateBuilder replaceCB(ActivityReplaceCB replaceCB) {
-        this.replaceCB = replaceCB;
-        return this;
-    }
-
-    public void check(Activity activity) {
-        Updater.getInstance().checkUpdate(activity, this);
+    public void check() {
+        Updater.getInstance().checkUpdate(this);
     }
 
     public UpdateStrategy getStrategy() {
@@ -213,7 +204,4 @@ public class UpdateBuilder {
         return downloadCB;
     }
 
-    public ActivityReplaceCB getReplaceCB () {
-        return replaceCB;
-    }
 }

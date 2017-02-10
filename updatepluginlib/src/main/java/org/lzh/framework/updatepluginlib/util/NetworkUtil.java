@@ -12,18 +12,6 @@ import org.lzh.framework.updatepluginlib.UpdateConfig;
 public class NetworkUtil {
 
     /**
-     * Whether or not to connect to the Internet
-     * @return true if is connected
-     */
-    public static boolean isConnected () {
-        NetworkInfo info = getNetworkInfos();
-        if (info == null || !info.isConnected()) {
-            return false;
-        }
-        return true;
-    }
-
-    /**
      * Determine whether to use wifi
      * @return true if is connected by wifi
      */
@@ -34,7 +22,7 @@ public class NetworkUtil {
                 && info.getType() == ConnectivityManager.TYPE_WIFI;
     }
 
-    static NetworkInfo getNetworkInfos() {
+    private static NetworkInfo getNetworkInfos() {
         Context context = UpdateConfig.getConfig().getContext();
         ConnectivityManager connManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         return connManager.getActiveNetworkInfo();

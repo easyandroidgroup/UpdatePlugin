@@ -8,24 +8,17 @@ import org.lzh.framework.updatepluginlib.Updater;
 import org.lzh.framework.updatepluginlib.business.UpdateWorker;
 import org.lzh.framework.updatepluginlib.creator.DialogCreator;
 import org.lzh.framework.updatepluginlib.model.Update;
-import org.lzh.framework.updatepluginlib.util.Recycler;
-import org.lzh.framework.updatepluginlib.util.Recycler.Recycleable;
+import org.lzh.framework.updatepluginlib.util.ActivityManager;
+import org.lzh.framework.updatepluginlib.util.Recyclable;
 import org.lzh.framework.updatepluginlib.util.SafeDialogOper;
-
-import java.lang.ref.WeakReference;
 
 /**
  * default check callback to receive update event send by {@link org.lzh.framework.updatepluginlib.business.UpdateWorker}
  */
-public class DefaultCheckCB implements UpdateCheckCB,Recycleable {
+public class DefaultCheckCB implements UpdateCheckCB,Recyclable {
 
-    private WeakReference<Activity> actRef = null;
     private UpdateBuilder builder;
     private UpdateCheckCB checkCB;
-
-    public DefaultCheckCB(Activity context) {
-        this.actRef = new WeakReference<>(context);
-    }
 
     public void setBuilder (UpdateBuilder builder) {
         this.builder = builder;
@@ -43,15 +36,11 @@ public class DefaultCheckCB implements UpdateCheckCB,Recycleable {
         }
 
         if (!builder.getStrategy().isShowUpdateDialog(update)) {
-            Updater.getInstance().downUpdate(actRef.get(),update,builder);
+            Updater.getInstance().downUpdate(update,builder);
             return;
         }
 
-        // replace activity when necessary
-        Activity current = actRef.get();
-        if (builder.getReplaceCB() != null) {
-            current = builder.getReplaceCB().replace(current);
-        }
+        Activity current = ActivityManager.get().topActivity();
 
         DialogCreator creator = builder.getUpdateDialogCreator();
         creator.setBuilder(builder);
@@ -59,7 +48,7 @@ public class DefaultCheckCB implements UpdateCheckCB,Recycleable {
         Dialog dialog = creator.create(update,current);
         SafeDialogOper.safeShowDialog(dialog);
 
-        Recycler.release(this);
+        release();
     }
 
     /**
@@ -71,7 +60,7 @@ public class DefaultCheckCB implements UpdateCheckCB,Recycleable {
             checkCB.noUpdate();
         }
 
-        Recycler.release(this);
+        release();
     }
 
     /**
@@ -83,7 +72,7 @@ public class DefaultCheckCB implements UpdateCheckCB,Recycleable {
             checkCB.onCheckError(code,errorMsg);
         }
 
-        Recycler.release(this);
+        release();
     }
 
     /**
@@ -95,7 +84,7 @@ public class DefaultCheckCB implements UpdateCheckCB,Recycleable {
             checkCB.onUserCancel();
         }
 
-        Recycler.release(this);
+        release();
     }
 
     @Override
@@ -104,12 +93,11 @@ public class DefaultCheckCB implements UpdateCheckCB,Recycleable {
             checkCB.onCheckIgnore(update);
         }
 
-        Recycler.release(this);
+        release();
     }
 
     @Override
     public void release() {
-        this.actRef = null;
         this.builder = null;
         this.checkCB = null;
     }

@@ -3,8 +3,7 @@ package org.lzh.framework.updatepluginlib.business;
 import org.lzh.framework.updatepluginlib.callback.UpdateDownloadCB;
 import org.lzh.framework.updatepluginlib.model.Update;
 import org.lzh.framework.updatepluginlib.util.HandlerUtil;
-import org.lzh.framework.updatepluginlib.util.Recycler;
-import org.lzh.framework.updatepluginlib.util.Recycler.Recycleable;
+import org.lzh.framework.updatepluginlib.util.Recyclable;
 
 import java.io.File;
 
@@ -12,7 +11,7 @@ import java.io.File;
  * The task to download new version apk
  * @author lzh
  */
-public abstract class DownloadWorker extends UnifiedWorker implements Runnable,Recycleable{
+public abstract class DownloadWorker extends UnifiedWorker implements Runnable,Recyclable {
 
     /**
      * The url set by {@link Update#getUpdateUrl()}
@@ -93,7 +92,7 @@ public abstract class DownloadWorker extends UnifiedWorker implements Runnable,R
             @Override
             public void run() {
                 downloadCB.onUpdateComplete(file);
-                Recycler.release(DownloadWorker.this);
+                release();
             }
         });
     }
@@ -105,7 +104,7 @@ public abstract class DownloadWorker extends UnifiedWorker implements Runnable,R
             @Override
             public void run() {
                 downloadCB.onUpdateError(code,errorMsg);
-                Recycler.release(DownloadWorker.this);
+                release();
             }
         });
     }

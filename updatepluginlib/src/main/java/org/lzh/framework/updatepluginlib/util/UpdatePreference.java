@@ -1,12 +1,9 @@
 package org.lzh.framework.updatepluginlib.util;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.text.TextUtils;
 
 import org.lzh.framework.updatepluginlib.UpdateConfig;
-import org.lzh.framework.updatepluginlib.model.Update;
 
 import java.util.HashSet;
 import java.util.Set;

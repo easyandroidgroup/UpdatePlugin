@@ -10,22 +10,17 @@ import org.lzh.framework.updatepluginlib.R;
 import org.lzh.framework.updatepluginlib.model.Update;
 import org.lzh.framework.updatepluginlib.util.SafeDialogOper;
 
-import java.lang.ref.WeakReference;
-
 /**
  * @author Administrator
  */
 public class DefaultNeedInstallCreator extends InstallCreator {
 
-    private WeakReference<Activity> activityRef;
-
     @Override
-    public Dialog create(final Update update, final String path, final Activity activity) {
+    public Dialog create(final Update update, final String path, Activity activity) {
         if (activity == null || activity.isFinishing()) {
             Log.e("DownDialogCreator--->","show install dialog failed:activity was recycled or finished");
             return null;
         }
-        activityRef = new WeakReference<>(activity);
         String updateContent = activity.getText(R.string.update_version_name)
                 + ": " + update.getVersionName() + "\n\n\n"
                 + update.getUpdateContent();

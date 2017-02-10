@@ -6,18 +6,12 @@ import org.lzh.framework.updatepluginlib.model.Update;
 import org.lzh.framework.updatepluginlib.model.UpdateChecker;
 import org.lzh.framework.updatepluginlib.model.UpdateParser;
 import org.lzh.framework.updatepluginlib.util.HandlerUtil;
-import org.lzh.framework.updatepluginlib.util.Recycler;
-import org.lzh.framework.updatepluginlib.util.Recycler.Recycleable;
+import org.lzh.framework.updatepluginlib.util.Recyclable;
 
 /**
  * The network task to check out whether or not a new version of apk is exist
  */
-public abstract class UpdateWorker extends UnifiedWorker implements Runnable,Recycleable{
-
-    /**
-     * To see {@link org.lzh.framework.updatepluginlib.UpdateConfig#url}
-     */
-//    protected String url;
+public abstract class UpdateWorker extends UnifiedWorker implements Runnable,Recyclable {
 
     protected CheckEntity entity;
     /**
@@ -94,7 +88,7 @@ public abstract class UpdateWorker extends UnifiedWorker implements Runnable,Rec
             @Override
             public void run() {
                 checkCB.hasUpdate(update);
-                Recycler.release(this);
+                release();
             }
         });
     }
@@ -105,7 +99,7 @@ public abstract class UpdateWorker extends UnifiedWorker implements Runnable,Rec
             @Override
             public void run() {
                 checkCB.noUpdate();
-                Recycler.release(this);
+                release();
             }
         });
     }
@@ -116,7 +110,7 @@ public abstract class UpdateWorker extends UnifiedWorker implements Runnable,Rec
             @Override
             public void run() {
                 checkCB.onCheckError(code,errorMsg);
-                Recycler.release(this);
+                release();
             }
         });
     }

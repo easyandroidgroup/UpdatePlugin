@@ -23,7 +23,7 @@ public class UpdateExecutor implements IUpdateExecutor{
     }
 
     @Override
-    public synchronized void check(final UpdateWorker worker) {
+    public synchronized void check(UpdateWorker worker) {
         worker.setRunning(true);
         pool.execute(worker);
     }
@@ -33,6 +33,5 @@ public class UpdateExecutor implements IUpdateExecutor{
         worker.setRunning(true);
         pool.execute(worker);
     }
-
 
 }

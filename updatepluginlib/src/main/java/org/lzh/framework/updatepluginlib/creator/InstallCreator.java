@@ -3,20 +3,18 @@ package org.lzh.framework.updatepluginlib.creator;
 import android.app.Activity;
 import android.app.Dialog;
 
-import org.lzh.framework.updatepluginlib.UpdateBuilder;
 import org.lzh.framework.updatepluginlib.UpdateConfig;
 import org.lzh.framework.updatepluginlib.callback.UpdateCheckCB;
 import org.lzh.framework.updatepluginlib.model.Update;
 import org.lzh.framework.updatepluginlib.util.InstallUtil;
-import org.lzh.framework.updatepluginlib.util.Recycler;
-import org.lzh.framework.updatepluginlib.util.Recycler.Recycleable;
+import org.lzh.framework.updatepluginlib.util.Recyclable;
 import org.lzh.framework.updatepluginlib.util.UpdatePreference;
 
 /**
  *
  * @author lzh
  */
-public abstract class InstallCreator implements Recycleable{
+public abstract class InstallCreator implements Recyclable {
 
     private UpdateCheckCB checkCB;
     protected InstallChecker installChecker;
@@ -46,7 +44,7 @@ public abstract class InstallCreator implements Recycleable{
         } else {
             checkCB.onCheckError(-1,String.format("apk %s checked failed",filename));
         }
-        Recycler.release(this);
+        release();
     }
 
     /**
@@ -57,7 +55,7 @@ public abstract class InstallCreator implements Recycleable{
             this.checkCB.onUserCancel();
         }
 
-        Recycler.release(this);
+        release();
     }
 
     public void sendCheckIgnore(Update update) {
@@ -65,7 +63,7 @@ public abstract class InstallCreator implements Recycleable{
             this.checkCB.onCheckIgnore(update);
         }
         UpdatePreference.saveIgnoreVersion(update.getVersionCode());
-        Recycler.release(this);
+        release();
     }
 
     @Override

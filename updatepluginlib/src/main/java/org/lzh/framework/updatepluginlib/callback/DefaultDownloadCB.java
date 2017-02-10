@@ -8,20 +8,18 @@ import org.lzh.framework.updatepluginlib.business.DownloadWorker;
 import org.lzh.framework.updatepluginlib.creator.InstallCreator;
 import org.lzh.framework.updatepluginlib.model.Update;
 import org.lzh.framework.updatepluginlib.strategy.UpdateStrategy;
-import org.lzh.framework.updatepluginlib.util.Recycler;
-import org.lzh.framework.updatepluginlib.util.Recycler.Recycleable;
+import org.lzh.framework.updatepluginlib.util.ActivityManager;
+import org.lzh.framework.updatepluginlib.util.Recyclable;
 import org.lzh.framework.updatepluginlib.util.SafeDialogOper;
 
 import java.io.File;
-import java.lang.ref.WeakReference;
 
 /**
  * The default download callback to receive update event send by {@link org.lzh.framework.updatepluginlib.business.DownloadWorker}
  * @author lzh
  */
-public class DefaultDownloadCB implements UpdateDownloadCB ,Recycleable{
+public class DefaultDownloadCB implements UpdateDownloadCB ,Recyclable {
 
-    private WeakReference<Activity> actRef = null;
     private UpdateBuilder builder;
     /**
      * set by {@link UpdateBuilder#downloadCB(UpdateDownloadCB)} or
@@ -34,10 +32,6 @@ public class DefaultDownloadCB implements UpdateDownloadCB ,Recycleable{
      *     to update UI within this callback
      */
     private UpdateDownloadCB innerCB;
-
-    public DefaultDownloadCB(Activity activity) {
-        actRef = new WeakReference<>(activity);
-    }
 
     public void setBuilder(UpdateBuilder builder) {
         this.builder = builder;
@@ -57,10 +51,6 @@ public class DefaultDownloadCB implements UpdateDownloadCB ,Recycleable{
      */
     @Override
     public void onUpdateStart() {
-        // replace activity when necessary
-        if (builder.getReplaceCB() != null) {
-            actRef = new WeakReference<>(builder.getReplaceCB().replace(actRef.get()));
-        }
         if (downloadCB != null) {
             downloadCB.onUpdateStart();
         }
@@ -70,10 +60,13 @@ public class DefaultDownloadCB implements UpdateDownloadCB ,Recycleable{
         }
     }
 
-    public UpdateDownloadCB getInnerCB() {
-        if (innerCB == null && builder.getStrategy().isShowDownloadDialog()) {
-            innerCB = builder.getDownloadDialogCreator().create(update,actRef.get());
+    private UpdateDownloadCB getInnerCB() {
+        if (innerCB != null || !builder.getStrategy().isShowDownloadDialog()) {
+            return innerCB;
         }
+
+        Activity current = ActivityManager.get().topActivity();
+        innerCB = builder.getDownloadDialogCreator().create(update,current);
         return innerCB;
     }
 
@@ -92,10 +85,7 @@ public class DefaultDownloadCB implements UpdateDownloadCB ,Recycleable{
             innerCB.onUpdateComplete(file);
         }
 
-        Activity current = actRef.get();
-        if (builder.getReplaceCB() != null) {
-            current = builder.getReplaceCB().replace(current);
-        }
+        Activity current = ActivityManager.get().topActivity();
 
         InstallCreator creator = builder.getInstallDialogCreator();
         creator.setCheckCB(builder.getCheckCB());
@@ -108,7 +98,7 @@ public class DefaultDownloadCB implements UpdateDownloadCB ,Recycleable{
             SafeDialogOper.safeShowDialog(dialog);
         }
 
-        Recycler.release(this);
+        release();
     }
 
     /**
@@ -138,12 +128,11 @@ public class DefaultDownloadCB implements UpdateDownloadCB ,Recycleable{
             innerCB.onUpdateError(code,errorMsg);
         }
 
-        Recycler.release(this);
+        release();
     }
 
     @Override
     public void release() {
-        this.actRef = null;
         this.builder = null;
         this.innerCB = null;
         this.downloadCB = null;

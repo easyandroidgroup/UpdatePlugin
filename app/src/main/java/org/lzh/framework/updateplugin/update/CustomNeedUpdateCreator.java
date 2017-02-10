@@ -31,7 +31,7 @@ public class CustomNeedUpdateCreator extends DialogCreator {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         // 发送下载请求
-                        sendDownloadRequest(update,context);
+                        sendDownloadRequest(update);
                         SafeDialogOper.safeDismissDialog((Dialog) dialog);
                     }
                 });
