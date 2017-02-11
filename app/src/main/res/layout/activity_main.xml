@@ -46,4 +46,10 @@
         android:layout_height="wrap_content"
         android:text="@string/show_update_dialog_in_another_activity" />
 
+    <Button
+        android:id="@+id/upgrade_in_back_thread"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/upgrade_in_back_thread" />
+
 </LinearLayout>

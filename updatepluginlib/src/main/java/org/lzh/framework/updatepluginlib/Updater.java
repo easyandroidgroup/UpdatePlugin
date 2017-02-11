@@ -10,9 +10,6 @@ import org.lzh.framework.updatepluginlib.callback.DefaultCheckCB;
 import org.lzh.framework.updatepluginlib.callback.DefaultDownloadCB;
 import org.lzh.framework.updatepluginlib.model.Update;
 
-/**
- * @author lzh
- */
 public class Updater {
     private static Updater updater;
     private IUpdateExecutor executor;
@@ -35,6 +32,7 @@ public class Updater {
         // define a default callback to receive update event send by update task
         DefaultCheckCB checkCB = new DefaultCheckCB();
         checkCB.setBuilder(builder);
+        checkCB.onCheckStart();
 
         UpdateWorker checkWorker = builder.getCheckWorker();
         if (checkWorker.isRunning()) {

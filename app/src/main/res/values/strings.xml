@@ -9,4 +9,5 @@
     <string name="custom_strategy">使用自定义更新策略</string>
     <string name="custom_file_creator">使用自定义下载文件创建器指定下载文件名</string>
     <string name="show_update_dialog_in_another_activity">跳转到下一页并显示更新</string>
+    <string name="upgrade_in_back_thread">在子线程中启动更新检查</string>
 </resources>

@@ -8,6 +8,7 @@ import org.lzh.framework.updatepluginlib.callback.UpdateCheckCB;
 import org.lzh.framework.updatepluginlib.callback.UpdateDownloadCB;
 import org.lzh.framework.updatepluginlib.model.Update;
 import org.lzh.framework.updatepluginlib.model.UpdateParser;
+import org.lzh.framework.updatepluginlib.util.HandlerUtil;
 
 import java.io.File;
 
@@ -70,6 +71,18 @@ public class MyApplication extends Application {
                     @Override
                     public void onCheckIgnore(Update update) {
                         Toast.makeText(MyApplication.this, "用户忽略此版本更新", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onCheckStart() {
+                        // 此方法的回调所处线程异于其他回调。其他回调所处线程为UI线程。
+                        // 此方法所处线程为你启动更新任务是所在线程
+                        HandlerUtil.getMainHandler().post(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(MyApplication.this, "启动更新任务", Toast.LENGTH_SHORT).show();
+                            }
+                        });
                     }
 
                     @Override

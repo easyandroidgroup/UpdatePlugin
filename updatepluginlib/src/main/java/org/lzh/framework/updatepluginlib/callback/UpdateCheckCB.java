@@ -8,6 +8,12 @@ import org.lzh.framework.updatepluginlib.model.Update;
 public interface UpdateCheckCB {
 
     /**
+     * When you start a upgrade task.this method should be invoked.
+     * This method runs on a thread which you launch the update task.
+     */
+    void onCheckStart ();
+
+    /**
      * There are a new version of APK on network
      * @param update Update entity
      */

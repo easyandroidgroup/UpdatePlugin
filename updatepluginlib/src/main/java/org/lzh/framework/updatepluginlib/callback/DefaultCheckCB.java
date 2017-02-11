@@ -25,6 +25,13 @@ public class DefaultCheckCB implements UpdateCheckCB,Recyclable {
         this.checkCB = builder.getCheckCB();
     }
 
+    @Override
+    public void onCheckStart() {
+        if (checkCB != null) {
+            checkCB.onCheckStart();
+        }
+    }
+
     /**
      * Receive and pass has_update event send by {@link org.lzh.framework.updatepluginlib.business.UpdateWorker#sendHasUpdate(Update)}<br>
      * Create update dialog if should be shown according to {@link org.lzh.framework.updatepluginlib.strategy.UpdateStrategy#isShowUpdateDialog(Update)}<br>

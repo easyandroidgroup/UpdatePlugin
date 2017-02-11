@@ -34,6 +34,7 @@ public class SampleActivity extends Activity implements View.OnClickListener{
         findViewById(R.id.custom_file_creator).setOnClickListener(this);
         findViewById(R.id.custom_strategy).setOnClickListener(this);
         findViewById(R.id.custom_activity_replace).setOnClickListener(this);
+        findViewById(R.id.upgrade_in_back_thread).setOnClickListener(this);
 
         SampleActivityPermissionsDispatcher.requestPermissionWithCheck(this);
     }
@@ -121,6 +122,18 @@ public class SampleActivity extends Activity implements View.OnClickListener{
             case R.id.custom_activity_replace:
                 useCustomReplace();
                 break;
+            case R.id.upgrade_in_back_thread:
+                upgradeOnBackThread();
+                break;
         }
+    }
+
+    private void upgradeOnBackThread() {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                UpdateBuilder.create().check();
+            }
+        }).start();
     }
 }
