@@ -2,9 +2,6 @@ package org.lzh.framework.updatepluginlib.strategy;
 
 import org.lzh.framework.updatepluginlib.model.Update;
 
-/**
- * @author lzh
- */
 public interface UpdateStrategy {
 
     /**

@@ -28,14 +28,14 @@ public class InstallUtil {
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.setAction(Intent.ACTION_VIEW);
         String type = "application/vnd.android.package-archive";
-        File pluginfile = new File(filename);
+        File pluginFile = new File(filename);
         Uri uri;
         if (Build.VERSION.SDK_INT >= 24) {
             // Adaptive with api version 24+
-            uri = UpdateInstallProvider.getUriByFile(pluginfile,getAuthor(context));
+            uri = UpdateInstallProvider.getUriByFile(pluginFile,getAuthor(context));
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         } else {
-            uri = Uri.fromFile(pluginfile);
+            uri = Uri.fromFile(pluginFile);
         }
         intent.setDataAndType(uri, type);
         if (context instanceof Activity) {

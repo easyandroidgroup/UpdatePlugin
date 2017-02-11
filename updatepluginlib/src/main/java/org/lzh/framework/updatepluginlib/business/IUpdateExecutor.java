@@ -1,7 +1,5 @@
 package org.lzh.framework.updatepluginlib.business;
 
-/**
- */
 public interface IUpdateExecutor {
 
     /**

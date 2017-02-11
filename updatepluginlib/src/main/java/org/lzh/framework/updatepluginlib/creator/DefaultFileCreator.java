@@ -6,9 +6,6 @@ import org.lzh.framework.updatepluginlib.UpdateConfig;
 
 import java.io.File;
 
-/**
- * @author Administrator
- */
 public class DefaultFileCreator implements ApkFileCreator {
     @Override
     public File create(String versionName) {

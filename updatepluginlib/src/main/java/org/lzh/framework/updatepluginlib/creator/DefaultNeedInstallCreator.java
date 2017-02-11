@@ -10,9 +10,6 @@ import org.lzh.framework.updatepluginlib.R;
 import org.lzh.framework.updatepluginlib.model.Update;
 import org.lzh.framework.updatepluginlib.util.SafeDialogOper;
 
-/**
- * @author Administrator
- */
 public class DefaultNeedInstallCreator extends InstallCreator {
 
     @Override

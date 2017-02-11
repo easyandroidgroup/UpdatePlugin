@@ -10,9 +10,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Map;
 
-/**
- * @author Administrator
- */
 public class DefaultUpdateWorker extends UpdateWorker {
     @Override
     protected String check(CheckEntity entity) throws Exception {

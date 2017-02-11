@@ -1,8 +1,5 @@
 package org.lzh.framework.updatepluginlib.business;
 
-/**
- * @author Administrator
- */
 public class HttpException extends RuntimeException {
 
     private int code;

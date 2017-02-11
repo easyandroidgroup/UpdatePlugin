@@ -10,10 +10,6 @@ import org.lzh.framework.updatepluginlib.util.InstallUtil;
 import org.lzh.framework.updatepluginlib.util.Recyclable;
 import org.lzh.framework.updatepluginlib.util.UpdatePreference;
 
-/**
- *
- * @author lzh
- */
 public abstract class InstallCreator implements Recyclable {
 
     private UpdateCheckCB checkCB;

@@ -1,7 +1,5 @@
 package org.lzh.framework.updatepluginlib.model;
 
-/**
- */
 public class Update {
 
     /**

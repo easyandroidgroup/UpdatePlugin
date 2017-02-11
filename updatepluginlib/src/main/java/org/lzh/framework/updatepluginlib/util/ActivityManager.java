@@ -13,7 +13,6 @@ import java.util.LinkedList;
  * A simple Activity stack tool.offer a top activity while should show a dialog
  * Created by lzh on 2017/2/10.
  */
-@TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
 public class ActivityManager implements Application.ActivityLifecycleCallbacks {
     private static ActivityManager manager = new ActivityManager();
     public static ActivityManager get () {

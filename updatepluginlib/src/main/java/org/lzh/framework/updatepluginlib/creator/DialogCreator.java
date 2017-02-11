@@ -10,9 +10,6 @@ import org.lzh.framework.updatepluginlib.model.Update;
 import org.lzh.framework.updatepluginlib.util.Recyclable;
 import org.lzh.framework.updatepluginlib.util.UpdatePreference;
 
-/**
- *
- */
 public abstract class DialogCreator implements Recyclable {
     private UpdateBuilder builder;
     private UpdateCheckCB checkCB;

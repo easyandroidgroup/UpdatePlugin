@@ -51,7 +51,7 @@ public class Updater {
     }
 
     /**
-     * Request to download apk.
+     * Request to download the app.
      * @param update update instance,should not be null;
      * @param builder update builder that contained all config;
      */

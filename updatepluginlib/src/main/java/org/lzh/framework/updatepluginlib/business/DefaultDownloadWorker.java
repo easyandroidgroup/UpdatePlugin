@@ -11,9 +11,6 @@ import java.io.RandomAccessFile;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-/**
- * @author Administrator
- */
 public class DefaultDownloadWorker extends DownloadWorker {
     private HttpURLConnection urlConn;
     @Override

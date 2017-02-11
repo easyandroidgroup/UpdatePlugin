@@ -12,6 +12,10 @@ import android.view.ContextThemeWrapper;
  */
 public class SafeDialogOper {
 
+    /**
+     * To show a dialog be safety
+     * @param dialog The dialog instance to be shown
+     */
     public static void safeShowDialog(Dialog dialog) {
         if (dialog == null || dialog.isShowing()) {
             return;
@@ -42,6 +46,10 @@ public class SafeDialogOper {
         return bindAct;
     }
 
+    /**
+     * to dismiss a dialog safety
+     * @param dialog The dialog to be hide
+     */
     public static void safeDismissDialog(Dialog dialog) {
         if (dialog == null || !dialog.isShowing()) {
             return;

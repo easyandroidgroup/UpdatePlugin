@@ -10,9 +10,6 @@ import org.lzh.framework.updatepluginlib.util.SafeDialogOper;
 
 import java.io.File;
 
-/**
- * @author Administrator
- */
 public class DefaultNeedDownloadCreator implements DownloadCreator {
     @Override
     public UpdateDownloadCB create(Update update,Activity activity) {
