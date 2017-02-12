@@ -1,6 +1,5 @@
 package org.lzh.framework.updateplugin;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,13 +13,8 @@ import org.lzh.framework.updateplugin.update.CustomNeedInstallCreator;
 import org.lzh.framework.updateplugin.update.CustomNeedUpdateCreator;
 import org.lzh.framework.updateplugin.update.CustomUpdateChecker;
 import org.lzh.framework.updateplugin.update.CustomUpdateWorker;
-import org.lzh.framework.updateplugin.update.NotificationDownloadCreator;
 import org.lzh.framework.updatepluginlib.UpdateBuilder;
 
-import permissions.dispatcher.NeedsPermission;
-import permissions.dispatcher.RuntimePermissions;
-
-@RuntimePermissions
 public class SampleActivity extends Activity implements View.OnClickListener{
 
     @Override
@@ -36,19 +30,11 @@ public class SampleActivity extends Activity implements View.OnClickListener{
         findViewById(R.id.custom_activity_replace).setOnClickListener(this);
         findViewById(R.id.upgrade_in_back_thread).setOnClickListener(this);
 
-        SampleActivityPermissionsDispatcher.requestPermissionWithCheck(this);
-    }
-
-    @NeedsPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-    void requestPermission() {
-
     }
 
     // 使用默认配置进行更新
     void useDefaultUpdate() {
-        UpdateBuilder.create()
-                .downloadDialogCreator(new NotificationDownloadCreator())
-                .check();
+        UpdateBuilder.create().check();
     }
 
     // 使用自定义网络任务进行更新。
