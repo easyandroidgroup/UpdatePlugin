@@ -10,7 +10,7 @@ import org.lzh.framework.updatepluginlib.callback.DefaultCheckCB;
 import org.lzh.framework.updatepluginlib.callback.DefaultDownloadCB;
 import org.lzh.framework.updatepluginlib.model.Update;
 
-public class Updater {
+public final class Updater {
     private static Updater updater;
     private IUpdateExecutor executor;
 
@@ -40,11 +40,8 @@ public class Updater {
             checkCB.onCheckError(-1,"Already have a update task running");
             return;
         }
-        checkWorker.setEntity(builder.getCheckEntity());
-        checkWorker.setParser(builder.getJsonParser());
-        checkWorker.setChecker(builder.getUpdateChecker());
+        checkWorker.setBuilder(builder);
         checkWorker.setCheckCB(checkCB);
-
         executor.check(checkWorker);
     }
 
@@ -58,7 +55,6 @@ public class Updater {
         DefaultDownloadCB downloadCB = new DefaultDownloadCB();
         downloadCB.setBuilder(builder);
         downloadCB.setUpdate(update);
-        downloadCB.setDownloadCB(builder.getDownloadCB());
 
         DownloadWorker downloadWorker = builder.getDownloadWorker();
         if (downloadWorker.isRunning()) {
@@ -67,7 +63,7 @@ public class Updater {
             return;
         }
 
-        downloadWorker.setUrl(update.getUpdateUrl());
+        downloadWorker.setUpdate(update);
         downloadWorker.setDownloadCB(downloadCB);
         downloadWorker.setCacheFileName(builder.getFileCreator().create(update.getVersionName()));
 

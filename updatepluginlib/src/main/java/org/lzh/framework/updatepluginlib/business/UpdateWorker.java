@@ -1,5 +1,6 @@
 package org.lzh.framework.updatepluginlib.business;
 
+import org.lzh.framework.updatepluginlib.UpdateBuilder;
 import org.lzh.framework.updatepluginlib.callback.UpdateCheckCB;
 import org.lzh.framework.updatepluginlib.model.CheckEntity;
 import org.lzh.framework.updatepluginlib.model.Update;
@@ -34,20 +35,14 @@ public abstract class UpdateWorker extends UnifiedWorker implements Runnable,Rec
      */
     protected UpdateParser parser;
 
-    public void setEntity(CheckEntity entity) {
-        this.entity = entity;
+    public void setBuilder (UpdateBuilder builder) {
+        this.entity = builder.getCheckEntity();
+        this.checker = builder.getUpdateChecker();
+        this.parser = builder.getJsonParser();
     }
 
-    public void setCheckCB(UpdateCheckCB checkCB) {
+    public void setCheckCB (UpdateCheckCB checkCB) {
         this.checkCB = checkCB;
-    }
-
-    public void setParser(UpdateParser parser) {
-        this.parser = parser;
-    }
-
-    public void setChecker(UpdateChecker checker) {
-        this.checker = checker;
     }
 
     @Override
@@ -120,5 +115,6 @@ public abstract class UpdateWorker extends UnifiedWorker implements Runnable,Rec
         this.checkCB = null;
         this.checker = null;
         this.parser = null;
+        this.entity = null;
     }
 }

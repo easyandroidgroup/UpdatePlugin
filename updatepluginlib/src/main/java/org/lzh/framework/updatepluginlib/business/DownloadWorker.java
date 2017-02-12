@@ -1,5 +1,6 @@
 package org.lzh.framework.updatepluginlib.business;
 
+import org.lzh.framework.updatepluginlib.UpdateBuilder;
 import org.lzh.framework.updatepluginlib.callback.UpdateDownloadCB;
 import org.lzh.framework.updatepluginlib.model.Update;
 import org.lzh.framework.updatepluginlib.util.HandlerUtil;
@@ -27,12 +28,9 @@ public abstract class DownloadWorker extends UnifiedWorker implements Runnable,R
     protected File cacheFileName;
     protected Update update;
 
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
     public void setUpdate(Update update) {
         this.update = update;
+        this.url = update.getUpdateUrl();
     }
 
     public void setCacheFileName(File cacheFileName) {

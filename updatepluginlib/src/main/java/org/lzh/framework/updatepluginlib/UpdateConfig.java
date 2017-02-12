@@ -181,7 +181,7 @@ public class UpdateConfig {
 
     public Context getContext() {
         if (context == null) {
-            throw new RuntimeException("should call UpdateConfig.install first");
+            throw new RuntimeException("should call UpdateConfig.init(context) first");
         }
         return context;
     }

@@ -3,12 +3,12 @@ package org.lzh.framework.updatepluginlib.business;
 public interface IUpdateExecutor {
 
     /**
-     * check if is new version exist;
+     * Launch a <b>Check</b> task which checks if is new version exist;
      */
     void check(UpdateWorker worker);
 
     /**
-     * request download new version apk
+     * Launch a <b>Download</b> task that requests download new version apk
      * @param worker The DownloadWorker task
      */
     void download(DownloadWorker worker);

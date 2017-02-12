@@ -40,7 +40,6 @@ public class UpdatePreference {
 
     public static Set<String> getIgnoreVersions () {
         Set<String> ignoreVersions = getUpdatePref().getStringSet("ignoreVersions", new HashSet<String>());
-        System.out.println("ignoreVersions = " + ignoreVersions);
         return ignoreVersions;
     }
 

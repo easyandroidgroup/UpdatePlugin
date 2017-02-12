@@ -18,7 +18,7 @@ import java.io.File;
  * The default download callback to receive update event send by {@link org.lzh.framework.updatepluginlib.business.DownloadWorker}
  * @author lzh
  */
-public class DefaultDownloadCB implements UpdateDownloadCB ,Recyclable {
+public final class DefaultDownloadCB implements UpdateDownloadCB ,Recyclable {
 
     private UpdateBuilder builder;
     /**
@@ -40,10 +40,6 @@ public class DefaultDownloadCB implements UpdateDownloadCB ,Recyclable {
 
     public void setUpdate(Update update) {
         this.update = update;
-    }
-
-    public void setDownloadCB(UpdateDownloadCB downloadCB) {
-        this.downloadCB = downloadCB;
     }
 
     /**

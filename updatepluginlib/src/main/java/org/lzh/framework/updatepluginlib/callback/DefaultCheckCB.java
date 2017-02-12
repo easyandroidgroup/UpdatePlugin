@@ -15,7 +15,7 @@ import org.lzh.framework.updatepluginlib.util.SafeDialogOper;
 /**
  * default check callback to receive update event send by {@link org.lzh.framework.updatepluginlib.business.UpdateWorker}
  */
-public class DefaultCheckCB implements UpdateCheckCB,Recyclable {
+public final class DefaultCheckCB implements UpdateCheckCB,Recyclable {
 
     private UpdateBuilder builder;
     private UpdateCheckCB checkCB;
