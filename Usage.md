@@ -13,6 +13,13 @@
 
 ```
 checkCB(new UpdateCheckCB() {
+
+    @Override
+    public void onCheckStart() {
+        // 此方法的回调所处线程异于其他回调。其他回调所处线程为UI线程。
+        // 此方法所处线程为你启动更新任务是所在线程
+    }
+
     @Override
     public void hasUpdate(Update update) {
         // 有新版本APK更新的回调
