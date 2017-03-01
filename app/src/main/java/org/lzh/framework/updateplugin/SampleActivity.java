@@ -17,18 +17,12 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class SampleActivity extends Activity {
-    @BindView(R.id.start_update)
-    Button startUpdate;
-    @BindView(R.id.check_worker)
-    CheckedView updateWorker;
-    @BindView(R.id.file_creator)
-    CheckedView fileCreator;
-    @BindView(R.id.update_strategy)
-    CheckedView updateStrategy;
-    @BindView(R.id.download_notice)
-    CheckedView downloadNotice;
-    @BindView(R.id.download_worker)
-    CheckedView downloadWorker;
+    @BindView(R.id.start_update) Button startUpdate;
+    @BindView(R.id.check_worker) CheckedView updateWorker;
+    @BindView(R.id.file_creator) CheckedView fileCreator;
+    @BindView(R.id.update_strategy) CheckedView updateStrategy;
+    @BindView(R.id.download_notice) CheckedView downloadNotice;
+    @BindView(R.id.download_worker) CheckedView downloadWorker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
