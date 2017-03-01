@@ -13,14 +13,12 @@ public abstract class BaseActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        ActivityStack.pull(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_base);
     }
 
     @Override
     protected void onDestroy() {
-        ActivityStack.pop();
         super.onDestroy();
     }
 }

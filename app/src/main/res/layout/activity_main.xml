@@ -2,54 +2,48 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
-    <Button
-        android:id="@+id/default_update"
+    <org.lzh.framework.updateplugin.widget.CheckedView
+        android:id="@+id/check_worker"
+        app:title="选择检查更新网络任务"
+        app:subtitle="使用okhttp作为检查网络任务"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/default_update" />
+        android:layout_height="wrap_content"/>
+
+    <org.lzh.framework.updateplugin.widget.CheckedView
+        android:id="@+id/file_creator"
+        app:title="选择更新时的apk的缓存文件创建器"
+        app:subtitle="使用定制的文件路径进行下载"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <org.lzh.framework.updateplugin.widget.CheckedView
+        android:id="@+id/update_strategy"
+        app:title="选择使用的更新策略"
+        app:subtitle="使用所有通知全部显示的策略"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <org.lzh.framework.updateplugin.widget.CheckedView
+        android:id="@+id/download_notice"
+        app:title="选择下载进度条显示方式"
+        app:subtitle="通知栏进度条提示"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <org.lzh.framework.updateplugin.widget.CheckedView
+        android:id="@+id/download_worker"
+        app:title="选择下载apk网络任务"
+        app:subtitle="使用okhttp作为下载任务"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
     <Button
-        android:id="@+id/custom_task"
+        android:id="@+id/start_update"
+        android:text="@string/start_update"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/custom_task" />
-
-    <Button
-        android:id="@+id/custom_checker"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/custom_checker" />
-
-    <Button
-        android:id="@+id/custom_dialog"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/custom_dialog" />
-
-    <Button
-        android:id="@+id/custom_strategy"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/custom_strategy" />
-
-    <Button
-        android:id="@+id/custom_file_creator"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/custom_file_creator" />
-
-    <Button
-        android:id="@+id/custom_activity_replace"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/show_update_dialog_in_another_activity" />
-
-    <Button
-        android:id="@+id/upgrade_in_back_thread"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/upgrade_in_back_thread" />
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

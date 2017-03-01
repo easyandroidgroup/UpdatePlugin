@@ -1,7 +1,9 @@
 package org.lzh.framework.updateplugin.update;
 
+import android.content.Context;
 import android.os.Environment;
 
+import org.lzh.framework.updatepluginlib.UpdateConfig;
 import org.lzh.framework.updatepluginlib.creator.ApkFileCreator;
 
 import java.io.File;
@@ -14,8 +16,17 @@ public class CustomApkFileCreator implements ApkFileCreator {
     @Override
     public File create(String versionName) {
         // 根据传入的versionName创建下载时使用的文件名
-        File path = new File(Environment.getExternalStorageDirectory().getPath() + "/updatePlugin");
-        boolean mkdirs = path.mkdirs();
-        return new File(path,"ver_" + versionName);
+        File path = new File(getCacheDir().getPath() + "/updatePlugin");
+        path.mkdirs();
+        return new File(path,"UpdatePlugin_" + versionName);
+    }
+
+    private File getCacheDir() {
+        Context context = UpdateConfig.getConfig().getContext();
+        File cacheDir = context.getExternalCacheDir();
+        if (cacheDir == null) {
+            cacheDir = context.getCacheDir();
+        }
+        return cacheDir;
     }
 }

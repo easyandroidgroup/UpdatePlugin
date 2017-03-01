@@ -1,125 +1,70 @@
 package org.lzh.framework.updateplugin;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
+import android.widget.Button;
 
 import org.lzh.framework.updateplugin.update.AllDialogShowStrategy;
 import org.lzh.framework.updateplugin.update.CustomApkFileCreator;
-import org.lzh.framework.updateplugin.update.CustomDownloadWorker;
-import org.lzh.framework.updateplugin.update.CustomNeedDownloadCreator;
-import org.lzh.framework.updateplugin.update.CustomNeedInstallCreator;
-import org.lzh.framework.updateplugin.update.CustomNeedUpdateCreator;
-import org.lzh.framework.updateplugin.update.CustomUpdateChecker;
-import org.lzh.framework.updateplugin.update.CustomUpdateWorker;
+import org.lzh.framework.updateplugin.update.NotificationDownloadCreator;
+import org.lzh.framework.updateplugin.update.OkhttpCheckWorker;
+import org.lzh.framework.updateplugin.update.OkhttpDownloadWorker;
+import org.lzh.framework.updateplugin.widget.CheckedView;
 import org.lzh.framework.updatepluginlib.UpdateBuilder;
 
-public class SampleActivity extends Activity implements View.OnClickListener{
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
+public class SampleActivity extends Activity {
+    @BindView(R.id.start_update)
+    Button startUpdate;
+    @BindView(R.id.check_worker)
+    CheckedView updateWorker;
+    @BindView(R.id.file_creator)
+    CheckedView fileCreator;
+    @BindView(R.id.update_strategy)
+    CheckedView updateStrategy;
+    @BindView(R.id.download_notice)
+    CheckedView downloadNotice;
+    @BindView(R.id.download_worker)
+    CheckedView downloadWorker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        findViewById(R.id.default_update).setOnClickListener(this);
-        findViewById(R.id.custom_task).setOnClickListener(this);
-        findViewById(R.id.custom_checker).setOnClickListener(this);
-        findViewById(R.id.custom_dialog).setOnClickListener(this);
-        findViewById(R.id.custom_file_creator).setOnClickListener(this);
-        findViewById(R.id.custom_strategy).setOnClickListener(this);
-        findViewById(R.id.custom_activity_replace).setOnClickListener(this);
-        findViewById(R.id.upgrade_in_back_thread).setOnClickListener(this);
-
+        ButterKnife.bind(this);
     }
 
-    // 使用默认配置进行更新
-    void useDefaultUpdate() {
-        UpdateBuilder.create().check();
-    }
-
-    // 使用自定义网络任务进行更新。
-    void useCustomTask () {
-        UpdateBuilder.create()
-                .checkWorker(new CustomUpdateWorker())// 设置自定义的更新任务
-                .downloadWorker(new CustomDownloadWorker()) // 设置自定义的下载任务
-                .check();
-    }
-
-    // 使用自定义的更新检查器。
-    void useCustomChecker () {
-        UpdateBuilder.create()
-                .updateChecker(new CustomUpdateChecker())
-                .strategy(new AllDialogShowStrategy())
-                .check();
-    }
-
-    // 使用自定义的Dialog作为显示效果
-    void useCustomDialog () {
-        UpdateBuilder.create()
-                .updateDialogCreator(new CustomNeedUpdateCreator())
-                .downloadDialogCreator(new CustomNeedDownloadCreator())
-                .installDialogCreator(new CustomNeedInstallCreator())
-                .check();
-    }
-
-    // 使用自定义更新策略
-    void useCustomUpdateStrataty () {
-        UpdateBuilder.create()
-                .strategy(new AllDialogShowStrategy())
-                .check();
-    }
-
-    // 使用自定义下载文件创建器指定下载文件名
-    void useCustomApkFileCreator () {
-        UpdateBuilder.create()
-                .fileCreator(new CustomApkFileCreator())
-                .check();
-    }
-
-    // 当前页面进行检查更新.同时跳转到AnotherActivity,使用replaceCB替换需要显示Dialog时的Activity实例
-    void useCustomReplace() {
-        UpdateBuilder builder = UpdateBuilder.create()
-                .strategy(new AllDialogShowStrategy());
-        builder.check();
-        startActivity(new Intent(this,AnotherActivity.class));
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.default_update:
-                useDefaultUpdate();
-                break;
-            case R.id.custom_checker:
-                useCustomChecker();
-                break;
-            case R.id.custom_dialog:
-                useCustomDialog();
-                break;
-            case R.id.custom_file_creator:
-                useCustomApkFileCreator();
-                break;
-            case R.id.custom_strategy:
-                useCustomUpdateStrataty();
-                break;
-            case R.id.custom_task:
-                useCustomTask();
-                break;
-            case R.id.custom_activity_replace:
-                useCustomReplace();
-                break;
-            case R.id.upgrade_in_back_thread:
-                upgradeOnBackThread();
-                break;
+    @OnClick(R.id.start_update)
+    void onStartClick () {
+        UpdateBuilder builder = UpdateBuilder.create();
+        // 根据各项是否选择使用默认配置进行使用更新。
+        if (!updateWorker.isDefaultSelected()) {
+            builder.checkWorker(new OkhttpCheckWorker());
         }
-    }
 
-    private void upgradeOnBackThread() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                UpdateBuilder.create().check();
-            }
-        }).start();
+        if (!fileCreator.isDefaultSelected()) {
+            builder.fileCreator(new CustomApkFileCreator());
+        }
+
+        if (!updateStrategy.isDefaultSelected()) {
+            builder.strategy(new AllDialogShowStrategy());
+        }
+
+        if (!downloadNotice.isDefaultSelected()) {
+            builder.downloadDialogCreator(new NotificationDownloadCreator());
+        }
+
+        if (!downloadWorker.isDefaultSelected()) {
+            builder.downloadWorker(new OkhttpDownloadWorker());
+        }
+        /**
+         * 以上为常用的需要定制的功能模块。如果需要更多的定制需求。请参考
+         * {@link org.lzh.framework.updatepluginlib.UpdateConfig}
+         * 类中所使用的其他模块的默认实现方式。
+         * */
+        builder.check();
     }
 }
