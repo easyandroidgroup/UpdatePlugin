@@ -15,18 +15,10 @@ import java.io.File;
 public class CustomApkFileCreator implements ApkFileCreator {
     @Override
     public File create(String versionName) {
-        // 根据传入的versionName创建下载时使用的文件名
-        File path = new File(getCacheDir().getPath() + "/updatePlugin");
+        // 根据传入的versionName创建一个文件。供下载时网络框架使用
+        File path = new File(Environment.getExternalStorageDirectory().getPath() + "/updatePlugin");
         path.mkdirs();
         return new File(path,"UpdatePlugin_" + versionName);
     }
 
-    private File getCacheDir() {
-        Context context = UpdateConfig.getConfig().getContext();
-        File cacheDir = context.getExternalCacheDir();
-        if (cacheDir == null) {
-            cacheDir = context.getCacheDir();
-        }
-        return cacheDir;
-    }
 }

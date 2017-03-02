@@ -3,6 +3,7 @@ package org.lzh.framework.updateplugin;
 import android.app.Application;
 import android.widget.Toast;
 
+import org.lzh.framework.updateplugin.widget.ToastTool;
 import org.lzh.framework.updatepluginlib.UpdateConfig;
 import org.lzh.framework.updatepluginlib.callback.UpdateCheckCB;
 import org.lzh.framework.updatepluginlib.callback.UpdateDownloadCB;
@@ -23,6 +24,7 @@ public class MyApplication extends Application {
         super.onCreate();
         // UpdateConfig为全局配置。当在其他页面中。使用UpdateBuilder进行检查更新时。
         // 对于没传的参数，会默认使用UpdateConfig中的全局配置
+        ToastTool.init(this);
         UpdateConfig.getConfig()
                 // 必填：初始化一个Application框架内使用
                 .init(this)
@@ -60,17 +62,18 @@ public class MyApplication extends Application {
 
                     @Override
                     public void onCheckError(int code, String errorMsg) {
-                        Toast.makeText(MyApplication.this, "更新失败：code:" + code + ",errorMsg:" + errorMsg, Toast.LENGTH_SHORT).show();
+                        ToastTool.show("更新失败：code:" + code + ",errorMsg:" + errorMsg);
+//                        Toast.makeText(MyApplication.this, "更新失败：code:" + code + ",errorMsg:" + errorMsg, Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onUserCancel() {
-                        Toast.makeText(MyApplication.this, "用户取消更新", Toast.LENGTH_SHORT).show();
+                        ToastTool.show("用户取消更新");
                     }
 
                     @Override
                     public void onCheckIgnore(Update update) {
-                        Toast.makeText(MyApplication.this, "用户忽略此版本更新", Toast.LENGTH_SHORT).show();
+                        ToastTool.show("用户忽略此版本更新");
                     }
 
                     @Override
@@ -80,31 +83,31 @@ public class MyApplication extends Application {
                         HandlerUtil.getMainHandler().post(new Runnable() {
                             @Override
                             public void run() {
-                                Toast.makeText(MyApplication.this, "启动更新任务", Toast.LENGTH_SHORT).show();
+                                ToastTool.show("启动更新任务");
                             }
                         });
                     }
 
                     @Override
                     public void hasUpdate(Update update) {
-                        Toast.makeText(MyApplication.this, "检查到有更新", Toast.LENGTH_SHORT).show();
+                        ToastTool.show("检查到有更新");
                     }
 
                     @Override
                     public void noUpdate() {
-                        Toast.makeText(MyApplication.this, "无更新", Toast.LENGTH_SHORT).show();
+                        ToastTool.show("无更新");
                     }
                 })
                 // apk下载的回调
                 .downloadCB(new UpdateDownloadCB(){
                     @Override
                     public void onUpdateStart() {
-                        Toast.makeText(MyApplication.this, "下载开始", Toast.LENGTH_SHORT).show();
+                        ToastTool.show("下载开始");
                     }
 
                     @Override
                     public void onUpdateComplete(File file) {
-                        Toast.makeText(MyApplication.this, "下载完成", Toast.LENGTH_SHORT).show();
+                        ToastTool.show("下载完成");
                     }
 
                     @Override
@@ -113,7 +116,7 @@ public class MyApplication extends Application {
 
                     @Override
                     public void onUpdateError(int code, String errorMsg) {
-                        Toast.makeText(MyApplication.this, "下载失败：code:" + code + ",errorMsg:" + errorMsg, Toast.LENGTH_SHORT).show();
+                        ToastTool.show("下载失败：code:" + code + ",errorMsg:" + errorMsg);
                     }
                 })
                 // 自定义更新检查器。

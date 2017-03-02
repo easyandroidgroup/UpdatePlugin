@@ -13,6 +13,34 @@
         android:layout_height="wrap_content"/>
 
     <org.lzh.framework.updateplugin.widget.CheckedView
+        android:id="@+id/download_worker"
+        app:title="选择下载apk网络任务"
+        app:subtitle="使用okhttp作为下载任务"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <org.lzh.framework.updateplugin.widget.CheckedView
+        android:id="@+id/has_update_notice"
+        app:title="选择检查到有更新时的弹窗提示"
+        app:subtitle="定制在通知栏显示新更新消息通知"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <org.lzh.framework.updateplugin.widget.CheckedView
+        android:id="@+id/download_complete_notice"
+        app:title="选择下载完成后的弹窗提示"
+        app:subtitle="定制在通知栏显示下载完成消息通知"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <org.lzh.framework.updateplugin.widget.CheckedView
+        android:id="@+id/download_notice"
+        app:title="选择下载进度条显示方式"
+        app:subtitle="定制在通知栏进度条提示"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <org.lzh.framework.updateplugin.widget.CheckedView
         android:id="@+id/file_creator"
         app:title="选择更新时的apk的缓存文件创建器"
         app:subtitle="使用定制的文件路径进行下载"
@@ -26,19 +54,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
-    <org.lzh.framework.updateplugin.widget.CheckedView
-        android:id="@+id/download_notice"
-        app:title="选择下载进度条显示方式"
-        app:subtitle="通知栏进度条提示"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
 
-    <org.lzh.framework.updateplugin.widget.CheckedView
-        android:id="@+id/download_worker"
-        app:title="选择下载apk网络任务"
-        app:subtitle="使用okhttp作为下载任务"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
 
     <Button
         android:id="@+id/start_update"
