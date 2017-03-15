@@ -23,41 +23,14 @@ dependencies {
 }
 ```
 
+###效果展示
+
+- 使用默认更新：
+
+
 ###使用方式：
 
-- 首先。在使用前对其进行配置
-
-```
-// 建议在Application中进行配置。
-// UpdateConfig为全局配置。当在其他页面中。使用UpdateBuilder进行检查更新时。
-// 对于没传的参数，会默认使用UpdateConfig中的全局配置
-UpdateConfig.getConfig()
-            // 必填：需尽早进行Application初始化操作。建议直接在Application进行初始化的时候进行框架初始化操作
-            .init(Application.this)
-            // url 与 checkEntity方法可任选一种填写，且至少必填一种。
-            // 数据更新接口数据，此时默认为使用GET请求
-            .url(url)
-            // 同url方法。CheckEntity方法可填写url,params,method。可在此设置为post请求
-            .checkEntity(checkEntity)
-            // 必填：用于从数据更新接口获取的数据response中。解析出Update实例。以便框架内部处理
-            .jsonParser(new UpdateParser() {
-                @Override
-                public Update parse(String response) {
-                    // 此处根据上面url接口返回的数据response进行update类组装。框架内部会使用此
-                    // 组装的update实例判断是否需要更新以做进一步工作
-                    return update;
-                }
-            })
-```
-
-- 在要进行检查更新的地方，使用UpdateBuilder类进行检查
-
-```
-// 可在任意线程进行调用
-UpdateBuilder.create().check();
-```
-
-OK。最简单的用法就这么点。当然。如果需要查看其他配置请查看[详细配置说明](./Usage.md)
+[查看wiki](https://github.com/yjfnypeu/UpdatePlugin/wiki)
 
 ###流程图
 ![](./screenshots/updatePlugin.png)
