@@ -3,6 +3,8 @@ package org.lzh.framework.updateplugin;
 import android.app.Application;
 import android.widget.Toast;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.lzh.framework.updateplugin.widget.ToastTool;
 import org.lzh.framework.updatepluginlib.UpdateConfig;
 import org.lzh.framework.updatepluginlib.callback.UpdateCheckCB;
@@ -17,7 +19,6 @@ import java.io.File;
  * @author Administrator
  */
 public class MyApplication extends Application {
-    private String apkFile = "http://m.shouji.360tpcdn.com/151023/2acc9ecca7ca75e925b9131f964f169f/com.baidu.tieba_mini_101253632.apk";
 
     @Override
     public void onCreate() {
@@ -29,7 +30,7 @@ public class MyApplication extends Application {
                 // 必填：初始化一个Application框架内使用
                 .init(this)
                 // 必填：数据更新接口,url与checkEntity两种方式任选一种填写
-                .url("https://www.baidu.com")
+                .url("https://raw.githubusercontent.com/yjfnypeu/UpdatePlugin/master/update.json")
 //                .checkEntity(new CheckEntity().setMethod(HttpMethod.GET).setUrl("http://www.baidu.com"))
                 // 必填：用于从数据更新接口获取的数据response中。解析出Update实例。以便框架内部处理
                 .jsonParser(new UpdateParser() {
@@ -38,23 +39,28 @@ public class MyApplication extends Application {
                         /* 此处根据上面url或者checkEntity设置的检查更新接口的返回数据response解析出
                          * 一个update对象返回即可。更新启动时框架内部即可根据update对象的数据进行处理
                          */
-                        // 此处模拟一个Update对象
-                        Update update = new Update(response);
-                        // 此apk包的更新时间
-                        update.setUpdateTime(System.currentTimeMillis());
-                        // 此apk包的下载地址
-                        update.setUpdateUrl(apkFile);
-                        // 此apk包的版本号
-                        update.setVersionCode(2);
-                        // 此apk包的版本名称
-                        update.setVersionName("2.0");
-                        // 此apk包的更新内容
-                        update.setUpdateContent("测试更新");
-                        // 此apk包是否为强制更新
-                        update.setForced(false);
-                        // 是否显示忽略此次版本更新按钮
-                        update.setIgnore(true);
-                        return update;
+                        try {
+                            JSONObject object = new JSONObject(response);
+                            Update update = new Update(response);
+                            // 此apk包的更新时间
+                            update.setUpdateTime(System.currentTimeMillis());
+                            // 此apk包的下载地址
+                            update.setUpdateUrl(object.optString("update_url"));
+                            // 此apk包的版本号
+                            update.setVersionCode(object.optInt("update_ver_code"));
+                            // 此apk包的版本名称
+                            update.setVersionName(object.optString("update_ver_name"));
+                            // 此apk包的更新内容
+                            update.setUpdateContent(object.optString("update_content"));
+                            // 此apk包是否为强制更新
+                            update.setForced(false);
+                            // 是否显示忽略此次版本更新按钮
+                            update.setIgnore(object.optBoolean("ignore_able",false));
+                            return update;
+                        } catch (JSONException e) {
+                            return null;
+                        }
+
                     }
                 })
                 // TODO: 2016/5/11 除了以上两个参数为必填。以下的参数均为非必填项。
