@@ -1,4 +1,4 @@
-###UpdatePlugin详细配置说明
+### UpdatePlugin详细配置说明
 
 配置分为全局配置与局部配置:
 

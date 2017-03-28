@@ -99,6 +99,8 @@ public class UpdateConfig {
 
     /**
      * Cache a application context.
+     * Should not be called by yourself,
+     * cause it had been invoked automatically when app was launched
      * @param context Activity context
      */
     public UpdateConfig init(Context context) {
