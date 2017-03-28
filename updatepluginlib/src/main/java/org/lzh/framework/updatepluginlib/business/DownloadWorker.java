@@ -1,10 +1,9 @@
 package org.lzh.framework.updatepluginlib.business;
 
-import org.lzh.framework.updatepluginlib.UpdateBuilder;
 import org.lzh.framework.updatepluginlib.callback.UpdateDownloadCB;
 import org.lzh.framework.updatepluginlib.model.Update;
-import org.lzh.framework.updatepluginlib.util.HandlerUtil;
 import org.lzh.framework.updatepluginlib.util.Recyclable;
+import org.lzh.framework.updatepluginlib.util.Utils;
 
 import java.io.File;
 
@@ -64,7 +63,7 @@ public abstract class DownloadWorker extends UnifiedWorker implements Runnable,R
     private void sendUpdateStart() {
         if (downloadCB == null) return;
 
-        HandlerUtil.getMainHandler().post(new Runnable() {
+        Utils.getMainHandler().post(new Runnable() {
             @Override
             public void run() {
                 downloadCB.onUpdateStart();
@@ -75,7 +74,7 @@ public abstract class DownloadWorker extends UnifiedWorker implements Runnable,R
     protected void sendUpdateProgress(final long current, final long total) {
         if (downloadCB == null) return;
 
-        HandlerUtil.getMainHandler().post(new Runnable() {
+        Utils.getMainHandler().post(new Runnable() {
             @Override
             public void run() {
                 downloadCB.onUpdateProgress(current, total);
@@ -86,7 +85,7 @@ public abstract class DownloadWorker extends UnifiedWorker implements Runnable,R
     private void sendUpdateComplete(final File file) {
         if (downloadCB == null) return;
 
-        HandlerUtil.getMainHandler().post(new Runnable() {
+        Utils.getMainHandler().post(new Runnable() {
             @Override
             public void run() {
                 downloadCB.onUpdateComplete(file);
@@ -98,7 +97,7 @@ public abstract class DownloadWorker extends UnifiedWorker implements Runnable,R
     private void sendUpdateError (final int code, final String errorMsg) {
         if (downloadCB == null) return;
 
-        HandlerUtil.getMainHandler().post(new Runnable() {
+        Utils.getMainHandler().post(new Runnable() {
             @Override
             public void run() {
                 downloadCB.onUpdateError(code,errorMsg);

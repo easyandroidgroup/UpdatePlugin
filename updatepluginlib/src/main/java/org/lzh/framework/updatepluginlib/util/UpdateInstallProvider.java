@@ -2,9 +2,13 @@ package org.lzh.framework.updatepluginlib.util;
 
 import android.content.ContentProvider;
 import android.content.ContentValues;
+import android.content.Context;
+import android.content.pm.ProviderInfo;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.ParcelFileDescriptor;
+
+import org.lzh.framework.updatepluginlib.UpdateConfig;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -22,6 +26,12 @@ public class UpdateInstallProvider extends ContentProvider {
     @Override
     public boolean onCreate() {
         return false;
+    }
+
+    @Override
+    public void attachInfo(Context context, ProviderInfo info) {
+        super.attachInfo(context, info);
+        UpdateConfig.getConfig().init(context);
     }
 
     @Override

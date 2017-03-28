@@ -6,8 +6,8 @@ import org.lzh.framework.updatepluginlib.model.CheckEntity;
 import org.lzh.framework.updatepluginlib.model.Update;
 import org.lzh.framework.updatepluginlib.model.UpdateChecker;
 import org.lzh.framework.updatepluginlib.model.UpdateParser;
-import org.lzh.framework.updatepluginlib.util.HandlerUtil;
 import org.lzh.framework.updatepluginlib.util.Recyclable;
+import org.lzh.framework.updatepluginlib.util.Utils;
 
 /**
  * The network task to check out whether or not a new version of apk is exist
@@ -79,7 +79,7 @@ public abstract class UpdateWorker extends UnifiedWorker implements Runnable,Rec
 
     private void sendHasUpdate(final Update update) {
         if (checkCB == null) return;
-        HandlerUtil.getMainHandler().post(new Runnable() {
+        Utils.getMainHandler().post(new Runnable() {
             @Override
             public void run() {
                 checkCB.hasUpdate(update);
@@ -90,7 +90,7 @@ public abstract class UpdateWorker extends UnifiedWorker implements Runnable,Rec
 
     private void sendNoUpdate() {
         if (checkCB == null) return;
-        HandlerUtil.getMainHandler().post(new Runnable() {
+        Utils.getMainHandler().post(new Runnable() {
             @Override
             public void run() {
                 checkCB.noUpdate();
@@ -101,7 +101,7 @@ public abstract class UpdateWorker extends UnifiedWorker implements Runnable,Rec
 
     private void sendOnErrorMsg(final int code, final String errorMsg) {
         if (checkCB == null) return;
-        HandlerUtil.getMainHandler().post(new Runnable() {
+        Utils.getMainHandler().post(new Runnable() {
             @Override
             public void run() {
                 checkCB.onCheckError(code,errorMsg);

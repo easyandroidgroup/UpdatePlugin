@@ -5,16 +5,19 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.TextUtils;
+
+import org.lzh.framework.updatepluginlib.UpdateConfig;
 
 import java.io.File;
 
-/**
- * @author Administrator
- */
-public class InstallUtil {
+public class Utils {
 
     private static final int REQUEST_INSTALL = 0x010101;
     private static String DEFAULT_AUTHOR = null;
@@ -56,4 +59,30 @@ public class InstallUtil {
         PackageInfo packageInfo = pm.getPackageInfo(context.getPackageName(), 0);
         return packageInfo.versionCode;
     }
+
+    /**
+     * Determine whether to use wifi
+     * @return true if is connected by wifi
+     */
+    public static boolean isConnectedByWifi() {
+        NetworkInfo info = getNetworkInfos();
+        return info != null
+                && info.isConnected()
+                && info.getType() == ConnectivityManager.TYPE_WIFI;
+    }
+
+    private static NetworkInfo getNetworkInfos() {
+        Context context = UpdateConfig.getConfig().getContext();
+        ConnectivityManager connManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        return connManager.getActiveNetworkInfo();
+    }
+
+    private static Handler handler;
+    public static Handler getMainHandler() {
+        if (handler == null) {
+            handler = new Handler(Looper.getMainLooper());
+        }
+        return handler;
+    }
+
 }

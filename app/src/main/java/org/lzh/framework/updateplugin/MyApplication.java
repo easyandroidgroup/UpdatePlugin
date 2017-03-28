@@ -1,7 +1,6 @@
 package org.lzh.framework.updateplugin;
 
 import android.app.Application;
-import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -11,7 +10,7 @@ import org.lzh.framework.updatepluginlib.callback.UpdateCheckCB;
 import org.lzh.framework.updatepluginlib.callback.UpdateDownloadCB;
 import org.lzh.framework.updatepluginlib.model.Update;
 import org.lzh.framework.updatepluginlib.model.UpdateParser;
-import org.lzh.framework.updatepluginlib.util.HandlerUtil;
+import org.lzh.framework.updatepluginlib.util.Utils;
 
 import java.io.File;
 
@@ -27,8 +26,6 @@ public class MyApplication extends Application {
         // 对于没传的参数，会默认使用UpdateConfig中的全局配置
         ToastTool.init(this);
         UpdateConfig.getConfig()
-                // 必填：初始化一个Application框架内使用
-                .init(this)
                 // 必填：数据更新接口,url与checkEntity两种方式任选一种填写
                 .url("https://raw.githubusercontent.com/yjfnypeu/UpdatePlugin/master/update.json")
 //                .checkEntity(new CheckEntity().setMethod(HttpMethod.GET).setUrl("http://www.baidu.com"))
@@ -86,7 +83,7 @@ public class MyApplication extends Application {
                     public void onCheckStart() {
                         // 此方法的回调所处线程异于其他回调。其他回调所处线程为UI线程。
                         // 此方法所处线程为你启动更新任务是所在线程
-                        HandlerUtil.getMainHandler().post(new Runnable() {
+                        Utils.getMainHandler().post(new Runnable() {
                             @Override
                             public void run() {
                                 ToastTool.show("启动更新任务");

@@ -6,9 +6,9 @@ import android.app.Dialog;
 import org.lzh.framework.updatepluginlib.UpdateConfig;
 import org.lzh.framework.updatepluginlib.callback.UpdateCheckCB;
 import org.lzh.framework.updatepluginlib.model.Update;
-import org.lzh.framework.updatepluginlib.util.InstallUtil;
 import org.lzh.framework.updatepluginlib.util.Recyclable;
 import org.lzh.framework.updatepluginlib.util.UpdatePreference;
+import org.lzh.framework.updatepluginlib.util.Utils;
 
 public abstract class InstallCreator implements Recyclable {
 
@@ -36,7 +36,7 @@ public abstract class InstallCreator implements Recyclable {
      */
     public void sendToInstall(String filename) {
         if (installChecker == null || installChecker.check(update,filename)) {
-            InstallUtil.installApk(UpdateConfig.getConfig().getContext(),filename);
+            Utils.installApk(UpdateConfig.getConfig().getContext(),filename);
         } else {
             checkCB.onCheckError(-1,String.format("apk %s checked failed",filename));
         }

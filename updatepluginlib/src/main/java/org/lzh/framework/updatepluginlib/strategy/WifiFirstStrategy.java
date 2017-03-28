@@ -1,7 +1,7 @@
 package org.lzh.framework.updatepluginlib.strategy;
 
 import org.lzh.framework.updatepluginlib.model.Update;
-import org.lzh.framework.updatepluginlib.util.NetworkUtil;
+import org.lzh.framework.updatepluginlib.util.Utils;
 
 public class WifiFirstStrategy implements UpdateStrategy {
 
@@ -9,7 +9,7 @@ public class WifiFirstStrategy implements UpdateStrategy {
 
     @Override
     public boolean isShowUpdateDialog(Update update) {
-        isWifi = NetworkUtil.isConnectedByWifi();
+        isWifi = Utils.isConnectedByWifi();
         return !isWifi;
     }
 
