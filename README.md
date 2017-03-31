@@ -19,7 +19,7 @@ LastestVersion= [ ![Download](https://api.bintray.com/packages/yjfnypeu/maven/Up
 ```
 dependencies {
     ...
-    compile "org.lzh.nonview.updateplugin:UpdatePlugin:2.1"
+    compile "org.lzh.nonview.updateplugin:UpdatePlugin:LastestVersion"
 }
 ```
 
