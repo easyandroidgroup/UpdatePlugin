@@ -66,6 +66,7 @@ public abstract class DownloadWorker extends UnifiedWorker implements Runnable,R
         Utils.getMainHandler().post(new Runnable() {
             @Override
             public void run() {
+                if (downloadCB == null) return;
                 downloadCB.onUpdateStart();
             }
         });
@@ -77,6 +78,7 @@ public abstract class DownloadWorker extends UnifiedWorker implements Runnable,R
         Utils.getMainHandler().post(new Runnable() {
             @Override
             public void run() {
+                if (downloadCB == null) return;
                 downloadCB.onUpdateProgress(current, total);
             }
         });
@@ -88,6 +90,7 @@ public abstract class DownloadWorker extends UnifiedWorker implements Runnable,R
         Utils.getMainHandler().post(new Runnable() {
             @Override
             public void run() {
+                if (downloadCB == null) return;
                 downloadCB.onUpdateComplete(file);
                 release();
             }
@@ -100,6 +103,7 @@ public abstract class DownloadWorker extends UnifiedWorker implements Runnable,R
         Utils.getMainHandler().post(new Runnable() {
             @Override
             public void run() {
+                if (downloadCB == null) return;
                 downloadCB.onUpdateError(code,errorMsg);
                 release();
             }

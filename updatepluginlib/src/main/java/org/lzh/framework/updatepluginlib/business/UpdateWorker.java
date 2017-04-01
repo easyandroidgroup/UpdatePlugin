@@ -82,6 +82,7 @@ public abstract class UpdateWorker extends UnifiedWorker implements Runnable,Rec
         Utils.getMainHandler().post(new Runnable() {
             @Override
             public void run() {
+                if (checkCB == null) return;
                 checkCB.hasUpdate(update);
                 release();
             }
@@ -93,6 +94,7 @@ public abstract class UpdateWorker extends UnifiedWorker implements Runnable,Rec
         Utils.getMainHandler().post(new Runnable() {
             @Override
             public void run() {
+                if (checkCB == null) return;
                 checkCB.noUpdate();
                 release();
             }
@@ -104,6 +106,7 @@ public abstract class UpdateWorker extends UnifiedWorker implements Runnable,Rec
         Utils.getMainHandler().post(new Runnable() {
             @Override
             public void run() {
+                if (checkCB == null) return;
                 checkCB.onCheckError(code,errorMsg);
                 release();
             }
