@@ -1,7 +1,7 @@
 {
-  "update_url" : "http://m.shouji.360tpcdn.com/151023/2acc9ecca7ca75e925b9131f964f169f/com.baidu.tieba_mini_101253632.apk",
+  "update_url" : "https://raw.githubusercontent.com/yjfnypeu/UpdatePlugin/master/update_plugin.apk",
   "update_content" : "你有新的版本需要更新",
-  "update_ver_code" : 101253632,
+  "update_ver_code" : 10,
   "update_ver_name" : "10.00",
   "ignore_able" : true
 }
