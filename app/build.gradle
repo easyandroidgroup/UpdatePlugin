@@ -24,9 +24,9 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
-    compile project(':updatepluginlib')
+//    compile project(':updatepluginlib')
     compile 'com.android.support:appcompat-v7:25.1.0'
-//    compile 'org.lzh.nonview.updateplugin:UpdatePlugin:2.2.0'
+    compile 'org.lzh.nonview.updateplugin:UpdatePlugin:2.3'
     debugCompile 'com.squareup.leakcanary:leakcanary-android:1.4-beta2'
     compile 'com.jakewharton:butterknife:8.5.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
