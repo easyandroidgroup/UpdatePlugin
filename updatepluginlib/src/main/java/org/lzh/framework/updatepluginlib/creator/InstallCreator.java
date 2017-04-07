@@ -13,15 +13,15 @@ import org.lzh.framework.updatepluginlib.util.Utils;
 public abstract class InstallCreator implements Recyclable {
 
     private UpdateCheckCB checkCB;
-    protected InstallChecker installChecker;
+    protected FileChecker fileChecker;
     protected Update update;
 
     public void setCheckCB(UpdateCheckCB checkCB) {
         this.checkCB = checkCB;
     }
 
-    public void setInstallChecker (InstallChecker checker) {
-        this.installChecker = checker;
+    public void setFileChecker(FileChecker checker) {
+        this.fileChecker = checker;
     }
 
     public void setUpdate(Update update) {
@@ -35,7 +35,7 @@ public abstract class InstallCreator implements Recyclable {
      * @param filename the absolutely file name that downloaded
      */
     public void sendToInstall(String filename) {
-        if (installChecker == null || installChecker.check(update,filename)) {
+        if (fileChecker == null || fileChecker.checkAfterDownload(update,filename)) {
             Utils.installApk(UpdateConfig.getConfig().getContext(),filename);
         } else {
             checkCB.onCheckError(-1,String.format("apk %s checked failed",filename));
@@ -65,7 +65,7 @@ public abstract class InstallCreator implements Recyclable {
     @Override
     public void release() {
         this.checkCB = null;
-        this.installChecker = null;
+        this.fileChecker = null;
         this.update = null;
     }
 }

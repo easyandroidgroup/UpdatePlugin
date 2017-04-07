@@ -7,15 +7,13 @@ import android.content.pm.PackageManager;
 import org.lzh.framework.updatepluginlib.UpdateConfig;
 import org.lzh.framework.updatepluginlib.model.Update;
 
-import java.io.File;
-
 /**
- * Checkout if
  * @author haoge
  */
-public class DefaultInstallChecker implements InstallChecker {
+public class DefaultFileChecker implements FileChecker {
+
     @Override
-    public boolean check(Update update, String file) {
+    public boolean checkPreFile(Update update, String file) {
         try {
             Context context = UpdateConfig.getConfig().getContext();
             PackageManager packageManager = context.getPackageManager();
@@ -24,5 +22,11 @@ public class DefaultInstallChecker implements InstallChecker {
         } catch (Throwable t) {
             return false;
         }
+    }
+
+    @Override
+    public boolean checkAfterDownload(Update update, String file) {
+        // For default: skip checked.
+        return true;
     }
 }

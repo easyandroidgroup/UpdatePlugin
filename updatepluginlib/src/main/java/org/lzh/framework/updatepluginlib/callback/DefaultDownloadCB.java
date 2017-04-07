@@ -91,7 +91,7 @@ public final class DefaultDownloadCB implements UpdateDownloadCB ,Recyclable {
 
         InstallCreator creator = builder.getInstallDialogCreator();
         creator.setCheckCB(builder.getCheckCB());
-        creator.setInstallChecker(builder.getInstallChecker());
+        creator.setFileChecker(builder.getFileChecker());
         creator.setUpdate(update);
         if (builder.getStrategy().isAutoInstall()) {
             creator.sendToInstall(file.getAbsolutePath());

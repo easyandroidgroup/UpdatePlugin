@@ -7,7 +7,7 @@ import org.lzh.framework.updatepluginlib.callback.UpdateDownloadCB;
 import org.lzh.framework.updatepluginlib.creator.ApkFileCreator;
 import org.lzh.framework.updatepluginlib.creator.DialogCreator;
 import org.lzh.framework.updatepluginlib.creator.DownloadCreator;
-import org.lzh.framework.updatepluginlib.creator.InstallChecker;
+import org.lzh.framework.updatepluginlib.creator.FileChecker;
 import org.lzh.framework.updatepluginlib.creator.InstallCreator;
 import org.lzh.framework.updatepluginlib.model.CheckEntity;
 import org.lzh.framework.updatepluginlib.model.UpdateChecker;
@@ -36,7 +36,7 @@ public class UpdateBuilder {
     private UpdateParser jsonParser;
     private ApkFileCreator fileCreator;
     private UpdateChecker updateChecker;
-    private InstallChecker installChecker;
+    private FileChecker fileChecker;
 
     public static UpdateBuilder create() {
         return new UpdateBuilder();
@@ -57,8 +57,8 @@ public class UpdateBuilder {
         return this;
     }
 
-    public UpdateBuilder installChecker(InstallChecker checker) {
-        this.installChecker = checker;
+    public UpdateBuilder installChecker(FileChecker checker) {
+        this.fileChecker = checker;
         return this;
     }
 
@@ -137,8 +137,8 @@ public class UpdateBuilder {
         return updateChecker;
     }
 
-    public InstallChecker getInstallChecker () {
-        return installChecker != null ? installChecker : UpdateConfig.getConfig().getInstallChecker();
+    public FileChecker getFileChecker() {
+        return fileChecker != null ? fileChecker : UpdateConfig.getConfig().getFileChecker();
     }
 
     public DialogCreator getUpdateDialogCreator() {

@@ -11,13 +11,13 @@ import org.lzh.framework.updatepluginlib.callback.UpdateCheckCB;
 import org.lzh.framework.updatepluginlib.callback.UpdateDownloadCB;
 import org.lzh.framework.updatepluginlib.creator.ApkFileCreator;
 import org.lzh.framework.updatepluginlib.creator.DefaultFileCreator;
-import org.lzh.framework.updatepluginlib.creator.DefaultInstallChecker;
+import org.lzh.framework.updatepluginlib.creator.DefaultFileChecker;
 import org.lzh.framework.updatepluginlib.creator.DefaultNeedDownloadCreator;
 import org.lzh.framework.updatepluginlib.creator.DefaultNeedInstallCreator;
 import org.lzh.framework.updatepluginlib.creator.DefaultNeedUpdateCreator;
 import org.lzh.framework.updatepluginlib.creator.DialogCreator;
 import org.lzh.framework.updatepluginlib.creator.DownloadCreator;
-import org.lzh.framework.updatepluginlib.creator.InstallChecker;
+import org.lzh.framework.updatepluginlib.creator.FileChecker;
 import org.lzh.framework.updatepluginlib.creator.InstallCreator;
 import org.lzh.framework.updatepluginlib.model.CheckEntity;
 import org.lzh.framework.updatepluginlib.model.DefaultChecker;
@@ -88,7 +88,7 @@ public class UpdateConfig {
     /**
      * To check out if the apk file is validly.
      */
-    private InstallChecker installChecker;
+    private FileChecker fileChecker;
 
     private static UpdateConfig config;
     public static UpdateConfig getConfig() {
@@ -127,8 +127,8 @@ public class UpdateConfig {
         return this;
     }
 
-    public UpdateConfig installChecker (InstallChecker checker) {
-        this.installChecker = checker;
+    public UpdateConfig installChecker (FileChecker checker) {
+        this.fileChecker = checker;
         return this;
     }
 
@@ -224,11 +224,11 @@ public class UpdateConfig {
         return updateChecker;
     }
 
-    public InstallChecker getInstallChecker () {
-        if (installChecker == null) {
-            installChecker = new DefaultInstallChecker();
+    public FileChecker getFileChecker() {
+        if (fileChecker == null) {
+            fileChecker = new DefaultFileChecker();
         }
-        return installChecker;
+        return fileChecker;
     }
 
     public DownloadCreator getDownloadDialogCreator() {
