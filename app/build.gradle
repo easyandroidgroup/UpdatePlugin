@@ -10,7 +10,7 @@ android {
         applicationId "org.lzh.framework.updateplugin"
         minSdkVersion 14
         targetSdkVersion 25
-        versionCode 10
+        versionCode 1
         versionName "1.0"
     }
     buildTypes {
