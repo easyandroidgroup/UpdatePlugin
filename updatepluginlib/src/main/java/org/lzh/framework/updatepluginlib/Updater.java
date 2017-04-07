@@ -8,7 +8,10 @@ import org.lzh.framework.updatepluginlib.business.UpdateExecutor;
 import org.lzh.framework.updatepluginlib.business.UpdateWorker;
 import org.lzh.framework.updatepluginlib.callback.DefaultCheckCB;
 import org.lzh.framework.updatepluginlib.callback.DefaultDownloadCB;
+import org.lzh.framework.updatepluginlib.creator.InstallChecker;
 import org.lzh.framework.updatepluginlib.model.Update;
+
+import java.io.File;
 
 public final class Updater {
     private static Updater updater;
@@ -55,6 +58,14 @@ public final class Updater {
         DefaultDownloadCB downloadCB = new DefaultDownloadCB();
         downloadCB.setBuilder(builder);
         downloadCB.setUpdate(update);
+
+        InstallChecker installChecker = builder.getInstallChecker();
+        File cacheFile = builder.getFileCreator().create(update.getVersionName());
+        if (installChecker.check(update,cacheFile.getAbsolutePath())) {
+            // check success: skip download and show install dialog if needed.
+            downloadCB.showInstallDialogIfNeed(cacheFile);
+            return;
+        }
 
         DownloadWorker downloadWorker = builder.getDownloadWorker();
         if (downloadWorker.isRunning()) {

@@ -81,6 +81,12 @@ public final class DefaultDownloadCB implements UpdateDownloadCB ,Recyclable {
             innerCB.onUpdateComplete(file);
         }
 
+        showInstallDialogIfNeed(file);
+
+        release();
+    }
+
+    public void showInstallDialogIfNeed(File file) {
         Activity current = ActivityManager.get().topActivity();
 
         InstallCreator creator = builder.getInstallDialogCreator();
@@ -93,8 +99,6 @@ public final class DefaultDownloadCB implements UpdateDownloadCB ,Recyclable {
             Dialog dialog = creator.create(update, file.getAbsolutePath(),current);
             SafeDialogOper.safeShowDialog(dialog);
         }
-
-        release();
     }
 
     /**

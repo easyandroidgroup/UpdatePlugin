@@ -11,6 +11,7 @@ import org.lzh.framework.updatepluginlib.callback.UpdateCheckCB;
 import org.lzh.framework.updatepluginlib.callback.UpdateDownloadCB;
 import org.lzh.framework.updatepluginlib.creator.ApkFileCreator;
 import org.lzh.framework.updatepluginlib.creator.DefaultFileCreator;
+import org.lzh.framework.updatepluginlib.creator.DefaultInstallChecker;
 import org.lzh.framework.updatepluginlib.creator.DefaultNeedDownloadCreator;
 import org.lzh.framework.updatepluginlib.creator.DefaultNeedInstallCreator;
 import org.lzh.framework.updatepluginlib.creator.DefaultNeedUpdateCreator;
@@ -224,6 +225,9 @@ public class UpdateConfig {
     }
 
     public InstallChecker getInstallChecker () {
+        if (installChecker == null) {
+            installChecker = new DefaultInstallChecker();
+        }
         return installChecker;
     }
 
