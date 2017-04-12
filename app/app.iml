@@ -98,7 +98,7 @@
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.jakewharton/butterknife/8.5.1/jars" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.squareup.leakcanary/leakcanary-android/1.4-beta2/jars" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/com.tbruyelle.rxpermissions/rxpermissions/0.9.2/jars" />
-      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/org.lzh.nonview.updateplugin/UpdatePlugin/2.3.0/jars" />
+      <excludeFolder url="file://$MODULE_DIR$/build/intermediates/exploded-aar/org.lzh.nonview.updateplugin/UpdatePlugin/2.4/jars" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/incremental" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/incremental-safeguard" />
       <excludeFolder url="file://$MODULE_DIR$/build/intermediates/jniLibs" />
@@ -133,10 +133,10 @@
     <orderEntry type="library" exported="" name="rxpermissions-0.9.2" level="project" />
     <orderEntry type="library" exported="" scope="TEST" name="junit-4.12" level="project" />
     <orderEntry type="library" exported="" name="support-vector-drawable-25.1.0" level="project" />
-    <orderEntry type="library" exported="" name="UpdatePlugin-2.3.0" level="project" />
     <orderEntry type="library" exported="" name="butterknife-8.5.1" level="project" />
     <orderEntry type="library" exported="" name="leakcanary-watcher-1.4-beta2" level="project" />
     <orderEntry type="library" exported="" name="appcompat-v7-25.1.0" level="project" />
+    <orderEntry type="library" exported="" name="UpdatePlugin-2.4" level="project" />
     <orderEntry type="library" exported="" name="support-core-utils-25.1.0" level="project" />
     <orderEntry type="library" exported="" name="leakcanary-android-1.4-beta2" level="project" />
   </component>

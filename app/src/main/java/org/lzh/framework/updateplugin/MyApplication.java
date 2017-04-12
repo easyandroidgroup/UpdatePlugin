@@ -64,8 +64,8 @@ public class MyApplication extends Application {
                 .checkCB(new UpdateCheckCB() {
 
                     @Override
-                    public void onCheckError(int code, String errorMsg) {
-                        ToastTool.show("更新失败：code:" + code + ",errorMsg:" + errorMsg);
+                    public void onCheckError(Throwable t) {
+                        ToastTool.show("更新失败：code:" + t.getMessage());
 //                        Toast.makeText(MyApplication.this, "更新失败：code:" + code + ",errorMsg:" + errorMsg, Toast.LENGTH_SHORT).show();
                     }
 
@@ -118,8 +118,8 @@ public class MyApplication extends Application {
                     }
 
                     @Override
-                    public void onUpdateError(int code, String errorMsg) {
-                        ToastTool.show("下载失败：code:" + code + ",errorMsg:" + errorMsg);
+                    public void onUpdateError(Throwable t) {
+                        ToastTool.show("下载失败:" + t.getMessage());
                     }
                 })
                 // 自定义更新检查器。

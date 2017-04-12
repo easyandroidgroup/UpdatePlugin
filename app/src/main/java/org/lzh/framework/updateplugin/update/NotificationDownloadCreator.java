@@ -64,7 +64,7 @@ public class NotificationDownloadCreator implements DownloadCreator {
         }
 
         @Override
-        public void onUpdateError(int code, String errorMsg) {
+        public void onUpdateError(Throwable t) {
             // 下载时出错。运行于主线程
             manager.cancel(id);
         }
