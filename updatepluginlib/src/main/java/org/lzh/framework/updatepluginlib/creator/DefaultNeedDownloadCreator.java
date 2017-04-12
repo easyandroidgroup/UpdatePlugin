@@ -41,7 +41,7 @@ public class DefaultNeedDownloadCreator implements DownloadCreator {
             }
 
             @Override
-            public void onUpdateError(int code, String errorMsg) {
+            public void onUpdateError(Throwable t) {
                 SafeDialogOper.safeDismissDialog(dialog);
             }
         };

@@ -40,7 +40,7 @@ public final class Updater {
         UpdateWorker checkWorker = builder.getCheckWorker();
         if (checkWorker.isRunning()) {
             Log.e("Updater","Already have a update task running");
-            checkCB.onCheckError(-1,"Already have a update task running");
+            checkCB.onCheckError(new RuntimeException("Already have a update task running"));
             return;
         }
         checkWorker.setBuilder(builder);
@@ -71,7 +71,7 @@ public final class Updater {
         DownloadWorker downloadWorker = builder.getDownloadWorker();
         if (downloadWorker.isRunning()) {
             Log.e("Updater","Already have a download task running");
-            downloadCB.onUpdateError(-1,"Already have a download task running");
+            downloadCB.onUpdateError(new RuntimeException("Already have a download task running"));
             return;
         }
 

@@ -58,12 +58,8 @@ public abstract class UpdateWorker extends UnifiedWorker implements Runnable,Rec
             } else {
                 sendNoUpdate();
             }
-        } catch (HttpException he) {
-            he.printStackTrace();
-            sendOnErrorMsg(he.getCode(),he.getErrorMsg());
-        } catch (Exception e) {
-            e.printStackTrace();
-            sendOnErrorMsg(-1,e.getMessage());
+        } catch (Throwable e) {
+            sendOnErrorMsg(e);
         } finally {
             setRunning(false);
         }
@@ -101,13 +97,13 @@ public abstract class UpdateWorker extends UnifiedWorker implements Runnable,Rec
         });
     }
 
-    private void sendOnErrorMsg(final int code, final String errorMsg) {
+    private void sendOnErrorMsg(final Throwable t) {
         if (checkCB == null) return;
         Utils.getMainHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (checkCB == null) return;
-                checkCB.onCheckError(code,errorMsg);
+                checkCB.onCheckError(t);
                 release();
             }
         });

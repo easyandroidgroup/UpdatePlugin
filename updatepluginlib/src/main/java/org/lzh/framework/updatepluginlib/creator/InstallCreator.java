@@ -38,7 +38,7 @@ public abstract class InstallCreator implements Recyclable {
         if (fileChecker == null || fileChecker.checkAfterDownload(update,filename)) {
             Utils.installApk(UpdateConfig.getConfig().getContext(),filename);
         } else {
-            checkCB.onCheckError(-1,String.format("apk %s checked failed",filename));
+            checkCB.onCheckError(new RuntimeException(String.format("apk %s checked failed",filename)));
         }
         release();
     }

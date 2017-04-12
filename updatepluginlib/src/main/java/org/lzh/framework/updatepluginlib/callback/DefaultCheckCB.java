@@ -71,12 +71,12 @@ public final class DefaultCheckCB implements UpdateCheckCB,Recyclable {
     }
 
     /**
-     * Receive and pass check_error event send by {@link UpdateWorker#sendOnErrorMsg(int, String)}
+     * Receive and pass check_error event send by {@link UpdateWorker#sendOnErrorMsg(Throwable)}
      */
     @Override
-    public void onCheckError(int code, String errorMsg) {
+    public void onCheckError(Throwable t) {
         if (checkCB != null) {
-            checkCB.onCheckError(code,errorMsg);
+            checkCB.onCheckError(t);
         }
 
         release();

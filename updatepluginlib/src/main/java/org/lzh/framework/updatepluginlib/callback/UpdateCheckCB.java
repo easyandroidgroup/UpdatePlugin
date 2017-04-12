@@ -24,12 +24,7 @@ public interface UpdateCheckCB {
      */
     void noUpdate();
 
-    /**
-     * http check error,
-     * @param code http code
-     * @param errorMsg http error msg
-     */
-    void onCheckError(int code, String errorMsg);
+    void onCheckError(Throwable t);
 
     /**
      * to be invoked by user press cancel button.

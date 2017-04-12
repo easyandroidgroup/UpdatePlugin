@@ -47,12 +47,8 @@ public abstract class DownloadWorker extends UnifiedWorker implements Runnable,R
             sendUpdateStart();
             download(url,cacheFileName);
             sendUpdateComplete(cacheFileName);
-        } catch (HttpException he) {
-            he.printStackTrace();
-            sendUpdateError(he.getCode(),he.getErrorMsg());
-        } catch (Exception e) {
-            e.printStackTrace();
-            sendUpdateError(-1,e.getMessage());
+        } catch (Throwable e) {
+            sendUpdateError(e);
         } finally {
             setRunning(false);
         }
@@ -97,14 +93,14 @@ public abstract class DownloadWorker extends UnifiedWorker implements Runnable,R
         });
     }
 
-    private void sendUpdateError (final int code, final String errorMsg) {
+    private void sendUpdateError (final Throwable t) {
         if (downloadCB == null) return;
 
         Utils.getMainHandler().post(new Runnable() {
             @Override
             public void run() {
                 if (downloadCB == null) return;
-                downloadCB.onUpdateError(code,errorMsg);
+                downloadCB.onUpdateError(t);
                 release();
             }
         });

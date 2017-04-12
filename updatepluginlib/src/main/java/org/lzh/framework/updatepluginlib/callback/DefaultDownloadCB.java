@@ -116,16 +116,16 @@ public final class DefaultDownloadCB implements UpdateDownloadCB ,Recyclable {
     }
 
     /**
-     * Receive and pass download_error event send by {@link DownloadWorker#sendUpdateError(int, String)}
+     * Receive and pass download_error event send by {@link DownloadWorker#sendUpdateError(Throwable)}
      */
     @Override
-    public void onUpdateError(int code,String errorMsg) {
+    public void onUpdateError(Throwable t) {
         if (downloadCB != null) {
-            downloadCB.onUpdateError(code,errorMsg);
+            downloadCB.onUpdateError(t);
         }
 
         if (innerCB != null) {
-            innerCB.onUpdateError(code,errorMsg);
+            innerCB.onUpdateError(t);
         }
 
         release();
