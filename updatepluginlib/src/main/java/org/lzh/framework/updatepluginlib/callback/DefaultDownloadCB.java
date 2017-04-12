@@ -47,12 +47,16 @@ public final class DefaultDownloadCB implements UpdateDownloadCB ,Recyclable {
      */
     @Override
     public void onUpdateStart() {
-        if (downloadCB != null) {
-            downloadCB.onUpdateStart();
-        }
-        innerCB = getInnerCB();
-        if (innerCB != null) {
-            innerCB.onUpdateStart();
+        try {
+            if (downloadCB != null) {
+                downloadCB.onUpdateStart();
+            }
+            innerCB = getInnerCB();
+            if (innerCB != null) {
+                innerCB.onUpdateStart();
+            }
+        } catch (Throwable t) {
+            onUpdateError(t);
         }
     }
 
@@ -73,17 +77,21 @@ public final class DefaultDownloadCB implements UpdateDownloadCB ,Recyclable {
      */
     @Override
     public void onUpdateComplete(File file) {
-        if (downloadCB != null) {
-            downloadCB.onUpdateComplete(file);
+        try {
+            if (downloadCB != null) {
+                downloadCB.onUpdateComplete(file);
+            }
+
+            if (innerCB != null) {
+                innerCB.onUpdateComplete(file);
+            }
+
+            showInstallDialogIfNeed(file);
+
+            release();
+        } catch (Throwable t) {
+            onUpdateError(t);
         }
-
-        if (innerCB != null) {
-            innerCB.onUpdateComplete(file);
-        }
-
-        showInstallDialogIfNeed(file);
-
-        release();
     }
 
     public void showInstallDialogIfNeed(File file) {
@@ -106,13 +114,18 @@ public final class DefaultDownloadCB implements UpdateDownloadCB ,Recyclable {
      */
     @Override
     public void onUpdateProgress(long current,long total) {
-        if (downloadCB != null) {
-            downloadCB.onUpdateProgress(current,total);
+        try {
+            if (downloadCB != null) {
+                downloadCB.onUpdateProgress(current,total);
+            }
+
+            if (innerCB != null) {
+                innerCB.onUpdateProgress(current,total);
+            }
+        } catch (Throwable t) {
+            onUpdateError(t);
         }
 
-        if (innerCB != null) {
-            innerCB.onUpdateProgress(current,total);
-        }
     }
 
     /**
@@ -120,15 +133,18 @@ public final class DefaultDownloadCB implements UpdateDownloadCB ,Recyclable {
      */
     @Override
     public void onUpdateError(Throwable t) {
-        if (downloadCB != null) {
-            downloadCB.onUpdateError(t);
+        try {
+            if (downloadCB != null) {
+                downloadCB.onUpdateError(t);
+            }
+            if (innerCB != null) {
+                innerCB.onUpdateError(t);
+            }
+        } catch (Throwable ignore) {
+            ignore.printStackTrace();
+        } finally {
+            release();
         }
-
-        if (innerCB != null) {
-            innerCB.onUpdateError(t);
-        }
-
-        release();
     }
 
     @Override

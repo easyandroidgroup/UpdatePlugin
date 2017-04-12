@@ -27,8 +27,12 @@ public final class DefaultCheckCB implements UpdateCheckCB,Recyclable {
 
     @Override
     public void onCheckStart() {
-        if (checkCB != null) {
-            checkCB.onCheckStart();
+        try {
+            if (checkCB != null) {
+                checkCB.onCheckStart();
+            }
+        } catch (Throwable t) {
+            onCheckError(t);
         }
     }
 
@@ -38,24 +42,28 @@ public final class DefaultCheckCB implements UpdateCheckCB,Recyclable {
      */
     @Override
     public void hasUpdate(Update update) {
-        if (checkCB != null) {
-            checkCB.hasUpdate(update);
+        try {
+            if (checkCB != null) {
+                checkCB.hasUpdate(update);
+            }
+
+            if (!builder.getStrategy().isShowUpdateDialog(update)) {
+                Updater.getInstance().downUpdate(update,builder);
+                return;
+            }
+
+            Activity current = ActivityManager.get().topActivity();
+
+            DialogCreator creator = builder.getUpdateDialogCreator();
+            creator.setBuilder(builder);
+            creator.setCheckCB(builder.getCheckCB());
+            Dialog dialog = creator.create(update,current);
+            SafeDialogOper.safeShowDialog(dialog);
+
+            release();
+        } catch (Throwable t) {
+            onCheckError(t);
         }
-
-        if (!builder.getStrategy().isShowUpdateDialog(update)) {
-            Updater.getInstance().downUpdate(update,builder);
-            return;
-        }
-
-        Activity current = ActivityManager.get().topActivity();
-
-        DialogCreator creator = builder.getUpdateDialogCreator();
-        creator.setBuilder(builder);
-        creator.setCheckCB(builder.getCheckCB());
-        Dialog dialog = creator.create(update,current);
-        SafeDialogOper.safeShowDialog(dialog);
-
-        release();
     }
 
     /**
@@ -63,11 +71,15 @@ public final class DefaultCheckCB implements UpdateCheckCB,Recyclable {
      */
     @Override
     public void noUpdate() {
-        if (checkCB != null) {
-            checkCB.noUpdate();
+        try {
+            if (checkCB != null) {
+                checkCB.noUpdate();
+            }
+            release();
+        } catch (Throwable t) {
+            onCheckError(t);
         }
 
-        release();
     }
 
     /**
@@ -75,11 +87,15 @@ public final class DefaultCheckCB implements UpdateCheckCB,Recyclable {
      */
     @Override
     public void onCheckError(Throwable t) {
-        if (checkCB != null) {
-            checkCB.onCheckError(t);
+        try {
+            if (checkCB != null) {
+                checkCB.onCheckError(t);
+            }
+        } catch (Throwable ignore) {
+            ignore.printStackTrace();
+        } finally {
+            release();
         }
-
-        release();
     }
 
     /**
@@ -87,20 +103,27 @@ public final class DefaultCheckCB implements UpdateCheckCB,Recyclable {
      */
     @Override
     public void onUserCancel() {
-        if (checkCB != null) {
-            checkCB.onUserCancel();
+        try {
+            if (checkCB != null) {
+                checkCB.onUserCancel();
+            }
+            release();
+        } catch (Throwable t) {
+            onCheckError(t);
         }
 
-        release();
     }
 
     @Override
     public void onCheckIgnore(Update update) {
-        if (checkCB != null) {
-            checkCB.onCheckIgnore(update);
+        try {
+            if (checkCB != null) {
+                checkCB.onCheckIgnore(update);
+            }
+            release();
+        } catch (Throwable t) {
+            onCheckError(t);
         }
-
-        release();
     }
 
     @Override
