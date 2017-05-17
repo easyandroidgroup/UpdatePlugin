@@ -1,6 +1,7 @@
 package org.lzh.framework.updateplugin;
 
 import android.app.Application;
+import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -115,6 +116,7 @@ public class MyApplication extends Application {
 
                     @Override
                     public void onUpdateProgress(long current, long total) {
+                        System.out.println("current = [" + current + "], total = [" + total + "]");
                     }
 
                     @Override

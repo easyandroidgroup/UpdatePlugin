@@ -49,6 +49,7 @@ public class DefaultDownloadWorker extends DownloadWorker {
                 long end = System.currentTimeMillis();
                 if (end - start > 1000) {
                     sendUpdateProgress(offset,contentLength);
+                    start = System.currentTimeMillis();
                 }
             }
         } finally {
