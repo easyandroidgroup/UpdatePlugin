@@ -6,17 +6,13 @@ android:
   components:
     - platform-tools
     - tools
-    - build-tools-23.0.3
-    - android-22
+    - build-tools-25.0.1
     - android-23
-    - sys-img-armeabi-v7a-android-22
+    - sys-img-armeabi-v7a-android-23
     - extra-android-m2repository
+  licenses:
+    - 'android-sdk-preview-license-52d11cd2'
+    - 'android-sdk-license-.+'
+    - 'google-gdk-license-.+'
 
-before_script:
-  # Create and start emulator
-  - echo no | android create avd --force -n test -t android-22 --abi armeabi-v7a
-  - emulator -avd test -no-skin -no-audio -no-window &
-  - android-wait-for-emulator
-  - adb shell input keyevent 82 &
-
-script: ./gradlew connectedAndroidTest --stacktrace
+script: ./gradlew clean assemble --stacktrace
