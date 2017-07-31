@@ -30,10 +30,7 @@ dependencies {
 
 ### 使用方式：
 
-[查看wiki](https://github.com/yjfnypeu/UpdatePlugin/wiki)
-
-### 流程图
-![](./screenshots/updatePlugin.png)
+[请访问wiki查看具体使用方法](https://github.com/yjfnypeu/UpdatePlugin/wiki)
 
 流程图中的UpdateWorker/UpdateParser/UpdateChecker等均为框架提供的对外接口,如需要对框架根据自己的业务需要进行定制,均可实现这些接口并设置到UpdateConfig或者UpdateBuilder中进行定制使用,
 
