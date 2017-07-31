@@ -31,6 +31,9 @@ dependencies {
 
 [请访问wiki查看具体使用方法](https://github.com/yjfnypeu/UpdatePlugin/wiki)
 
+### 流程图
+![](./screenshots/updatePlugin.png)
+
 ### 联系作者
 email: 470368500@qq.com
 
