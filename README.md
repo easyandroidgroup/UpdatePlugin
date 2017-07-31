@@ -23,11 +23,6 @@ dependencies {
 }
 ```
 
-### 效果展示
-
-- 使用默认更新：
-
-
 ### 使用方式：
 
 [请访问wiki查看具体使用方法](https://github.com/yjfnypeu/UpdatePlugin/wiki)
