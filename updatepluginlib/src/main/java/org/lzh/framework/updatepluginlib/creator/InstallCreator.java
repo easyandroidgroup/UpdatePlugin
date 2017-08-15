@@ -18,8 +18,10 @@ package org.lzh.framework.updatepluginlib.creator;
 import android.app.Activity;
 import android.app.Dialog;
 
+import org.lzh.framework.updatepluginlib.UpdateBuilder;
 import org.lzh.framework.updatepluginlib.callback.UpdateCheckCB;
 import org.lzh.framework.updatepluginlib.model.Update;
+import org.lzh.framework.updatepluginlib.strategy.InstallStrategy;
 import org.lzh.framework.updatepluginlib.util.ActivityManager;
 import org.lzh.framework.updatepluginlib.util.Recyclable;
 import org.lzh.framework.updatepluginlib.util.UpdatePreference;
@@ -27,16 +29,11 @@ import org.lzh.framework.updatepluginlib.util.Utils;
 
 public abstract class InstallCreator implements Recyclable {
 
-    private UpdateCheckCB checkCB;
-    private FileChecker fileChecker;
+    private UpdateBuilder builder;
     private Update update;
 
-    public void setCheckCB(UpdateCheckCB checkCB) {
-        this.checkCB = checkCB;
-    }
-
-    public void setFileChecker(FileChecker checker) {
-        this.fileChecker = checker;
+    public void setBuilder(UpdateBuilder builder) {
+        this.builder = builder;
     }
 
     public void setUpdate(Update update) {
@@ -50,10 +47,10 @@ public abstract class InstallCreator implements Recyclable {
      * @param filename the absolutely file name that downloaded
      */
     public void sendToInstall(String filename) {
-        if (fileChecker == null || fileChecker.checkAfterDownload(update,filename)) {
-            Utils.installApk(ActivityManager.get().getApplicationContext(), filename);
+        if (builder.getFileChecker().checkAfterDownload(update,filename)) {
+            builder.getInstallStrategy().install(ActivityManager.get().getApplicationContext(), filename);
         } else {
-            checkCB.onCheckError(new RuntimeException(String.format("apk %s checked failed",filename)));
+            builder.getCheckCB().onCheckError(new RuntimeException(String.format("apk %s checked failed",filename)));
         }
         release();
     }
@@ -62,16 +59,16 @@ public abstract class InstallCreator implements Recyclable {
      * request cancel install action
      */
     public void sendUserCancel() {
-        if (this.checkCB != null) {
-            this.checkCB.onUserCancel();
+        if (builder.getCheckCB() != null) {
+            builder.getCheckCB().onUserCancel();
         }
 
         release();
     }
 
     public void sendCheckIgnore(Update update) {
-        if (this.checkCB != null) {
-            this.checkCB.onCheckIgnore(update);
+        if (builder.getCheckCB() != null) {
+            builder.getCheckCB().onCheckIgnore(update);
         }
         UpdatePreference.saveIgnoreVersion(update.getVersionCode());
         release();
@@ -79,8 +76,7 @@ public abstract class InstallCreator implements Recyclable {
 
     @Override
     public void release() {
-        this.checkCB = null;
-        this.fileChecker = null;
+        this.builder = null;
         this.update = null;
     }
 }

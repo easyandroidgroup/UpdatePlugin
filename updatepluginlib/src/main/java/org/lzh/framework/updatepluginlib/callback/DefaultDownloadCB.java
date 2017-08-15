@@ -113,8 +113,7 @@ public final class DefaultDownloadCB implements UpdateDownloadCB ,Recyclable {
         Activity current = ActivityManager.get().topActivity();
 
         InstallCreator creator = builder.getInstallDialogCreator();
-        creator.setCheckCB(builder.getCheckCB());
-        creator.setFileChecker(builder.getFileChecker());
+        creator.setBuilder(builder);
         creator.setUpdate(update);
         if (builder.getStrategy().isAutoInstall()) {
             creator.sendToInstall(file.getAbsolutePath());
