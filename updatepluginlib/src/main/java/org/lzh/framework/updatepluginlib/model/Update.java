@@ -18,11 +18,6 @@ package org.lzh.framework.updatepluginlib.model;
 public class Update {
 
     /**
-     * original data.
-     */
-    private String original;
-
-    /**
      * indicated whether or not to force update,update dialog should not be disable by back key or touch outside if set true
      */
     private boolean forced;
@@ -51,10 +46,6 @@ public class Update {
      * indicated whether or not to update this version
      */
     private boolean ignore;
-
-    public Update(String original) {
-        this.original = original;
-    }
 
     public boolean isForced() {
         return forced;
@@ -112,14 +103,9 @@ public class Update {
         this.versionName = versionName;
     }
 
-    public String getOriginal() {
-        return original;
-    }
-
     @Override
     public String toString() {
         return "Update{" +
-                "original='" + original + '\'' +
                 ", forced=" + forced +
                 ", updateContent='" + updateContent + '\'' +
                 ", updateUrl='" + updateUrl + '\'' +

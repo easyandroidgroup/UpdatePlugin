@@ -7,8 +7,10 @@ import android.widget.Button;
 
 import com.tbruyelle.rxpermissions.RxPermissions;
 
+import org.json.JSONObject;
 import org.lzh.framework.updateplugin.update.AllDialogShowStrategy;
 import org.lzh.framework.updateplugin.update.CustomApkFileCreator;
+import org.lzh.framework.updateplugin.update.LogCallback;
 import org.lzh.framework.updateplugin.update.NotificationDownloadCreator;
 import org.lzh.framework.updateplugin.update.NotificationInstallCreator;
 import org.lzh.framework.updateplugin.update.NotificationUpdateCreator;
@@ -16,6 +18,9 @@ import org.lzh.framework.updateplugin.update.OkhttpCheckWorker;
 import org.lzh.framework.updateplugin.update.OkhttpDownloadWorker;
 import org.lzh.framework.updateplugin.widget.CheckedView;
 import org.lzh.framework.updatepluginlib.UpdateBuilder;
+import org.lzh.framework.updatepluginlib.UpdateConfig;
+import org.lzh.framework.updatepluginlib.model.Update;
+import org.lzh.framework.updatepluginlib.model.UpdateParser;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -30,6 +35,7 @@ public class SampleActivity extends Activity {
     @BindView(R.id.has_update_notice) CheckedView hasUpdateNotice;                  // 选择使用的检测到有更新时的提示
     @BindView(R.id.download_complete_notice) CheckedView downloadCompleteNotice;    // 选择使用的下载完成后的提示
     @BindView(R.id.download_worker) CheckedView downloadWorker;                     // 选择使用的apk下载网络任务
+    @BindView(R.id.create_new_config) CheckedView newConfig;                     // 选择使用的apk下载网络任务
     boolean isPermissionGrant;// 程序是否被允许持有写入权限
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +61,9 @@ public class SampleActivity extends Activity {
     @OnClick(R.id.start_update)
     void onStartClick () {
         UpdateBuilder builder = UpdateBuilder.create();
+        if (!newConfig.isDefaultSelected()) {
+            builder = UpdateBuilder.create(createNewConfig());
+        }
         // 根据各项是否选择使用默认配置进行使用更新。
         if (!updateWorker.isDefaultSelected()) {
             builder.checkWorker(new OkhttpCheckWorker());
@@ -83,11 +92,40 @@ public class SampleActivity extends Activity {
         if (!downloadWorker.isDefaultSelected()) {
             builder.downloadWorker(new OkhttpDownloadWorker());
         }
-        /**
+        /*
          * 以上为常用的需要定制的功能模块。如果需要更多的定制需求。请参考
          * {@link org.lzh.framework.updatepluginlib.UpdateConfig}
          * 类中所使用的其他模块的默认实现方式。
          * */
         builder.check();
+    }
+
+    private UpdateConfig createNewConfig() {
+        return UpdateConfig.createConfig()
+                .checkCB(new LogCallback())
+                .downloadCB(new LogCallback())
+                .url("https://raw.githubusercontent.com/yjfnypeu/UpdatePlugin/master/update.json")
+                .jsonParser(new UpdateParser() {
+                    @Override
+                    public Update parse(String httpResponse) throws Exception {
+                        JSONObject object = new JSONObject(httpResponse);
+                        Update update = new Update();
+                        // 此apk包的更新时间
+                        update.setUpdateTime(System.currentTimeMillis());
+                        // 此apk包的下载地址
+                        update.setUpdateUrl(object.optString("update_url"));
+                        // 此apk包的版本号
+                        update.setVersionCode(object.optInt("update_ver_code"));
+                        // 此apk包的版本名称
+                        update.setVersionName(object.optString("update_ver_name"));
+                        // 此apk包的更新内容
+                        update.setUpdateContent(object.optString("update_content"));
+                        // 此apk包是否为强制更新
+                        update.setForced(false);
+                        // 是否显示忽略此次版本更新按钮
+                        update.setIgnore(object.optBoolean("ignore_able",false));
+                        return update;
+                    }
+                });
     }
 }

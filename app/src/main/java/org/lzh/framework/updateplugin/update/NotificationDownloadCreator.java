@@ -44,19 +44,19 @@ public class NotificationDownloadCreator implements DownloadCreator {
         }
 
         @Override
-        public void onUpdateStart() {
+        public void onDownloadStart() {
             // 下载开始时的通知回调。运行于主线程
             manager.notify(id,builder.build());
         }
 
         @Override
-        public void onUpdateComplete(File file) {
+        public void onDownloadComplete(File file) {
             // 下载完成的回调。运行于主线程
             manager.cancel(id);
         }
 
         @Override
-        public void onUpdateProgress(long current, long total) {
+        public void onDownloadProgress(long current, long total) {
             // 下载过程中的进度信息。在此获取进度信息。运行于主线程
             int progress = (int) (current * 1f / total * 100);
             builder.setProgress(100,progress,false);
@@ -64,7 +64,7 @@ public class NotificationDownloadCreator implements DownloadCreator {
         }
 
         @Override
-        public void onUpdateError(Throwable t) {
+        public void onDownloadError(Throwable t) {
             // 下载时出错。运行于主线程
             manager.cancel(id);
         }

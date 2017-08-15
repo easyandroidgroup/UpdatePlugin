@@ -41,22 +41,22 @@ public class DefaultNeedDownloadCreator implements DownloadCreator {
         SafeDialogOper.safeShowDialog(dialog);
         return new UpdateDownloadCB() {
             @Override
-            public void  onUpdateStart() {
+            public void onDownloadStart() {
             }
 
             @Override
-            public void onUpdateComplete(File file) {
+            public void onDownloadComplete(File file) {
                 SafeDialogOper.safeDismissDialog(dialog);
             }
 
             @Override
-            public void onUpdateProgress(long current, long total) {
+            public void onDownloadProgress(long current, long total) {
                 int percent = (int) (current * 1.0f / total * 100);
                 dialog.setProgress(percent);
             }
 
             @Override
-            public void onUpdateError(Throwable t) {
+            public void onDownloadError(Throwable t) {
                 SafeDialogOper.safeDismissDialog(dialog);
             }
         };

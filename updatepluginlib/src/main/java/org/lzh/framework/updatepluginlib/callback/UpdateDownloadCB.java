@@ -23,11 +23,11 @@ import java.io.File;
  */
 public interface UpdateDownloadCB {
 
-    void onUpdateStart();
+    void onDownloadStart();
 
-    void onUpdateComplete(File file);
+    void onDownloadComplete(File file);
 
-    void onUpdateProgress(long current, long total);
+    void onDownloadProgress(long current, long total);
 
-    void onUpdateError(Throwable t);
+    void onDownloadError(Throwable t);
 }

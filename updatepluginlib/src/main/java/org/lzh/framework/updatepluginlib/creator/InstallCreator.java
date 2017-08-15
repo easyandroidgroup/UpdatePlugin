@@ -49,7 +49,7 @@ public abstract class InstallCreator implements Recyclable {
      * request to install this apk file
      * @param filename the absolutely file name that downloaded
      */
-    protected void sendToInstall(String filename) {
+    public void sendToInstall(String filename) {
         if (fileChecker == null || fileChecker.checkAfterDownload(update,filename)) {
             Utils.installApk(ActivityManager.get().getApplicationContext(), filename);
         } else {
@@ -61,7 +61,7 @@ public abstract class InstallCreator implements Recyclable {
     /**
      * request cancel install action
      */
-    protected void sendUserCancel() {
+    public void sendUserCancel() {
         if (this.checkCB != null) {
             this.checkCB.onUserCancel();
         }
@@ -69,7 +69,7 @@ public abstract class InstallCreator implements Recyclable {
         release();
     }
 
-    protected void sendCheckIgnore(Update update) {
+    public void sendCheckIgnore(Update update) {
         if (this.checkCB != null) {
             this.checkCB.onCheckIgnore(update);
         }

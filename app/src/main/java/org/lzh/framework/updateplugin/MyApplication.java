@@ -4,6 +4,7 @@ import android.app.Application;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.lzh.framework.updateplugin.update.LogCallback;
 import org.lzh.framework.updateplugin.widget.ToastTool;
 import org.lzh.framework.updatepluginlib.UpdateConfig;
 import org.lzh.framework.updatepluginlib.callback.UpdateCheckCB;
@@ -25,6 +26,7 @@ public class MyApplication extends Application {
         // UpdateConfig为全局配置。当在其他页面中。使用UpdateBuilder进行检查更新时。
         // 对于没传的参数，会默认使用UpdateConfig中的全局配置
         ToastTool.init(this);
+        LogCallback callback = new LogCallback();
         UpdateConfig.getConfig()
                 // 必填：数据更新接口,url与checkEntity两种方式任选一种填写
                 .url("https://raw.githubusercontent.com/yjfnypeu/UpdatePlugin/master/update.json")
@@ -37,7 +39,7 @@ public class MyApplication extends Application {
                          * 一个update对象返回即可。更新启动时框架内部即可根据update对象的数据进行处理
                          */
                         JSONObject object = new JSONObject(response);
-                        Update update = new Update(response);
+                        Update update = new Update();
                         // 此apk包的更新时间
                         update.setUpdateTime(System.currentTimeMillis());
                         // 此apk包的下载地址
@@ -56,68 +58,10 @@ public class MyApplication extends Application {
                     }
                 })
                 // TODO: 2016/5/11 除了以上两个参数为必填。以下的参数均为非必填项。
-                .checkCB(new UpdateCheckCB() {
-
-                    @Override
-                    public void onCheckError(Throwable t) {
-                        ToastTool.show("更新失败：code:" + t.getMessage());
-//                        Toast.makeText(MyApplication.this, "更新失败：code:" + code + ",errorMsg:" + errorMsg, Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onUserCancel() {
-                        ToastTool.show("用户取消更新");
-                    }
-
-                    @Override
-                    public void onCheckIgnore(Update update) {
-                        ToastTool.show("用户忽略此版本更新");
-                    }
-
-                    @Override
-                    public void onCheckStart() {
-                        // 此方法的回调所处线程异于其他回调。其他回调所处线程为UI线程。
-                        // 此方法所处线程为你启动更新任务是所在线程
-                        Utils.getMainHandler().post(new Runnable() {
-                            @Override
-                            public void run() {
-                                ToastTool.show("启动更新任务");
-                            }
-                        });
-                    }
-
-                    @Override
-                    public void hasUpdate(Update update) {
-                        ToastTool.show("检查到有更新");
-                    }
-
-                    @Override
-                    public void noUpdate() {
-                        ToastTool.show("无更新");
-                    }
-                })
+                // 检查更新接口是否有新版本更新的回调。
+                .checkCB(callback)
                 // apk下载的回调
-                .downloadCB(new UpdateDownloadCB(){
-                    @Override
-                    public void onUpdateStart() {
-                        ToastTool.show("下载开始");
-                    }
-
-                    @Override
-                    public void onUpdateComplete(File file) {
-                        ToastTool.show("下载完成");
-                    }
-
-                    @Override
-                    public void onUpdateProgress(long current, long total) {
-                        System.out.println("current = [" + current + "], total = [" + total + "]");
-                    }
-
-                    @Override
-                    public void onUpdateError(Throwable t) {
-                        ToastTool.show("下载失败:" + t.getMessage());
-                    }
-                })
+                .downloadCB(callback)
                 // 自定义更新检查器。
                 /*.updateChecker(new UpdateChecker() {
                     @Override

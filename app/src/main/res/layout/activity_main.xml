@@ -54,7 +54,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
-
+    <org.lzh.framework.updateplugin.widget.CheckedView
+        android:id="@+id/create_new_config"
+        app:title="使用单独的更新配置。"
+        app:subtitle="新建的UpdateConfig做更新默认配置"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
     <Button
         android:id="@+id/start_update"

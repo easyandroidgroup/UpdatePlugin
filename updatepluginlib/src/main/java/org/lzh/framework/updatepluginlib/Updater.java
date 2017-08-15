@@ -86,7 +86,7 @@ public final class Updater {
         DownloadWorker downloadWorker = builder.getDownloadWorker();
         if (downloadWorker.isRunning()) {
             Log.e("Updater","Already have a download task running");
-            downloadCB.onUpdateError(new RuntimeException("Already have a download task running"));
+            downloadCB.onDownloadError(new RuntimeException("Already have a download task running"));
             return;
         }
 

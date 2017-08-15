@@ -52,22 +52,22 @@ checkCB(new UpdateCheckCB() {
 ```
 downloadCB(new UpdateDownloadCB() {
     @Override
-    public void onUpdateStart() {
+    public void onDownloadStart() {
         // 下载开始 
     }
     
     @Override
-    public void onUpdateComplete(File file) {
+    public void onDownloadComplete(File file) {
         // 下载完成 
     }
     
     @Override
-    public void onUpdateProgress(long current, long total) {
+    public void onDownloadProgress(long current, long total) {
         // 下载进度 
     }
     
     @Override
-    public void onUpdateError(int code, String errorMsg) {
+    public void onDownloadError(int code, String errorMsg) {
         // 下载apk错误 
     }
 })

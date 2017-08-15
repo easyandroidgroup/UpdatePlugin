@@ -78,7 +78,7 @@ public abstract class DownloadWorker extends UnifiedWorker implements Runnable,R
             @Override
             public void run() {
                 if (downloadCB == null) return;
-                downloadCB.onUpdateStart();
+                downloadCB.onDownloadStart();
             }
         });
     }
@@ -90,7 +90,7 @@ public abstract class DownloadWorker extends UnifiedWorker implements Runnable,R
             @Override
             public void run() {
                 if (downloadCB == null) return;
-                downloadCB.onUpdateProgress(current, total);
+                downloadCB.onDownloadProgress(current, total);
             }
         });
     }
@@ -102,7 +102,7 @@ public abstract class DownloadWorker extends UnifiedWorker implements Runnable,R
             @Override
             public void run() {
                 if (downloadCB == null) return;
-                downloadCB.onUpdateComplete(file);
+                downloadCB.onDownloadComplete(file);
                 release();
             }
         });
@@ -115,7 +115,7 @@ public abstract class DownloadWorker extends UnifiedWorker implements Runnable,R
             @Override
             public void run() {
                 if (downloadCB == null) return;
-                downloadCB.onUpdateError(t);
+                downloadCB.onDownloadError(t);
                 release();
             }
         });
