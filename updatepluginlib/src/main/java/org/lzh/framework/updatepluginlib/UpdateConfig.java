@@ -38,6 +38,8 @@ import org.lzh.framework.updatepluginlib.model.DefaultChecker;
 import org.lzh.framework.updatepluginlib.model.Update;
 import org.lzh.framework.updatepluginlib.model.UpdateChecker;
 import org.lzh.framework.updatepluginlib.model.UpdateParser;
+import org.lzh.framework.updatepluginlib.strategy.DefaultInstallStrategy;
+import org.lzh.framework.updatepluginlib.strategy.InstallStrategy;
 import org.lzh.framework.updatepluginlib.strategy.UpdateStrategy;
 import org.lzh.framework.updatepluginlib.strategy.WifiFirstStrategy;
 
@@ -100,6 +102,11 @@ public class UpdateConfig {
      * To check out if the apk file is validly.
      */
     private FileChecker fileChecker;
+
+    /**
+     * To make your owner install strategy.
+     */
+    private InstallStrategy installStrategy;
 
     private static UpdateConfig DEFAULT;
 
@@ -188,7 +195,12 @@ public class UpdateConfig {
     }
 
     public UpdateConfig strategy(UpdateStrategy strategy) {
-         this.strategy = strategy;
+        this.strategy = strategy;
+        return this;
+    }
+
+    public UpdateConfig installStrategy(InstallStrategy installStrategy) {
+        this.installStrategy = installStrategy;
         return this;
     }
 
@@ -267,6 +279,13 @@ public class UpdateConfig {
             fileCreator = new DefaultFileCreator();
         }
         return fileCreator;
+    }
+
+    public InstallStrategy getInstallStrategy() {
+        if (installStrategy == null) {
+            installStrategy = new DefaultInstallStrategy();
+        }
+        return installStrategy;
     }
 
     public UpdateCheckCB getCheckCB() {

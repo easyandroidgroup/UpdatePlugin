@@ -27,6 +27,7 @@ import org.lzh.framework.updatepluginlib.creator.InstallCreator;
 import org.lzh.framework.updatepluginlib.model.CheckEntity;
 import org.lzh.framework.updatepluginlib.model.UpdateChecker;
 import org.lzh.framework.updatepluginlib.model.UpdateParser;
+import org.lzh.framework.updatepluginlib.strategy.InstallStrategy;
 import org.lzh.framework.updatepluginlib.strategy.UpdateStrategy;
 
 public class UpdateBuilder {
@@ -44,6 +45,7 @@ public class UpdateBuilder {
     private ApkFileCreator fileCreator;
     private UpdateChecker updateChecker;
     private FileChecker fileChecker;
+    private InstallStrategy installStrategy;
     private UpdateConfig config;
     
     private UpdateBuilder(UpdateConfig config) {
@@ -137,6 +139,11 @@ public class UpdateBuilder {
         return this;
     }
 
+    public UpdateBuilder installStrategy(InstallStrategy installStrategy) {
+        this.installStrategy = installStrategy;
+        return this;
+    }
+
     public void check() {
         Updater.getInstance().checkUpdate(this);
     }
@@ -227,6 +234,13 @@ public class UpdateBuilder {
             downloadCB = config.getDownloadCB();
         }
         return downloadCB;
+    }
+
+    public InstallStrategy getInstallStrategy() {
+        if (installStrategy == null) {
+            installStrategy = config.getInstallStrategy();
+        }
+        return installStrategy;
     }
 
 }
