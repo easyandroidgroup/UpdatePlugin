@@ -35,11 +35,11 @@ public abstract class DownloadWorker extends UnifiedWorker implements Runnable,R
     /**
      * The instance of {@link org.lzh.framework.updatepluginlib.callback.DefaultDownloadCB}
      */
-    protected UpdateDownloadCB downloadCB;
+    private UpdateDownloadCB downloadCB;
     /**
      * The file was created by {@link org.lzh.framework.updatepluginlib.creator.ApkFileCreator#create(String)}
      */
-    protected File cacheFileName;
+    private File cacheFileName;
     protected Update update;
 
     public void setUpdate(Update update) {

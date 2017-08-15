@@ -15,6 +15,7 @@
  */
 package org.lzh.framework.updatepluginlib.util;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 
@@ -67,6 +68,6 @@ public class UpdatePreference {
     }
 
     private static SharedPreferences getUpdatePref () {
-        return UpdateConfig.getConfig().getContext().getSharedPreferences(PREF_NAME,Context.MODE_PRIVATE);
+        return ActivityManager.get().getApplicationContext().getSharedPreferences(PREF_NAME,Context.MODE_PRIVATE);
     }
 }

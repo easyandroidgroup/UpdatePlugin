@@ -1,7 +1,6 @@
 package org.lzh.framework.updateplugin;
 
 import android.app.Application;
-import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -33,32 +32,27 @@ public class MyApplication extends Application {
                 // 必填：用于从数据更新接口获取的数据response中。解析出Update实例。以便框架内部处理
                 .jsonParser(new UpdateParser() {
                     @Override
-                    public Update parse(String response) {
+                    public Update parse(String response) throws Exception{
                         /* 此处根据上面url或者checkEntity设置的检查更新接口的返回数据response解析出
                          * 一个update对象返回即可。更新启动时框架内部即可根据update对象的数据进行处理
                          */
-                        try {
-                            JSONObject object = new JSONObject(response);
-                            Update update = new Update(response);
-                            // 此apk包的更新时间
-                            update.setUpdateTime(System.currentTimeMillis());
-                            // 此apk包的下载地址
-                            update.setUpdateUrl(object.optString("update_url"));
-                            // 此apk包的版本号
-                            update.setVersionCode(object.optInt("update_ver_code"));
-                            // 此apk包的版本名称
-                            update.setVersionName(object.optString("update_ver_name"));
-                            // 此apk包的更新内容
-                            update.setUpdateContent(object.optString("update_content"));
-                            // 此apk包是否为强制更新
-                            update.setForced(false);
-                            // 是否显示忽略此次版本更新按钮
-                            update.setIgnore(object.optBoolean("ignore_able",false));
-                            return update;
-                        } catch (JSONException e) {
-                            return null;
-                        }
-
+                        JSONObject object = new JSONObject(response);
+                        Update update = new Update(response);
+                        // 此apk包的更新时间
+                        update.setUpdateTime(System.currentTimeMillis());
+                        // 此apk包的下载地址
+                        update.setUpdateUrl(object.optString("update_url"));
+                        // 此apk包的版本号
+                        update.setVersionCode(object.optInt("update_ver_code"));
+                        // 此apk包的版本名称
+                        update.setVersionName(object.optString("update_ver_name"));
+                        // 此apk包的更新内容
+                        update.setUpdateContent(object.optString("update_content"));
+                        // 此apk包是否为强制更新
+                        update.setForced(false);
+                        // 是否显示忽略此次版本更新按钮
+                        update.setIgnore(object.optBoolean("ignore_able",false));
+                        return update;
                     }
                 })
                 // TODO: 2016/5/11 除了以上两个参数为必填。以下的参数均为非必填项。
@@ -125,18 +119,18 @@ public class MyApplication extends Application {
                     }
                 })
                 // 自定义更新检查器。
-//                .updateChecker(new UpdateChecker() {
-//                    @Override
-//                    public boolean check(Update update) {
-                          // 此处根据上面jsonParser解析出的update对象来判断是否此update代表的
-                          // 版本应该被更新。返回true为需要更新。返回false代表不需要更新
-//                        return false;
-//                    }
-//                })
-                /* // 自定义更新接口的访问任务
+                /*.updateChecker(new UpdateChecker() {
+                    @Override
+                    public boolean check(Update update) {
+//                           此处根据上面jsonParser解析出的update对象来判断是否此update代表的
+//                           版本应该被更新。返回true为需要更新。返回false代表不需要更新
+                        return false;
+                    }
+                })
+                 // 自定义更新接口的访问任务
                 .checkWorker(new UpdateWorker() {
                     @Override
-                    protected String check(String url) throws Exception {
+                    protected String check(CheckEntity url) throws Exception {
                         // TODO: 2016/5/11 此处运行于子线程。在此进行更新接口访问
                         return null;
                     }
@@ -166,13 +160,7 @@ public class MyApplication extends Application {
 
                     @Override
                     public boolean isAutoInstall() {
-                        // 是否自动更新。此属性与是否isShowInstallDialog互斥
-                        return false;
-                    }
-
-                    @Override
-                    public boolean isShowInstallDialog() {
-                        // 下载完成后。是否显示提示安装的Dialog
+                        // 是否自动更新.当为自动更新时。代表下载成功后不通知用户。直接调起安装。
                         return false;
                     }
 
@@ -182,15 +170,15 @@ public class MyApplication extends Application {
                         return false;
                     }
                 })
-                        // 自定义检查出更新后显示的Dialog，
+                // 自定义检查出更新后显示的Dialog，
                 .updateDialogCreator(new DialogCreator() {
                     @Override
-                    public Dialog create(Update update, Activity activity, UpdateBuilder updateBuilder) {
+                    public Dialog create(Update update, Activity context) {
                         // TODO: 2016/5/11 此处为检查出有新版本需要更新时的回调。运行于主线程，在此进行更新Dialog的创建
                         return null;
                     }
                 })
-                        // 自定义下载时的进度条Dialog
+                // 自定义下载时的进度条Dialog
                 .downloadDialogCreator(new DownloadCreator() {
                     @Override
                     public UpdateDownloadCB create(Update update, Activity activity) {
@@ -199,7 +187,7 @@ public class MyApplication extends Application {
                         return null;
                     }
                 })
-                        // 自定义下载完成后。显示的Dialog
+                // 自定义下载完成后。显示的Dialog
                 .installDialogCreator(new InstallCreator() {
                     @Override
                     public Dialog create(Update update, String s, Activity activity) {

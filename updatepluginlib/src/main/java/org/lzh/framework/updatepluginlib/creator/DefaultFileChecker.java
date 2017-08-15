@@ -21,6 +21,7 @@ import android.content.pm.PackageManager;
 
 import org.lzh.framework.updatepluginlib.UpdateConfig;
 import org.lzh.framework.updatepluginlib.model.Update;
+import org.lzh.framework.updatepluginlib.util.ActivityManager;
 
 /**
  * @author haoge
@@ -30,7 +31,7 @@ public class DefaultFileChecker implements FileChecker {
     @Override
     public boolean checkPreFile(Update update, String file) {
         try {
-            Context context = UpdateConfig.getConfig().getContext();
+            Context context = ActivityManager.get().getApplicationContext();
             PackageManager packageManager = context.getPackageManager();
             PackageInfo packageInfo = packageManager.getPackageArchiveInfo(file, PackageManager.GET_ACTIVITIES);
             return  (update.getVersionCode() == packageInfo.versionCode);

@@ -16,6 +16,8 @@
 package org.lzh.framework.updatepluginlib.business;
 
 import org.lzh.framework.updatepluginlib.UpdateBuilder;
+import org.lzh.framework.updatepluginlib.UpdateConfig;
+import org.lzh.framework.updatepluginlib.callback.DefaultCheckCB;
 import org.lzh.framework.updatepluginlib.callback.UpdateCheckCB;
 import org.lzh.framework.updatepluginlib.model.CheckEntity;
 import org.lzh.framework.updatepluginlib.model.Update;
@@ -31,24 +33,24 @@ public abstract class UpdateWorker extends UnifiedWorker implements Runnable,Rec
 
     protected CheckEntity entity;
     /**
-     * The instance of {@link org.lzh.framework.updatepluginlib.callback.DefaultCheckCB}
+     * The instance of {@link DefaultCheckCB}
      */
-    protected UpdateCheckCB checkCB;
+    private UpdateCheckCB checkCB;
 
     /**
-     * set by {@link org.lzh.framework.updatepluginlib.UpdateConfig#updateChecker(UpdateChecker)} or
-     * {@link org.lzh.framework.updatepluginlib.UpdateBuilder#updateChecker(UpdateChecker)}<br>
+     * set by {@link UpdateConfig#updateChecker(UpdateChecker)} or
+     * {@link UpdateBuilder#updateChecker(UpdateChecker)}<br>
      *     <br>
      *     according to instance {@link Update} to check out whether or not should be updated
      */
-    protected UpdateChecker checker;
+    private UpdateChecker checker;
     /**
-     * set by {@link org.lzh.framework.updatepluginlib.UpdateConfig#jsonParser(UpdateParser)} or
-     * {@link org.lzh.framework.updatepluginlib.UpdateBuilder#jsonParser(UpdateParser)}<br><br>
+     * set by {@link UpdateConfig#jsonParser(UpdateParser)} or
+     * {@link UpdateBuilder#jsonParser(UpdateParser)}<br><br>
      *
      *     according to response data from url to create update instance
      */
-    protected UpdateParser parser;
+    private UpdateParser parser;
 
     public void setBuilder (UpdateBuilder builder) {
         this.entity = builder.getCheckEntity();

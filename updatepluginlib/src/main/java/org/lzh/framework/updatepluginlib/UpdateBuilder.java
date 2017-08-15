@@ -29,20 +29,12 @@ import org.lzh.framework.updatepluginlib.model.UpdateChecker;
 import org.lzh.framework.updatepluginlib.model.UpdateParser;
 import org.lzh.framework.updatepluginlib.strategy.UpdateStrategy;
 
-/**
- *
- * @author lzh
- */
 public class UpdateBuilder {
 
-    /**
-     * @see UpdateWorker
-     */
     private UpdateWorker checkWorker;
     private DownloadWorker downloadWorker;
     private UpdateCheckCB checkCB;
     private UpdateDownloadCB downloadCB;
-    private String url;
     private CheckEntity entity;
     private UpdateStrategy strategy;
     private DialogCreator updateDialogCreator;
@@ -52,9 +44,27 @@ public class UpdateBuilder {
     private ApkFileCreator fileCreator;
     private UpdateChecker updateChecker;
     private FileChecker fileChecker;
+    private UpdateConfig config;
+    
+    private UpdateBuilder(UpdateConfig config) {
+        this.config = config;
+    }
 
+    /**
+     * Create a {@link UpdateBuilder} with the default {@link UpdateConfig}
+     * @return {@link UpdateBuilder}
+     */
     public static UpdateBuilder create() {
-        return new UpdateBuilder();
+        return create(UpdateConfig.getConfig());
+    }
+
+    /**
+     * Create a {@link UpdateBuilder} with the special {@link UpdateConfig}
+     * @param config the config you are created.
+     * @return new {@link UpdateBuilder}
+     */
+    public static UpdateBuilder create(UpdateConfig config) {
+        return new UpdateBuilder(config);
     }
 
     public UpdateBuilder url(String url) {
@@ -133,88 +143,88 @@ public class UpdateBuilder {
 
     public UpdateStrategy getStrategy() {
         if (strategy == null) {
-            strategy = UpdateConfig.getConfig().getStrategy();
+            strategy = config.getStrategy();
         }
         return strategy;
     }
 
     public CheckEntity getCheckEntity () {
         if (this.entity == null) {
-            this.entity = UpdateConfig.getConfig().getCheckEntity();
+            this.entity = config.getCheckEntity();
         }
         return this.entity;
     }
 
     public UpdateChecker getUpdateChecker() {
         if (updateChecker == null) {
-            updateChecker = UpdateConfig.getConfig().getUpdateChecker();
+            updateChecker = config.getUpdateChecker();
         }
         return updateChecker;
     }
 
     public FileChecker getFileChecker() {
-        return fileChecker != null ? fileChecker : UpdateConfig.getConfig().getFileChecker();
+        return fileChecker != null ? fileChecker : config.getFileChecker();
     }
 
     public DialogCreator getUpdateDialogCreator() {
         if (updateDialogCreator == null) {
-            updateDialogCreator = UpdateConfig.getConfig().getUpdateDialogCreator();
+            updateDialogCreator = config.getUpdateDialogCreator();
         }
         return updateDialogCreator;
     }
 
     public InstallCreator getInstallDialogCreator() {
         if (installDialogCreator == null) {
-            installDialogCreator = UpdateConfig.getConfig().getInstallDialogCreator();
+            installDialogCreator = config.getInstallDialogCreator();
         }
         return installDialogCreator;
     }
 
     public DownloadCreator getDownloadDialogCreator() {
         if (downloadDialogCreator == null) {
-            downloadDialogCreator = UpdateConfig.getConfig().getDownloadDialogCreator();
+            downloadDialogCreator = config.getDownloadDialogCreator();
         }
         return downloadDialogCreator;
     }
 
     public UpdateParser getJsonParser() {
         if (jsonParser == null) {
-            jsonParser = UpdateConfig.getConfig().getJsonParser();
+            jsonParser = config.getJsonParser();
         }
         return jsonParser;
     }
 
     public UpdateWorker getCheckWorker() {
         if (checkWorker == null) {
-            checkWorker = UpdateConfig.getConfig().getCheckWorker();
+            checkWorker = config.getCheckWorker();
         }
         return checkWorker;
     }
 
     public DownloadWorker getDownloadWorker() {
         if (downloadWorker == null) {
-            downloadWorker = UpdateConfig.getConfig().getDownloadWorker();
+            downloadWorker = config.getDownloadWorker();
         }
         return downloadWorker;
     }
 
     public ApkFileCreator getFileCreator() {
         if (fileCreator == null) {
-            fileCreator = UpdateConfig.getConfig().getFileCreator();
+            fileCreator = config.getFileCreator();
         }
         return fileCreator;
     }
 
     public UpdateCheckCB getCheckCB() {
         if (checkCB == null) {
-            checkCB = UpdateConfig.getConfig().getCheckCB();
+            checkCB = config.getCheckCB();
         }
         return checkCB;
     }
 
     public UpdateDownloadCB getDownloadCB() {
         if (downloadCB == null) {
-            downloadCB = UpdateConfig.getConfig().getDownloadCB();
+            downloadCB = config.getDownloadCB();
         }
         return downloadCB;
     }

@@ -18,6 +18,7 @@ package org.lzh.framework.updatepluginlib.creator;
 import android.content.Context;
 
 import org.lzh.framework.updatepluginlib.UpdateConfig;
+import org.lzh.framework.updatepluginlib.util.ActivityManager;
 
 import java.io.File;
 
@@ -30,7 +31,7 @@ public class DefaultFileCreator implements ApkFileCreator {
     }
 
     private File getCacheDir() {
-        Context context = UpdateConfig.getConfig().getContext();
+        Context context = ActivityManager.get().getApplicationContext();
         File cacheDir = context.getExternalCacheDir();
         if (cacheDir == null) {
             cacheDir = context.getCacheDir();

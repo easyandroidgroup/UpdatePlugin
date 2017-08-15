@@ -49,7 +49,7 @@ public abstract class DialogCreator implements Recyclable {
      * invoked this method when you want to start download task
      * @param update should not be null,
      */
-    public void sendDownloadRequest(Update update) {
+    protected void sendDownloadRequest(Update update) {
         Updater.getInstance().downUpdate(update,builder);
         release();
     }
@@ -57,14 +57,14 @@ public abstract class DialogCreator implements Recyclable {
     /**
      * invoked this method when you press cancel button
      */
-    public void sendUserCancel() {
+    protected void sendUserCancel() {
         if (this.checkCB != null) {
             this.checkCB.onUserCancel();
         }
         release();
     }
 
-    public void sendUserIgnore(Update update) {
+    protected void sendUserIgnore(Update update) {
         if (this.checkCB != null) {
             this.checkCB.onCheckIgnore(update);
         }

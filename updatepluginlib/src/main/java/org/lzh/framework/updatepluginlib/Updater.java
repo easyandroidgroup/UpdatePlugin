@@ -46,7 +46,7 @@ public final class Updater {
      * Check out whether or not there is a new version on internet
      * @param builder update builder that contained all config.
      */
-    public void checkUpdate(UpdateBuilder builder) {
+    void checkUpdate(UpdateBuilder builder) {
         // define a default callback to receive update event send by update task
         DefaultCheckCB checkCB = new DefaultCheckCB();
         checkCB.setBuilder(builder);

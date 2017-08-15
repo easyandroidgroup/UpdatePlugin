@@ -18,9 +18,9 @@ package org.lzh.framework.updatepluginlib.creator;
 import android.app.Activity;
 import android.app.Dialog;
 
-import org.lzh.framework.updatepluginlib.UpdateConfig;
 import org.lzh.framework.updatepluginlib.callback.UpdateCheckCB;
 import org.lzh.framework.updatepluginlib.model.Update;
+import org.lzh.framework.updatepluginlib.util.ActivityManager;
 import org.lzh.framework.updatepluginlib.util.Recyclable;
 import org.lzh.framework.updatepluginlib.util.UpdatePreference;
 import org.lzh.framework.updatepluginlib.util.Utils;
@@ -28,8 +28,8 @@ import org.lzh.framework.updatepluginlib.util.Utils;
 public abstract class InstallCreator implements Recyclable {
 
     private UpdateCheckCB checkCB;
-    protected FileChecker fileChecker;
-    protected Update update;
+    private FileChecker fileChecker;
+    private Update update;
 
     public void setCheckCB(UpdateCheckCB checkCB) {
         this.checkCB = checkCB;
@@ -49,9 +49,9 @@ public abstract class InstallCreator implements Recyclable {
      * request to install this apk file
      * @param filename the absolutely file name that downloaded
      */
-    public void sendToInstall(String filename) {
+    protected void sendToInstall(String filename) {
         if (fileChecker == null || fileChecker.checkAfterDownload(update,filename)) {
-            Utils.installApk(UpdateConfig.getConfig().getContext(),filename);
+            Utils.installApk(ActivityManager.get().getApplicationContext(), filename);
         } else {
             checkCB.onCheckError(new RuntimeException(String.format("apk %s checked failed",filename)));
         }
@@ -61,7 +61,7 @@ public abstract class InstallCreator implements Recyclable {
     /**
      * request cancel install action
      */
-    public void sendUserCancel() {
+    protected void sendUserCancel() {
         if (this.checkCB != null) {
             this.checkCB.onUserCancel();
         }
@@ -69,7 +69,7 @@ public abstract class InstallCreator implements Recyclable {
         release();
     }
 
-    public void sendCheckIgnore(Update update) {
+    protected void sendCheckIgnore(Update update) {
         if (this.checkCB != null) {
             this.checkCB.onCheckIgnore(update);
         }

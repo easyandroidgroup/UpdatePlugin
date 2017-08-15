@@ -15,7 +15,6 @@
  */
 package org.lzh.framework.updatepluginlib;
 
-import android.content.Context;
 import android.text.TextUtils;
 
 import org.lzh.framework.updatepluginlib.business.DefaultDownloadWorker;
@@ -25,8 +24,8 @@ import org.lzh.framework.updatepluginlib.business.UpdateWorker;
 import org.lzh.framework.updatepluginlib.callback.UpdateCheckCB;
 import org.lzh.framework.updatepluginlib.callback.UpdateDownloadCB;
 import org.lzh.framework.updatepluginlib.creator.ApkFileCreator;
-import org.lzh.framework.updatepluginlib.creator.DefaultFileCreator;
 import org.lzh.framework.updatepluginlib.creator.DefaultFileChecker;
+import org.lzh.framework.updatepluginlib.creator.DefaultFileCreator;
 import org.lzh.framework.updatepluginlib.creator.DefaultNeedDownloadCreator;
 import org.lzh.framework.updatepluginlib.creator.DefaultNeedInstallCreator;
 import org.lzh.framework.updatepluginlib.creator.DefaultNeedUpdateCreator;
@@ -41,14 +40,11 @@ import org.lzh.framework.updatepluginlib.model.UpdateChecker;
 import org.lzh.framework.updatepluginlib.model.UpdateParser;
 import org.lzh.framework.updatepluginlib.strategy.UpdateStrategy;
 import org.lzh.framework.updatepluginlib.strategy.WifiFirstStrategy;
-import org.lzh.framework.updatepluginlib.util.ActivityManager;
 
 /**
  * Global configs
  */
 public class UpdateConfig {
-
-    private Context context;
 
     /**
      * update task
@@ -105,26 +101,25 @@ public class UpdateConfig {
      */
     private FileChecker fileChecker;
 
-    private static UpdateConfig config;
+    private static UpdateConfig DEFAULT;
+
+    /**
+     * get the default update configuration.
+     * @return the default config instance.
+     */
     public static UpdateConfig getConfig() {
-        if (config == null) {
-            config = new UpdateConfig();
+        if (DEFAULT == null) {
+            DEFAULT = new UpdateConfig();
         }
-        return config;
+        return DEFAULT;
     }
 
     /**
-     * Cache a application context.
-     * Should not be called by yourself,
-     * cause it had been invoked automatically when app was launched
-     * @param context Activity context
+     * Create a new Update config
+     * @return The new config instance
      */
-    public UpdateConfig init(Context context) {
-        if (this.context == null) {
-            this.context = context.getApplicationContext();
-            ActivityManager.get().registerSelf(this.context);
-        }
-        return this;
+    public static UpdateConfig createConfig() {
+        return new UpdateConfig();
     }
 
     public UpdateConfig url(String url) {
@@ -195,13 +190,6 @@ public class UpdateConfig {
     public UpdateConfig strategy(UpdateStrategy strategy) {
          this.strategy = strategy;
         return this;
-    }
-
-    public Context getContext() {
-        if (context == null) {
-            throw new RuntimeException("should call UpdateConfig.init(context) first");
-        }
-        return context;
     }
 
     public UpdateStrategy getStrategy() {

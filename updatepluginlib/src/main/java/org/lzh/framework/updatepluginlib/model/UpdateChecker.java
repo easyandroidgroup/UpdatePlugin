@@ -25,6 +25,7 @@ public interface UpdateChecker {
      * check if is a new version
      * @param update The update entity to be checked
      * @return true if is valid
+     * @throws Exception error occurs.
      */
-    boolean check(Update update);
+    boolean check(Update update) throws Exception;
 }

@@ -15,11 +15,13 @@
  */
 package org.lzh.framework.updatepluginlib.model;
 
+import org.lzh.framework.updatepluginlib.business.UpdateWorker;
+
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * This entity contains all of data used by {@link org.lzh.framework.updatepluginlib.business.UpdateWorker}
+ * This entity contains all of data used by {@link UpdateWorker}
  * Created by lzh on 2016/7/15.
  */
 public class CheckEntity {

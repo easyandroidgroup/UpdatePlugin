@@ -27,6 +27,7 @@ import java.util.LinkedList;
  * Created by lzh on 2017/2/10.
  */
 public class ActivityManager implements Application.ActivityLifecycleCallbacks {
+    private Context applicationContext;
     private static ActivityManager manager = new ActivityManager();
     public static ActivityManager get () {
         return manager;
@@ -80,6 +81,10 @@ public class ActivityManager implements Application.ActivityLifecycleCallbacks {
         return activity;
     }
 
+    public Context getApplicationContext() {
+        return applicationContext;
+    }
+
     /**
      * Register this to {@link Application}
      * @param context Application context
@@ -87,5 +92,6 @@ public class ActivityManager implements Application.ActivityLifecycleCallbacks {
     public void registerSelf(Context context) {
         Application application = (Application) context.getApplicationContext();
         application.registerActivityLifecycleCallbacks(ActivityManager.get());
+        this.applicationContext = context.getApplicationContext();
     }
 }

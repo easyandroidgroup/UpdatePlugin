@@ -87,7 +87,7 @@ public class Utils {
     }
 
     private static NetworkInfo getNetworkInfos() {
-        Context context = UpdateConfig.getConfig().getContext();
+        Context context = ActivityManager.get().getApplicationContext();
         ConnectivityManager connManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         return connManager.getActiveNetworkInfo();
     }

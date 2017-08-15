@@ -37,6 +37,7 @@ import java.util.Map;
 public class UpdateInstallProvider extends ContentProvider {
 
     static Map<Uri,File> mCache = new HashMap<>();
+    Context applicationContext;
 
     @Override
     public boolean onCreate() {
@@ -46,7 +47,8 @@ public class UpdateInstallProvider extends ContentProvider {
     @Override
     public void attachInfo(Context context, ProviderInfo info) {
         super.attachInfo(context, info);
-        UpdateConfig.getConfig().init(context);
+        this.applicationContext = context;
+        ActivityManager.get().registerSelf(context);
     }
 
     @Override
