@@ -28,6 +28,9 @@ import org.lzh.framework.updatepluginlib.model.Update;
 
 import java.io.File;
 
+/**
+ * The Dispatcher class to request to launch check-task or download-task
+ */
 public final class Updater {
     private static Updater updater;
     private IUpdateExecutor executor;
@@ -43,11 +46,12 @@ public final class Updater {
     }
 
     /**
-     * Check out whether or not there is a new version on internet
-     * @param builder update builder that contained all config.
+     * Request to launch a {@link UpdateWorker} task from this builder
+     *
+     * @param builder The {@link UpdateWorker} instance provider.
      */
     void checkUpdate(UpdateBuilder builder) {
-        // define a default callback to receive update event send by update task
+        // define a default callback to receive update event send by check task
         DefaultCheckCB checkCB = new DefaultCheckCB();
         checkCB.setBuilder(builder);
         checkCB.onCheckStart();
@@ -64,9 +68,10 @@ public final class Updater {
     }
 
     /**
-     * Request to download the app.
-     * @param update update instance,should not be null;
-     * @param builder update builder that contained all config;
+     * Request to launch a {@link DownloadWorker} task from this builder.
+     *
+     * @param update update instance, should not be null;
+     * @param builder The {@link DownloadWorker} instance provider
      */
     public void downUpdate(Update update,UpdateBuilder builder) {
         // define a default download callback to receive callback from download task

@@ -129,6 +129,11 @@ public class UpdateConfig {
         return new UpdateConfig();
     }
 
+    /**
+     * Set a check api
+     * @param url
+     * @return
+     */
     public UpdateConfig url(String url) {
         this.entity = new CheckEntity().setUrl(url);
         return this;

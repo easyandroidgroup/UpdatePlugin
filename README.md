@@ -14,7 +14,7 @@ allprojects {
 ```
 - 在要使用的项目的build.gradle中。添加依赖：
 
-LastestVersion= [ ![Download](https://api.bintray.com/packages/yjfnypeu/maven/UpdatePlugin/images/download.svg) ](https://bintray.com/yjfnypeu/maven/UpdatePlugin/_latestVersion)
+LastestVersion= [![Download](https://api.bintray.com/packages/yjfnypeu/maven/UpdatePlugin/images/download.svg) ](https://bintray.com/yjfnypeu/maven/UpdatePlugin/_latestVersion)
 
 ```
 dependencies {
@@ -28,11 +28,7 @@ dependencies {
 请通过下载此[demo.apk](./screenshots/app-debug.apk)进行体验
 
 ### 使用方式：
-
 [请访问wiki查看具体使用方法](https://github.com/yjfnypeu/UpdatePlugin/wiki)
-
-### 流程图
-![](./screenshots/updatePlugin.png)
 
 ### 联系作者
 email: 470368500@qq.com
