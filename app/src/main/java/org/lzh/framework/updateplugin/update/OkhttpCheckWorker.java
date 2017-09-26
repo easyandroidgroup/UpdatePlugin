@@ -2,7 +2,6 @@ package org.lzh.framework.updateplugin.update;
 
 import org.lzh.framework.updatepluginlib.business.UpdateWorker;
 import org.lzh.framework.updatepluginlib.model.CheckEntity;
-import org.lzh.framework.updatepluginlib.model.HttpMethod;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,7 +25,7 @@ public class OkhttpCheckWorker extends UpdateWorker {
     protected String check(CheckEntity entity) throws Exception {
         // 自定网络任务。在此通过同步请求的方式调用即可
         Request.Builder builder = new Request.Builder().url(entity.getUrl());
-        if (HttpMethod.GET.equals(entity.getMethod())) {
+        if ("GET".equalsIgnoreCase(entity.getMethod())) {
             builder.method("GET",null);
         } else {
             FormBody.Builder bodyBuilder = new FormBody.Builder();

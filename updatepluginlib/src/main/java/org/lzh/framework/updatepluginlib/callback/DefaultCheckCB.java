@@ -28,10 +28,13 @@ import org.lzh.framework.updatepluginlib.util.Recyclable;
 import org.lzh.framework.updatepluginlib.util.SafeDialogOper;
 
 /**
- * default check callback to receive update event send by {@link org.lzh.framework.updatepluginlib.business.UpdateWorker}
+ * <p><b>核心操作类</b>
+ *
+ * <p>此类为默认的检查更新api网络任务的通知回调。用于接收从{@link UpdateWorker}中所传递过来的各种状态。并进行后续流程触发</p>
+ *
+ * @author haoge
  */
 public final class DefaultCheckCB implements UpdateCheckCB,Recyclable {
-
     private UpdateBuilder builder;
     private UpdateCheckCB checkCB;
 
@@ -51,10 +54,6 @@ public final class DefaultCheckCB implements UpdateCheckCB,Recyclable {
         }
     }
 
-    /**
-     * Receive and pass has_update event send by {@link org.lzh.framework.updatepluginlib.business.UpdateWorker#sendHasUpdate(Update)}<br>
-     * Create update dialog if should be shown according to {@link org.lzh.framework.updatepluginlib.strategy.UpdateStrategy#isShowUpdateDialog(Update)}<br>
-     */
     @Override
     public void hasUpdate(Update update) {
         try {
@@ -81,9 +80,6 @@ public final class DefaultCheckCB implements UpdateCheckCB,Recyclable {
         }
     }
 
-    /**
-     * Receive and pass no_update event send by {@link UpdateWorker#sendNoUpdate()}
-     */
     @Override
     public void noUpdate() {
         try {
@@ -97,9 +93,6 @@ public final class DefaultCheckCB implements UpdateCheckCB,Recyclable {
 
     }
 
-    /**
-     * Receive and pass check_error event send by {@link UpdateWorker#sendOnErrorMsg(Throwable)}
-     */
     @Override
     public void onCheckError(Throwable t) {
         try {
@@ -113,9 +106,6 @@ public final class DefaultCheckCB implements UpdateCheckCB,Recyclable {
         }
     }
 
-    /**
-     * will be never invoke
-     */
     @Override
     public void onUserCancel() {
         try {

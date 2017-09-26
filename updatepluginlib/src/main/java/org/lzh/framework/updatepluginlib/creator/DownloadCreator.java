@@ -17,23 +17,32 @@ package org.lzh.framework.updatepluginlib.creator;
 
 import android.app.Activity;
 
+import org.lzh.framework.updatepluginlib.UpdateBuilder;
+import org.lzh.framework.updatepluginlib.UpdateConfig;
 import org.lzh.framework.updatepluginlib.callback.UpdateDownloadCB;
 import org.lzh.framework.updatepluginlib.model.Update;
+import org.lzh.framework.updatepluginlib.strategy.UpdateStrategy;
+import org.lzh.framework.updatepluginlib.util.ActivityManager;
 
 /**
- * Download dialog creator
- * @author lzh
+ * apk下载任务的通知创建器
+ *
+ * <p>配置方式：通过{@link UpdateConfig#downloadDialogCreator(DownloadCreator)}或者{@link UpdateBuilder#downloadDialogCreator(DownloadCreator)}
+ *
+ * <p>默认实现：{@link DefaultNeedDownloadCreator}
+ *
+ * <p>触发逻辑：当配置的更新策略{@link UpdateStrategy#isShowDownloadDialog()}设定为true时。此通知创建器将被触发
+ *
+ * @author haoge
  */
 public interface DownloadCreator {
 
     /**
-     * To create a download dialog when should be shown,this method returns a {@link UpdateDownloadCB},
-     * the download callback will be used in {@link org.lzh.framework.updatepluginlib.business.DownloadWorker},
-     * and also called with it to update download progress,
-     * @param update The update instance created by {@link org.lzh.framework.updatepluginlib.model.UpdateParser#parse(String)}
-     * @param activity The activity instance,cause it is be saved with weak ref,so the context
-     *                will be null or finished sometimes when you finish you activity before,
-     * @return A {@link UpdateDownloadCB} instance to update ui
+     * 创建一个下载任务的下载进度回调。此回调将用于接收下载任务的状态并更新UI。
+     *
+     * @param update 更新数据实体类
+     * @param activity 顶部的Activity实例。通过{@link ActivityManager#topActivity()}进行获取
+     * @return 被创建的回调器。允许为null。
      */
     UpdateDownloadCB create(Update update, Activity activity);
 }

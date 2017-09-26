@@ -19,14 +19,32 @@ import android.app.Activity;
 import android.app.Dialog;
 
 import org.lzh.framework.updatepluginlib.UpdateBuilder;
+import org.lzh.framework.updatepluginlib.UpdateConfig;
 import org.lzh.framework.updatepluginlib.callback.UpdateCheckCB;
 import org.lzh.framework.updatepluginlib.model.Update;
 import org.lzh.framework.updatepluginlib.strategy.InstallStrategy;
+import org.lzh.framework.updatepluginlib.strategy.UpdateStrategy;
 import org.lzh.framework.updatepluginlib.util.ActivityManager;
 import org.lzh.framework.updatepluginlib.util.Recyclable;
 import org.lzh.framework.updatepluginlib.util.UpdatePreference;
 import org.lzh.framework.updatepluginlib.util.Utils;
 
+/**
+ * <p>此类为当检查到更新时的通知创建器基类。
+ *
+ * <p>配置方式：通过{@link UpdateConfig#installDialogCreator(InstallCreator)}或者{@link UpdateBuilder#installDialogCreator(InstallCreator)}
+ *
+ * <p>默认实现：{@link DefaultNeedInstallCreator}
+ *
+ * <p>触发逻辑：当检查到有新版本更新时且配置的更新策略{@link UpdateStrategy#isAutoInstall()}设定为false时。此通知创建器将被触发
+ *
+ * <p>定制说明：<br>
+ *     1. 当需要进行后续更新操作时(请求调起安装任务)：调用{@link #sendToInstall(String)}}<br>
+ *     2. 当需要取消此次更新操作时：调用{@link #sendUserCancel()}<br>
+ *     3. 当需要忽略此版本更新时：调用{@link #sendCheckIgnore(Update)}<br>
+ *
+ * @author haoge
+ */
 public abstract class InstallCreator implements Recyclable {
 
     private UpdateBuilder builder;
@@ -42,22 +60,19 @@ public abstract class InstallCreator implements Recyclable {
 
     public abstract Dialog create(Update update, String path, Activity activity);
 
-    /**
-     * request to install this apk file
-     * @param filename the absolutely file name that downloaded
-     */
     public void sendToInstall(String filename) {
         if (builder.getFileChecker().checkAfterDownload(update,filename)) {
             builder.getInstallStrategy().install(ActivityManager.get().getApplicationContext(), filename);
+            if (update.isForced()) {
+                // 对于是强制更新的。当调起安装任务后。直接kill掉自身进程。
+                System.exit(0);
+            }
         } else {
             builder.getCheckCB().onCheckError(new RuntimeException(String.format("apk %s checked failed",filename)));
         }
         release();
     }
 
-    /**
-     * request cancel install action
-     */
     public void sendUserCancel() {
         if (builder.getCheckCB() != null) {
             builder.getCheckCB().onUserCancel();

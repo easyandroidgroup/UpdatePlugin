@@ -15,18 +15,15 @@
  */
 package org.lzh.framework.updatepluginlib.util;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
-
-import org.lzh.framework.updatepluginlib.UpdateConfig;
 
 import java.util.HashSet;
 import java.util.Set;
 
 /**
- *
- * Created by lzh on 2016/8/11.
+ * 框架内部所提供使用的一些缓存数据存取：如下载进度、忽略版本。
+ * @author haoge
  */
 public class UpdatePreference {
 

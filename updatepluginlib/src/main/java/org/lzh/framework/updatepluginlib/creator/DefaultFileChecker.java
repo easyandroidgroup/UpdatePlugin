@@ -24,6 +24,7 @@ import org.lzh.framework.updatepluginlib.model.Update;
 import org.lzh.framework.updatepluginlib.util.ActivityManager;
 
 /**
+ * 默认的apk文件检查器。
  * @author haoge
  */
 public class DefaultFileChecker implements FileChecker {

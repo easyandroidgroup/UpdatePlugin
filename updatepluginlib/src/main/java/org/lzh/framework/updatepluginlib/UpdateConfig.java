@@ -44,76 +44,30 @@ import org.lzh.framework.updatepluginlib.strategy.UpdateStrategy;
 import org.lzh.framework.updatepluginlib.strategy.WifiFirstStrategy;
 
 /**
- * Global configs
+ * 此类用于提供一些默认使用的更新配置。在进行更新任务时，当{@link UpdateBuilder} 中未设置对应的配置时。
+ * 将从此配置类中读取默认的
  */
 public class UpdateConfig {
 
-    /**
-     * update task
-     */
     private UpdateWorker checkWorker;
-
-    /**
-     * download task
-     */
     private DownloadWorker downloadWorker;
-    /**
-     * The callback to receive update task info
-     */
     private UpdateCheckCB checkCB;
-    /**
-     * The callback to receive download task info
-     */
     private UpdateDownloadCB downloadCB;
-    /**
-     * The entity will be used by {@link UpdateWorker} to access network
-     */
     private CheckEntity entity;
-    /**
-     * The strategy on update
-     */
     private UpdateStrategy strategy;
-    /**
-     * To create update dialog when should be shown,according to {@link UpdateStrategy#isShowUpdateDialog(Update)}
-     */
     private DialogCreator updateDialogCreator;
-    /**
-     * To create install dialog when should be shown,according to {@link UpdateStrategy#isAutoInstall()}
-     */
     private InstallCreator installDialogCreator;
-    /**
-     * To create download dialog when should be shown,according to {@link UpdateStrategy#isShowDownloadDialog()}
-     */
     private DownloadCreator downloadDialogCreator;
-    /**
-     * The parser to parse response data form url to {@link Update} instance
-     */
     private UpdateParser jsonParser;
-    /**
-     * To create cache apk file name in download task:{@link DownloadWorker}
-     */
     private ApkFileCreator fileCreator;
-    /**
-     * To check out whether or not there are a new version of apk should be updated
-     */
     private UpdateChecker updateChecker;
 
-    /**
-     * To check out if the apk file is validly.
-     */
     private FileChecker fileChecker;
 
-    /**
-     * To make your owner install strategy.
-     */
     private InstallStrategy installStrategy;
 
     private static UpdateConfig DEFAULT;
 
-    /**
-     * get the default update configuration.
-     * @return the default config instance.
-     */
     public static UpdateConfig getConfig() {
         if (DEFAULT == null) {
             DEFAULT = new UpdateConfig();
@@ -121,19 +75,10 @@ public class UpdateConfig {
         return DEFAULT;
     }
 
-    /**
-     * Create a new Update config
-     * @return The new config instance
-     */
     public static UpdateConfig createConfig() {
         return new UpdateConfig();
     }
 
-    /**
-     * Set a check api
-     * @param url
-     * @return
-     */
     public UpdateConfig url(String url) {
         this.entity = new CheckEntity().setUrl(url);
         return this;
@@ -149,7 +94,7 @@ public class UpdateConfig {
         return this;
     }
 
-    public UpdateConfig installChecker (FileChecker checker) {
+    public UpdateConfig fileChecker (FileChecker checker) {
         this.fileChecker = checker;
         return this;
     }

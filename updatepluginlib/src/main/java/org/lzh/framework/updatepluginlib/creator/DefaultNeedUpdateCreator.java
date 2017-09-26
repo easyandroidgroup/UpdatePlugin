@@ -25,6 +25,12 @@ import org.lzh.framework.updatepluginlib.R;
 import org.lzh.framework.updatepluginlib.model.Update;
 import org.lzh.framework.updatepluginlib.util.SafeDialogOper;
 
+/**
+ * 默认使用的在检查到有更新时的通知创建器：创建一个弹窗提示用户当前有新版本需要更新。
+ *
+ * @author haoge
+ * @see DialogCreator
+ */
 public class DefaultNeedUpdateCreator extends DialogCreator {
     @Override
     public Dialog create(final Update update, Activity activity) {

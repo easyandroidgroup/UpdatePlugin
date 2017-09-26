@@ -23,10 +23,11 @@ import android.os.Bundle;
 import java.util.LinkedList;
 
 /**
- * A simple Activity stack tool.offer a top activity while should show a dialog
- * Created by lzh on 2017/2/10.
+ * 一个简单的用于自动管理的Activity模拟栈。 主要用于在进行更新通知时，提供最顶层的Activity实例作为有效的Context进行使用。
+ *
+ * @author haoge
  */
-public class ActivityManager implements Application.ActivityLifecycleCallbacks {
+public final class ActivityManager implements Application.ActivityLifecycleCallbacks {
     private Context applicationContext;
     private static ActivityManager manager = new ActivityManager();
     public static ActivityManager get () {
@@ -85,11 +86,7 @@ public class ActivityManager implements Application.ActivityLifecycleCallbacks {
         return applicationContext;
     }
 
-    /**
-     * Register this to {@link Application}
-     * @param context Application context
-     */
-    public void registerSelf(Context context) {
+    void registerSelf(Context context) {
         Application application = (Application) context.getApplicationContext();
         application.registerActivityLifecycleCallbacks(ActivityManager.get());
         this.applicationContext = context.getApplicationContext();

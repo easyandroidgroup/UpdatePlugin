@@ -15,7 +15,9 @@
  */
 package org.lzh.framework.updatepluginlib.business;
 
+import org.lzh.framework.updatepluginlib.callback.DefaultDownloadCB;
 import org.lzh.framework.updatepluginlib.callback.UpdateDownloadCB;
+import org.lzh.framework.updatepluginlib.creator.ApkFileCreator;
 import org.lzh.framework.updatepluginlib.model.Update;
 import org.lzh.framework.updatepluginlib.util.Recyclable;
 import org.lzh.framework.updatepluginlib.util.Utils;
@@ -23,23 +25,27 @@ import org.lzh.framework.updatepluginlib.util.Utils;
 import java.io.File;
 
 /**
- * The task to download new version apk
+ * <b>核心操作类</b>
+ *
+ * 此为下载任务的封装基类。主要用于对下载中的进度、状态进行派发。以起到连接更新流程作用
+ *
  * @author lzh
  */
 public abstract class DownloadWorker extends UnifiedWorker implements Runnable,Recyclable {
 
     /**
-     * The url set by {@link Update#getUpdateUrl()}
+     * 通过{@link Update#setUpdateUrl(String)}所设置的远程apk下载地址
      */
     protected String url;
     /**
-     * The instance of {@link org.lzh.framework.updatepluginlib.callback.DefaultDownloadCB}
+     * {@link DefaultDownloadCB}的实例。用于接收下载状态并进行后续流程通知
      */
     private UpdateDownloadCB downloadCB;
     /**
-     * The file was created by {@link org.lzh.framework.updatepluginlib.creator.ApkFileCreator#create(String)}
+     * 下载的缓存文件全路径。此路径名通过{@link ApkFileCreator#create(String)}进行获取
      */
     private File cacheFileName;
+    // 将update实例提供给子类使用。
     protected Update update;
 
     public void setUpdate(Update update) {

@@ -31,6 +31,7 @@ public class NotificationDownloadCreator implements DownloadCreator {
         NotificationManager manager;
         NotificationCompat.Builder builder;
         int id;
+        int preProgress;
 
         NotificationCB (Activity activity) {
             this.manager = (NotificationManager) activity.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -59,8 +60,12 @@ public class NotificationDownloadCreator implements DownloadCreator {
         public void onDownloadProgress(long current, long total) {
             // 下载过程中的进度信息。在此获取进度信息。运行于主线程
             int progress = (int) (current * 1f / total * 100);
-            builder.setProgress(100,progress,false);
-            manager.notify(id,builder.build());
+            // 过滤不必要的刷新进度
+            if (preProgress < progress) {
+                preProgress = progress;
+                builder.setProgress(100,progress,false);
+                manager.notify(id,builder.build());
+            }
         }
 
         @Override

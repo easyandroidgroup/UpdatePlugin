@@ -110,8 +110,6 @@ public class SampleActivity extends Activity {
                     public Update parse(String httpResponse) throws Exception {
                         JSONObject object = new JSONObject(httpResponse);
                         Update update = new Update();
-                        // 此apk包的更新时间
-                        update.setUpdateTime(System.currentTimeMillis());
                         // 此apk包的下载地址
                         update.setUpdateUrl(object.optString("update_url"));
                         // 此apk包的版本号
@@ -121,7 +119,7 @@ public class SampleActivity extends Activity {
                         // 此apk包的更新内容
                         update.setUpdateContent(object.optString("update_content"));
                         // 此apk包是否为强制更新
-                        update.setForced(false);
+                        update.setForced(true);
                         // 是否显示忽略此次版本更新按钮
                         update.setIgnore(object.optBoolean("ignore_able",false));
                         return update;

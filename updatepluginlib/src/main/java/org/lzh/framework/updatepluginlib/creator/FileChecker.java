@@ -15,26 +15,38 @@
  */
 package org.lzh.framework.updatepluginlib.creator;
 
+import org.lzh.framework.updatepluginlib.UpdateBuilder;
+import org.lzh.framework.updatepluginlib.UpdateConfig;
 import org.lzh.framework.updatepluginlib.model.Update;
 
 /**
- * A tool to check if the apk file is valid.
+ * 用于提供在更新中对apk进行有效性、安全性检查的接口
+ *
+ * <p>配置方式：通过{@link UpdateConfig#fileChecker(FileChecker)}或者{@link UpdateBuilder#fileChecker(FileChecker)}
+ *
+ * <p>默认实现：{@link DefaultFileChecker}
+ *
+ * @author haoge
  */
 public interface FileChecker {
 
     /**
-     * Check if that file is valid before start download task.
-     * @param update update entity
-     * @param file the cache file name create by {@link ApkFileCreator#create(String)}
-     * @return true if check successful
+     * 在启动下载任务前。通过对设置的文件下载缓存路径进行验证。
+     *
+     * <p>当验证成功时，则代表此文件在之前已经被下载好了。则将跳过下载任务。
+     *
+     * @param update 更新数据实体类
+     * @param file 被{@link ApkFileCreator}所创建的缓存文件地址
+     * @return True代表验证成功
      */
     boolean checkPreFile(Update update, String file);
 
     /**
-     * Check if that file is valid before start install task.
-     * @param update update entity
-     * @param file the cache file name create by {@link ApkFileCreator#create(String)}
-     * @return true if check successful
+     * 当下载完成后。触发到此。进行文件安全校验检查。当检查成功。即可启动安装任务。安装更新apk
+     *
+     * @param update 更新数据实体类
+     * @param file 被{@link ApkFileCreator}所创建的缓存文件地址
+     * @return True代表验证成功
      */
     boolean checkAfterDownload (Update update, String file);
 }

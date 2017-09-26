@@ -15,8 +15,9 @@
  */
 package org.lzh.framework.updatepluginlib.business;
 
+import org.lzh.framework.updatepluginlib.UpdateBuilder;
+import org.lzh.framework.updatepluginlib.UpdateConfig;
 import org.lzh.framework.updatepluginlib.model.CheckEntity;
-import org.lzh.framework.updatepluginlib.model.HttpMethod;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -25,6 +26,13 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Map;
 
+/**
+ * 默认提供的检查更新api网络任务：
+ *
+ * <p>若需定制。则可通过 {@link UpdateBuilder#checkWorker(UpdateWorker)}或者 {@link UpdateConfig#checkWorker(UpdateWorker)}进行定制
+ *
+ * @author haoge
+ */
 public class DefaultUpdateWorker extends UpdateWorker {
     @Override
     protected String check(CheckEntity entity) throws Exception {
@@ -50,7 +58,7 @@ public class DefaultUpdateWorker extends UpdateWorker {
     }
 
     private HttpURLConnection createHttpRequest(CheckEntity entity) throws IOException {
-        if (entity.getMethod().equals(HttpMethod.GET)) {
+        if (entity.getMethod().equalsIgnoreCase("GET")) {
             return createGetRequest(entity);
         } else {
             return createPostRequest(entity);

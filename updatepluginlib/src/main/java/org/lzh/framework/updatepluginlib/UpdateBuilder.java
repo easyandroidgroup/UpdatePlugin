@@ -84,7 +84,7 @@ public class UpdateBuilder {
         return this;
     }
 
-    public UpdateBuilder installChecker(FileChecker checker) {
+    public UpdateBuilder fileChecker(FileChecker checker) {
         this.fileChecker = checker;
         return this;
     }

@@ -17,11 +17,15 @@ package org.lzh.framework.updatepluginlib.creator;
 
 import android.content.Context;
 
-import org.lzh.framework.updatepluginlib.UpdateConfig;
 import org.lzh.framework.updatepluginlib.util.ActivityManager;
 
 import java.io.File;
 
+/**
+ * 默认使用的APK下载文件创建器。
+ *
+ * @author haoge
+ */
 public class DefaultFileCreator implements ApkFileCreator {
     @Override
     public File create(String versionName) {

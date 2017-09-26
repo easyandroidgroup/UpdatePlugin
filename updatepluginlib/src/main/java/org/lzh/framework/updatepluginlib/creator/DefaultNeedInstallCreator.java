@@ -25,6 +25,11 @@ import org.lzh.framework.updatepluginlib.R;
 import org.lzh.framework.updatepluginlib.model.Update;
 import org.lzh.framework.updatepluginlib.util.SafeDialogOper;
 
+/**
+ * 默认使用的下载完成后的通知创建器：创建一个弹窗提示用户已下载完成。可直接安装。
+ *
+ * @author haoge
+ */
 public class DefaultNeedInstallCreator extends InstallCreator {
 
     @Override

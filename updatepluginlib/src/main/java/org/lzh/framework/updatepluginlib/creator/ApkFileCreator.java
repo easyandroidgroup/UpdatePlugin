@@ -15,11 +15,21 @@
  */
 package org.lzh.framework.updatepluginlib.creator;
 
+import org.lzh.framework.updatepluginlib.UpdateBuilder;
+import org.lzh.framework.updatepluginlib.UpdateConfig;
+
 import java.io.File;
 
 /**
- * The file creator to create file name with apk version name
- * @author lzh
+ * 此接口用于定制下载文件的本地路径。
+ *
+ * <p>设置方式：通过{@link UpdateConfig#fileCreator(ApkFileCreator)}或者{@link UpdateBuilder#fileCreator(ApkFileCreator)}进行配置
+ *
+ * <p>默认实现方式：{@link DefaultFileChecker}
+ *
+ * <p>注意事项：在Android 7.0上，对于非私有目录的访问是需要进行动态权限申请的。所以当你将下载缓存路径配置到非私有目录下时，请注意权限问题。
+ *
+ * @author haoge
  */
 public interface ApkFileCreator {
 

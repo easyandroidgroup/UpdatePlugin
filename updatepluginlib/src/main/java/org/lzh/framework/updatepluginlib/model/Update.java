@@ -15,37 +15,75 @@
  */
 package org.lzh.framework.updatepluginlib.model;
 
+import org.lzh.framework.updatepluginlib.creator.DefaultNeedInstallCreator;
+import org.lzh.framework.updatepluginlib.creator.DefaultNeedUpdateCreator;
+import org.lzh.framework.updatepluginlib.strategy.ForcedUpdateStrategy;
+
+/**
+ * 此实体类用于存储框架所需的更新数据。
+ *
+ * @author haoge
+ */
 public class Update {
 
-    /**
-     * indicated whether or not to force update,update dialog should not be disable by back key or touch outside if set true
-     */
     private boolean forced;
-    /**
-     * update content,
-     */
+    private boolean ignore;
     private String updateContent;
-    /**
-     * update url
-     */
     private String updateUrl;
-    /**
-     * update time
-     */
-    private long updateTime;
-    /**
-     * update code
-     */
     private int versionCode;
-    /**
-     * update name
-     */
     private String versionName;
 
     /**
-     * indicated whether or not to update this version
+     * <p>指定是否要求展示忽略此版本更新按钮：
+     *
+     * <p>此属性为非必须属性。即框架核心操作层并未依赖此属性。此属性只用于提供的默认弹窗通知中：{@link DefaultNeedInstallCreator} 和 {@link DefaultNeedUpdateCreator}
+     *
+     * @param ignore True代表在弹出通知中进行展示 <b>忽略此版本更新按钮</b>
      */
-    private boolean ignore;
+    public void setIgnore(boolean ignore) {
+        this.ignore = ignore;
+    }
+
+    /**
+     * <p>指定是否要求进行强制更新。当设置为强制更新时，将会导致设置的更新策略无效。而直接使用框架内部所提供的{@link ForcedUpdateStrategy}进行更新策略管理
+     *
+     * @param forced True代表此版本需要进行强制更新
+     */
+    public void setForced(boolean forced) {
+        this.forced = forced;
+    }
+
+    /**
+     * 设置此次版本更新内容，将在更新弹窗通知中使用
+     * @param updateContent 更新内容
+     */
+    public void setUpdateContent(String updateContent) {
+        this.updateContent = updateContent;
+    }
+
+    /**
+     * 设置此次版本的远程更新apk包
+     * @param updateUrl 更新包url地址
+     */
+    public void setUpdateUrl(String updateUrl) {
+        this.updateUrl = updateUrl;
+    }
+
+    /**
+     * 新版本apk的版本号。此版本号将被用于与本地apk进行版本号比对。判断该版本是否应该被更新. 默认版本号检查器为：{@link DefaultChecker}.
+     * @param versionCode apk版本号
+     */
+    public void setVersionCode(int versionCode) {
+        this.versionCode = versionCode;
+    }
+
+    /**
+     * 新版本的apk的版本名。
+     * @param versionName version name
+     */
+    public void setVersionName(String versionName) {
+        this.versionName = versionName;
+    }
 
     public boolean isForced() {
         return forced;
@@ -55,52 +93,20 @@ public class Update {
         return ignore;
     }
 
-    public void setIgnore(boolean ignore) {
-        this.ignore = ignore;
-    }
-
-    public void setForced(boolean forced) {
-        this.forced = forced;
-    }
-
     public String getUpdateContent() {
         return updateContent;
-    }
-
-    public void setUpdateContent(String updateContent) {
-        this.updateContent = updateContent;
     }
 
     public String getUpdateUrl() {
         return updateUrl;
     }
 
-    public void setUpdateUrl(String updateUrl) {
-        this.updateUrl = updateUrl;
-    }
-
-    public long getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(long updateTime) {
-        this.updateTime = updateTime;
-    }
-
     public int getVersionCode() {
         return versionCode;
     }
 
-    public void setVersionCode(int versionCode) {
-        this.versionCode = versionCode;
-    }
-
     public String getVersionName() {
         return versionName;
-    }
-
-    public void setVersionName(String versionName) {
-        this.versionName = versionName;
     }
 
     @Override
@@ -109,7 +115,6 @@ public class Update {
                 ", forced=" + forced +
                 ", updateContent='" + updateContent + '\'' +
                 ", updateUrl='" + updateUrl + '\'' +
-                ", updateTime=" + updateTime +
                 ", versionCode=" + versionCode +
                 ", versionName='" + versionName + '\'' +
                 ", ignore=" + ignore +

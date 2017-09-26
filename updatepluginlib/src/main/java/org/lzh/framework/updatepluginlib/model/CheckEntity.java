@@ -15,25 +15,29 @@
  */
 package org.lzh.framework.updatepluginlib.model;
 
+import org.lzh.framework.updatepluginlib.UpdateConfig;
 import org.lzh.framework.updatepluginlib.business.UpdateWorker;
 
 import java.util.HashMap;
 import java.util.Map;
 
 /**
- * This entity contains all of data used by {@link UpdateWorker}
- * Created by lzh on 2016/7/15.
+ * 配置的更新api实体类。此实体类将被{@link UpdateWorker}进行使用。
+ *
+ * <p>配置方式：通过{@link UpdateConfig#checkEntity(CheckEntity)}对复杂api数据进行定制，或者通过{@link UpdateConfig#url(String)}对简单GET请求的更新api进行定制。
+ *
+ * @author haoge
  */
 public class CheckEntity {
-    private HttpMethod method = HttpMethod.GET;
+    private String method = "GET";
     private String url;
     private Map<String,String> params;
 
-    public HttpMethod getMethod() {
+    public String getMethod() {
         return method;
     }
 
-    public CheckEntity setMethod(HttpMethod method) {
+    public CheckEntity setMethod(String method) {
         this.method = method;
         return this;
     }

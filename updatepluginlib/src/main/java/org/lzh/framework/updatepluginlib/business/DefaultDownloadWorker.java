@@ -17,6 +17,8 @@ package org.lzh.framework.updatepluginlib.business;
 
 import android.text.TextUtils;
 
+import org.lzh.framework.updatepluginlib.UpdateBuilder;
+import org.lzh.framework.updatepluginlib.UpdateConfig;
 import org.lzh.framework.updatepluginlib.util.UpdatePreference;
 
 import java.io.File;
@@ -26,6 +28,13 @@ import java.io.RandomAccessFile;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+/**
+ * 默认的apk下载任务。若需定制，则可通过{@link UpdateBuilder#downloadWorker(DownloadWorker)}或者{@link UpdateConfig#downloadWorker(DownloadWorker)}进行定制使用
+ *
+ * <p>此默认下载任务。支持断点下载功能。
+ *
+ * @author haoge
+ */
 public class DefaultDownloadWorker extends DownloadWorker {
     private HttpURLConnection urlConn;
     @Override

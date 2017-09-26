@@ -17,14 +17,26 @@ package org.lzh.framework.updatepluginlib.strategy;
 
 import android.content.Context;
 
+import org.lzh.framework.updatepluginlib.UpdateBuilder;
+import org.lzh.framework.updatepluginlib.UpdateConfig;
+
 /**
- * Provided to define your own install strategy. default id {@link DefaultInstallStrategy}
+ * 提供一个安装策略。便于针对不同的应用场景。定制不同的安装策略实现。
+ *
+ * <p>配置方式：通过{@link UpdateConfig#installStrategy(InstallStrategy)}或者{@link UpdateBuilder#installStrategy(InstallStrategy)}
+ *
+ * <p>默认实现：{@link DefaultInstallStrategy}
+ *
+ * @author haoge
  */
 public interface InstallStrategy {
 
     /**
-     * to define your own install strategy. for example. for upgrade plugin or hot-fix
-     * @param context The valid context.
+     * 在此定制你自己的安装策略。如：
+     * 1. 普通环境下，调起系统安装页面
+     * 2. 插件化环境下，在此进行插件安装
+     * 3. 热修复环境下，在此进行热修复dex合并及更多兼容操作
+     * @param context application context
      * @param filename The apk filename
      */
     void install(Context context, String filename);

@@ -25,6 +25,10 @@ import org.lzh.framework.updatepluginlib.util.SafeDialogOper;
 
 import java.io.File;
 
+/**
+ * 默认使用的下载进度通知创建器: 在此创建Dialog弹窗显示并根据下载回调通知进行进度条更新
+ * @author haoge
+ */
 public class DefaultNeedDownloadCreator implements DownloadCreator {
     @Override
     public UpdateDownloadCB create(Update update,Activity activity) {

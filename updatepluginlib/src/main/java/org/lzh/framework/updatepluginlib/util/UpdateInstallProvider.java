@@ -32,7 +32,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * This provider should only be used by UpdatePlugin,Adaptive app versions above 24+ to install with packageInstaller
+ * 此类只应被UpdatePlugin框架自身使用，主要用于适配兼容24+版本下的安装包安装任务。及一些框架的默认初始配置。
  */
 public class UpdateInstallProvider extends ContentProvider {
 

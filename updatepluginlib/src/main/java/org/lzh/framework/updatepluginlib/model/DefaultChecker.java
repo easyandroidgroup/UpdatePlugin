@@ -19,6 +19,11 @@ import org.lzh.framework.updatepluginlib.util.ActivityManager;
 import org.lzh.framework.updatepluginlib.util.UpdatePreference;
 import org.lzh.framework.updatepluginlib.util.Utils;
 
+/**
+ * 默认的更新数据检查器。
+ *
+ * @author haoge
+ */
 public class DefaultChecker implements UpdateChecker {
     @Override
     public boolean check(Update update) throws Exception{

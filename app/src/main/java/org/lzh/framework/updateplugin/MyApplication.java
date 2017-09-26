@@ -40,8 +40,6 @@ public class MyApplication extends Application {
                          */
                         JSONObject object = new JSONObject(response);
                         Update update = new Update();
-                        // 此apk包的更新时间
-                        update.setUpdateTime(System.currentTimeMillis());
                         // 此apk包的下载地址
                         update.setUpdateUrl(object.optString("update_url"));
                         // 此apk包的版本号

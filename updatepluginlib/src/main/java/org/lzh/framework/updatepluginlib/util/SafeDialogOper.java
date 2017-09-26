@@ -22,15 +22,11 @@ import android.util.Log;
 import android.view.ContextThemeWrapper;
 
 /**
- * To safely operation dialog show and hide
- * @author lzh
+ * 用于安全的进行Dialog显示隐藏的工具类
+ * @author haoge
  */
 public class SafeDialogOper {
 
-    /**
-     * To show a dialog be safety
-     * @param dialog The dialog instance to be shown
-     */
     public static void safeShowDialog(Dialog dialog) {
         if (dialog == null || dialog.isShowing()) {
             return;
@@ -61,10 +57,6 @@ public class SafeDialogOper {
         return bindAct;
     }
 
-    /**
-     * to dismiss a dialog safety
-     * @param dialog The dialog to be hide
-     */
     public static void safeDismissDialog(Dialog dialog) {
         if (dialog == null || !dialog.isShowing()) {
             return;

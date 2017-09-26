@@ -18,7 +18,6 @@ package org.lzh.framework.updatepluginlib;
 import android.util.Log;
 
 import org.lzh.framework.updatepluginlib.business.DownloadWorker;
-import org.lzh.framework.updatepluginlib.business.IUpdateExecutor;
 import org.lzh.framework.updatepluginlib.business.UpdateExecutor;
 import org.lzh.framework.updatepluginlib.business.UpdateWorker;
 import org.lzh.framework.updatepluginlib.callback.DefaultCheckCB;
@@ -33,7 +32,7 @@ import java.io.File;
  */
 public final class Updater {
     private static Updater updater;
-    private IUpdateExecutor executor;
+    private UpdateExecutor executor;
 
     private Updater() {
         executor = UpdateExecutor.getInstance();

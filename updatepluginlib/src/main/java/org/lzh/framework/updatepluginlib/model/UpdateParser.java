@@ -15,19 +15,25 @@
  */
 package org.lzh.framework.updatepluginlib.model;
 
+import org.lzh.framework.updatepluginlib.UpdateBuilder;
+import org.lzh.framework.updatepluginlib.UpdateConfig;
+import org.lzh.framework.updatepluginlib.business.UpdateWorker;
+
 /**
- * Parse http response data to Update class
+ * 此类用于解析通过{@link UpdateWorker}访问的更新api地址返回的数据。解析出框架所需的{@link Update}实体类数据以提供框架内部各处使用
  *
- * @author lzh
+ * <p>配置方式：通过{@link UpdateConfig#jsonParser(UpdateParser)}或者{@link UpdateBuilder#jsonParser(UpdateParser)}
+ *
+ * @author haoge
  */
 public interface UpdateParser {
 
     /**
-     * Parse http response data to Update class
+     * 当更新api网络任务请求成功时。将会触发到此，在此根据网络数据解析创建出对应的更新数据实体类并返回给框架层使用。
      *
-     * @param httpResponse The response data to be parsed
-     * @return a new Update instance
-     * @throws Exception Throws a exception if a error occurs.
+     * @param httpResponse 更新api返回数据。
+     * @return 被创建的更新数据实体类。不能为null
+     * @throws Exception error occurs.
      */
     Update parse(String httpResponse) throws Exception;
 }

@@ -16,30 +16,30 @@
 package org.lzh.framework.updatepluginlib.strategy;
 
 import org.lzh.framework.updatepluginlib.model.Update;
-import org.lzh.framework.updatepluginlib.util.Utils;
 
 /**
- * 默认提供的更新策略：
- * 1. 当处于wifi环境时，只展示下载完成后的通知
- * 2. 当处于非wifi环境是：只展示有新版本更新及下载进度的通知。
+ * 当为强制更新时，将会强制使用此更新策略。
+ *
+ * <p>此更新策略的表现为：<br>
+ *     1. 当存在更新时：直接展示有新更新时的通知<br>
+ *     2. 当点击进行更新时：直接展示下载进度通知<br>
+ *     3. 当下载完成后。直接调起安装任务。并调起安装后。杀死进程
+ *
+ * @author haoge on 2017/9/25.
  */
-public class WifiFirstStrategy implements UpdateStrategy {
-
-    private boolean isWifi;
-
+public class ForcedUpdateStrategy implements UpdateStrategy {
     @Override
     public boolean isShowUpdateDialog(Update update) {
-        isWifi = Utils.isConnectedByWifi();
-        return !isWifi;
+        return true;
     }
 
     @Override
     public boolean isAutoInstall() {
-        return !isWifi;
+        return true;
     }
 
     @Override
     public boolean isShowDownloadDialog() {
-        return !isWifi;
+        return true;
     }
 }

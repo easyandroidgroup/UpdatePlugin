@@ -30,22 +30,17 @@ import org.lzh.framework.updatepluginlib.util.SafeDialogOper;
 import java.io.File;
 
 /**
- * The default download callback to receive update event send by {@link org.lzh.framework.updatepluginlib.business.DownloadWorker}
- * @author lzh
+ * 默认的下载任务的回调监听。主要用于接收从{@link DownloadWorker}中传递过来的下载状态。通知用户并触发后续流程
+ *
+ * @author haoge
  */
 public final class DefaultDownloadCB implements UpdateDownloadCB ,Recyclable {
 
     private UpdateBuilder builder;
-    /**
-     * set by {@link UpdateBuilder#downloadCB(UpdateDownloadCB)} or
-     * {@link org.lzh.framework.updatepluginlib.UpdateConfig#downloadCB(UpdateDownloadCB)}<br>
-     */
+    // 通过UpdateConfig或者UpdateBuilder所设置的下载回调监听。通过此监听器进行通知用户下载状态
     private UpdateDownloadCB downloadCB;
     private Update update;
-    /**
-     * This callback is created by {@link org.lzh.framework.updatepluginlib.creator.DownloadCreator#create(Update, Activity)}<br>
-     *     to update UI within this callback
-     */
+    // 通过DownloadCreator所创建的回调监听，通过此监听器进行下载通知的UI更新
     private UpdateDownloadCB innerCB;
 
     public void setBuilder(UpdateBuilder builder) {
@@ -57,9 +52,6 @@ public final class DefaultDownloadCB implements UpdateDownloadCB ,Recyclable {
         this.update = update;
     }
 
-    /**
-     * Receive and pass download_start event send by {@link DownloadWorker#sendUpdateStart()}
-     */
     @Override
     public void onDownloadStart() {
         try {
@@ -85,11 +77,6 @@ public final class DefaultDownloadCB implements UpdateDownloadCB ,Recyclable {
         return innerCB;
     }
 
-    /**
-     * Receive and pass download_complete event send by {@link DownloadWorker#sendUpdateComplete(File)}
-     *
-     * When download complete,The install dialog will be create when {@link UpdateStrategy#isAutoInstall()} is return with false
-     */
     @Override
     public void onDownloadComplete(File file) {
         try {
@@ -123,9 +110,6 @@ public final class DefaultDownloadCB implements UpdateDownloadCB ,Recyclable {
         }
     }
 
-    /**
-     * Receive and pass download_progress event send by {@link DownloadWorker#sendUpdateProgress(long, long)}
-     */
     @Override
     public void onDownloadProgress(long current, long total) {
         try {
@@ -142,9 +126,6 @@ public final class DefaultDownloadCB implements UpdateDownloadCB ,Recyclable {
 
     }
 
-    /**
-     * Receive and pass download_error event send by {@link DownloadWorker#sendUpdateError(Throwable)}
-     */
     @Override
     public void onDownloadError(Throwable t) {
         try {

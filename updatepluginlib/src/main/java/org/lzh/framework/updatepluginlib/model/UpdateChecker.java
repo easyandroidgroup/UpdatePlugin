@@ -15,16 +15,24 @@
  */
 package org.lzh.framework.updatepluginlib.model;
 
+import org.lzh.framework.updatepluginlib.UpdateBuilder;
+import org.lzh.framework.updatepluginlib.UpdateConfig;
+
 /**
- * The checker to check whether or not should be updated
- * Created by lzh on 2016/6/20.
+ * 此类用于对通过{@link UpdateParser}所解析返回的更新数据进行检查。判断是否此新版本数据需要被更新
+ *
+ * <p>配置方式：通过{@link UpdateConfig#updateChecker(UpdateChecker)}或者{@link UpdateBuilder#updateChecker(UpdateChecker)}
+ *
+ * <p>默认实现：{@link DefaultChecker}
+ *
+ * @author haoge
  */
 public interface UpdateChecker {
 
     /**
-     * check if is a new version
-     * @param update The update entity to be checked
-     * @return true if is valid
+     * 对提供的更新实体类进行检查。判断是否
+     * @param update 更新数据实体类
+     * @return True代表检查通过。此版本需要被更新
      * @throws Exception error occurs.
      */
     boolean check(Update update) throws Exception;

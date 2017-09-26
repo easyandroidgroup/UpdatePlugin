@@ -16,61 +16,48 @@
 package org.lzh.framework.updatepluginlib.business;
 
 import org.lzh.framework.updatepluginlib.UpdateBuilder;
-import org.lzh.framework.updatepluginlib.UpdateConfig;
 import org.lzh.framework.updatepluginlib.callback.DefaultCheckCB;
-import org.lzh.framework.updatepluginlib.callback.UpdateCheckCB;
 import org.lzh.framework.updatepluginlib.model.CheckEntity;
 import org.lzh.framework.updatepluginlib.model.Update;
-import org.lzh.framework.updatepluginlib.model.UpdateChecker;
 import org.lzh.framework.updatepluginlib.model.UpdateParser;
+import org.lzh.framework.updatepluginlib.strategy.ForcedUpdateStrategy;
 import org.lzh.framework.updatepluginlib.util.Recyclable;
 import org.lzh.framework.updatepluginlib.util.Utils;
 
 /**
- * The network task to check out whether or not a new version of apk is exist
+ * <b>核心操作类</b>
+ *
+ * 此为检查更新api网络任务封装基类。用于对更新api进行请求返回数据后。触发
+ *
+ * @author haoge
  */
 public abstract class UpdateWorker extends UnifiedWorker implements Runnable,Recyclable {
 
-    protected CheckEntity entity;
     /**
-     * The instance of {@link DefaultCheckCB}
+     * {@link DefaultCheckCB}的实例，用于接收网络任务状态。并连接后续流程
      */
-    private UpdateCheckCB checkCB;
+    private DefaultCheckCB checkCB;
 
-    /**
-     * set by {@link UpdateConfig#updateChecker(UpdateChecker)} or
-     * {@link UpdateBuilder#updateChecker(UpdateChecker)}<br>
-     *     <br>
-     *     according to instance {@link Update} to check out whether or not should be updated
-     */
-    private UpdateChecker checker;
-    /**
-     * set by {@link UpdateConfig#jsonParser(UpdateParser)} or
-     * {@link UpdateBuilder#jsonParser(UpdateParser)}<br><br>
-     *
-     *     according to response data from url to create update instance
-     */
-    private UpdateParser parser;
+    private UpdateBuilder builder;
 
     public void setBuilder (UpdateBuilder builder) {
-        this.entity = builder.getCheckEntity();
-        this.checker = builder.getUpdateChecker();
-        this.parser = builder.getJsonParser();
+        this.builder = builder;
     }
 
-    public void setCheckCB (UpdateCheckCB checkCB) {
+    public void setCheckCB (DefaultCheckCB checkCB) {
         this.checkCB = checkCB;
     }
 
     @Override
     public void run() {
         try {
-            String response = check(entity);
-            Update parse = parser.parse(response);
+            String response = check(builder.getCheckEntity());
+            UpdateParser jsonParser = builder.getJsonParser();
+            Update parse = preHandle(jsonParser.parse(response));
             if (parse == null) {
-                throw new IllegalArgumentException("parse response to update failed by " + parser.getClass().getCanonicalName());
+                throw new IllegalArgumentException("parse response to update failed by " + jsonParser.getClass().getCanonicalName());
             }
-            if (checker.check(parse)) {
+            if (builder.getUpdateChecker().check(parse)) {
                 sendHasUpdate(parse);
             } else {
                 sendNoUpdate();
@@ -83,12 +70,12 @@ public abstract class UpdateWorker extends UnifiedWorker implements Runnable,Rec
     }
 
     /**
-     * access the url and get response data back
-     * @param url The url to be accessed
-     * @return response data from url
-     * @throws Exception some error occurs when checked
+     * 访问此更新api实体类，并将其api接口数据返回。
+     * @param entity 更新api数据实体类
+     * @return 通过此更新api接口返回的数据
+     * @throws Exception 当访问失败。请抛出一个异常。底层即可捕获此异常用于通知用户。
      */
-    protected abstract String check(CheckEntity url) throws Exception;
+    protected abstract String check(CheckEntity entity) throws Exception;
 
     private void sendHasUpdate(final Update update) {
         if (checkCB == null) return;
@@ -129,8 +116,18 @@ public abstract class UpdateWorker extends UnifiedWorker implements Runnable,Rec
     @Override
     public void release() {
         this.checkCB = null;
-        this.checker = null;
-        this.parser = null;
-        this.entity = null;
+    }
+
+    private Update preHandle(Update update) {
+        if (update == null) {
+            return null;
+        }
+
+        // 当需要进行强制更新时。覆盖替换更新策略，且关闭忽略功能
+        if (update.isForced()) {
+            update.setIgnore(false);
+            builder.strategy(new ForcedUpdateStrategy());
+        }
+        return update;
     }
 }

@@ -15,6 +15,10 @@
  */
 package org.lzh.framework.updatepluginlib.business;
 
+/**
+ * 内部提供的一个异常。用于标识及提供在网络操作中出现的异常。
+ * @author haoge
+ */
 public class HttpException extends RuntimeException {
 
     private int code;
