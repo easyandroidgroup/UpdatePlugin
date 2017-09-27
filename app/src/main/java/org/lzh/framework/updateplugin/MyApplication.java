@@ -2,18 +2,11 @@ package org.lzh.framework.updateplugin;
 
 import android.app.Application;
 
-import org.json.JSONException;
 import org.json.JSONObject;
-import org.lzh.framework.updateplugin.update.LogCallback;
 import org.lzh.framework.updateplugin.widget.ToastTool;
 import org.lzh.framework.updatepluginlib.UpdateConfig;
-import org.lzh.framework.updatepluginlib.callback.UpdateCheckCB;
-import org.lzh.framework.updatepluginlib.callback.UpdateDownloadCB;
 import org.lzh.framework.updatepluginlib.model.Update;
 import org.lzh.framework.updatepluginlib.model.UpdateParser;
-import org.lzh.framework.updatepluginlib.util.Utils;
-
-import java.io.File;
 
 /**
  * @author Administrator
@@ -26,7 +19,6 @@ public class MyApplication extends Application {
         // UpdateConfig为全局配置。当在其他页面中。使用UpdateBuilder进行检查更新时。
         // 对于没传的参数，会默认使用UpdateConfig中的全局配置
         ToastTool.init(this);
-        LogCallback callback = new LogCallback();
         UpdateConfig.getConfig()
                 // 必填：数据更新接口,url与checkEntity两种方式任选一种填写
                 .url("https://raw.githubusercontent.com/yjfnypeu/UpdatePlugin/master/update.json")
@@ -57,9 +49,9 @@ public class MyApplication extends Application {
                 })
                 // TODO: 2016/5/11 除了以上两个参数为必填。以下的参数均为非必填项。
                 // 检查更新接口是否有新版本更新的回调。
-                .checkCB(callback)
+//                .checkCB(callback)
                 // apk下载的回调
-                .downloadCB(callback)
+//                .downloadCB(callback)
                 // 自定义更新检查器。
                 /*.updateChecker(new UpdateChecker() {
                     @Override

@@ -15,8 +15,12 @@
  */
 package org.lzh.framework.updatepluginlib.strategy;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+
 import org.lzh.framework.updatepluginlib.model.Update;
-import org.lzh.framework.updatepluginlib.util.Utils;
+import org.lzh.framework.updatepluginlib.util.ActivityManager;
 
 /**
  * 默认提供的更新策略：
@@ -29,7 +33,7 @@ public class WifiFirstStrategy implements UpdateStrategy {
 
     @Override
     public boolean isShowUpdateDialog(Update update) {
-        isWifi = Utils.isConnectedByWifi();
+        isWifi = isConnectedByWifi();
         return !isWifi;
     }
 
@@ -42,4 +46,14 @@ public class WifiFirstStrategy implements UpdateStrategy {
     public boolean isShowDownloadDialog() {
         return !isWifi;
     }
+
+    private boolean isConnectedByWifi() {
+        Context context = ActivityManager.get().getApplicationContext();
+        ConnectivityManager connManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo info = connManager.getActiveNetworkInfo();
+        return info != null
+                && info.isConnected()
+                && info.getType() == ConnectivityManager.TYPE_WIFI;
+    }
+
 }

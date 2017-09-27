@@ -39,36 +39,43 @@ public final class LogCallback implements UpdateCheckCB, UpdateDownloadCB{
 
     @Override
     public void onDownloadError(Throwable t) {
+        log(t.getMessage());
+        if (LOG) {
+            t.printStackTrace();
+        }
     }
 
     @Override
     public void onCheckStart() {
-
+        log("starting check update task.");
     }
 
     @Override
     public void hasUpdate(Update update) {
-
+        log(String.format("Checkout a new version apk is exist: update is %s", update));
     }
 
     @Override
     public void noUpdate() {
-
+        log("no new version exist");
     }
 
     @Override
     public void onCheckError(Throwable t) {
-
+        log("check update failed: cause by : " + t.getMessage());
+        if (LOG) {
+            t.printStackTrace();
+        }
     }
 
     @Override
     public void onUserCancel() {
-
+        log("canceled update by user");
     }
 
     @Override
     public void onCheckIgnore(Update update) {
-
+        log("ignored for this update: " + update);
     }
 
     private void log(String message) {

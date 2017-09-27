@@ -10,7 +10,6 @@ import com.tbruyelle.rxpermissions.RxPermissions;
 import org.json.JSONObject;
 import org.lzh.framework.updateplugin.update.AllDialogShowStrategy;
 import org.lzh.framework.updateplugin.update.CustomApkFileCreator;
-import org.lzh.framework.updateplugin.update.LogCallback;
 import org.lzh.framework.updateplugin.update.NotificationDownloadCreator;
 import org.lzh.framework.updateplugin.update.NotificationInstallCreator;
 import org.lzh.framework.updateplugin.update.NotificationUpdateCreator;
@@ -102,8 +101,6 @@ public class SampleActivity extends Activity {
 
     private UpdateConfig createNewConfig() {
         return UpdateConfig.createConfig()
-                .checkCB(new LogCallback())
-                .downloadCB(new LogCallback())
                 .url("https://raw.githubusercontent.com/yjfnypeu/UpdatePlugin/master/update.json")
                 .jsonParser(new UpdateParser() {
                     @Override

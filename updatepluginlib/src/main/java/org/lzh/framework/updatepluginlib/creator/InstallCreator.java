@@ -17,17 +17,15 @@ package org.lzh.framework.updatepluginlib.creator;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.os.Process;
 
 import org.lzh.framework.updatepluginlib.UpdateBuilder;
 import org.lzh.framework.updatepluginlib.UpdateConfig;
-import org.lzh.framework.updatepluginlib.callback.UpdateCheckCB;
 import org.lzh.framework.updatepluginlib.model.Update;
-import org.lzh.framework.updatepluginlib.strategy.InstallStrategy;
 import org.lzh.framework.updatepluginlib.strategy.UpdateStrategy;
 import org.lzh.framework.updatepluginlib.util.ActivityManager;
 import org.lzh.framework.updatepluginlib.util.Recyclable;
 import org.lzh.framework.updatepluginlib.util.UpdatePreference;
-import org.lzh.framework.updatepluginlib.util.Utils;
 
 /**
  * <p>此类为当检查到更新时的通知创建器基类。
@@ -65,6 +63,8 @@ public abstract class InstallCreator implements Recyclable {
             builder.getInstallStrategy().install(ActivityManager.get().getApplicationContext(), filename);
             if (update.isForced()) {
                 // 对于是强制更新的。当调起安装任务后。直接kill掉自身进程。
+                // 单独使用一种有时候会kill失效。两种一起用。。。双管齐下。。。
+                Process.killProcess(Process.myPid());
                 System.exit(0);
             }
         } else {
