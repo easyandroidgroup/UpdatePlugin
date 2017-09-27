@@ -22,4 +22,3 @@ artifacts {
     archives javadocJar
 }
 
-apply from: '../javadoc.gradle'
