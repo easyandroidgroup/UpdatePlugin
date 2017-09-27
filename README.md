@@ -26,6 +26,11 @@ dependencies {
 }
 ```
 
+### 特性
+
+支持Android 7.0+的新版安装方式
+支持对更新流程中的各个节点进行定制。满足各种奇葩需求。各种支持的定制方式请参考:[WIKI:更新配置说明](https://github.com/yjfnypeu/UpdatePlugin/wiki/%E6%9B%B4%E6%96%B0%E9%85%8D%E7%BD%AE%E8%AF%B4%E6%98%8E)
+
 ### 效果展示
 
 请通过下载此[demo.apk](https://raw.githubusercontent.com/yjfnypeu/UpdatePlugin/master/screenshots/app-debug.apk)进行体验

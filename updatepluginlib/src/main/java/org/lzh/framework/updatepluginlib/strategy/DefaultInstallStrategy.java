@@ -35,7 +35,7 @@ import java.io.File;
  *
  * @author haoge
  */
-public final class DefaultInstallStrategy implements InstallStrategy{
+public class DefaultInstallStrategy implements InstallStrategy{
 
     private static final int REQUEST_INSTALL = 0x010101;
     private static String DEFAULT_AUTHOR = null;
