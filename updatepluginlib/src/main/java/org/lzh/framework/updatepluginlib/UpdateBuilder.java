@@ -30,6 +30,20 @@ import org.lzh.framework.updatepluginlib.model.UpdateParser;
 import org.lzh.framework.updatepluginlib.strategy.InstallStrategy;
 import org.lzh.framework.updatepluginlib.strategy.UpdateStrategy;
 
+/**
+ * 此类用于建立真正的更新任务。每个更新任务对应于一个{@link UpdateBuilder}实例。
+ *
+ * <p>创建更新任务有两种方式：<br>
+ *      1. 通过{@link #create()}进行创建，代表将使用默认提供的全局更新配置。此默认更新配置通过{@link UpdateConfig#getConfig()}进行获取。<br>
+ *      2. 通过{@link #create(UpdateConfig)}指定使用某个特殊的更新配置。<br>
+ *
+ * <p>此Builder中的所有配置项，均在{@link UpdateConfig}中有对应的相同方法名的配置函数。此两者的关系为：
+ * 在更新流程中，当Builder中未设置对应的配置，将会使用在{@link UpdateConfig}更新配置中所提供的默认配置进行使用
+ *
+ * <p>正常启动：调用{@link #check()}进行启动。
+ *
+ * @author haoge
+ */
 public class UpdateBuilder {
 
     private UpdateWorker checkWorker;
@@ -53,17 +67,17 @@ public class UpdateBuilder {
     }
 
     /**
-     * Create a {@link UpdateBuilder} with the default {@link UpdateConfig}
-     * @return {@link UpdateBuilder}
+     * 使用默认全局配置进行更新任务创建，默认全局配置可通过{@link UpdateConfig#getConfig()}进行获取
+     * @return Builder
      */
     public static UpdateBuilder create() {
         return create(UpdateConfig.getConfig());
     }
 
     /**
-     * Create a {@link UpdateBuilder} with the special {@link UpdateConfig}
-     * @param config the config you are created.
-     * @return new {@link UpdateBuilder}
+     * 指定该更新任务所使用的更新配置。可通过{@link UpdateConfig#createConfig()}进行新的更新配置创建。
+     * @param config 指定使用的更新配置
+     * @return Builder
      */
     public static UpdateBuilder create(UpdateConfig config) {
         return new UpdateBuilder(config);
@@ -144,6 +158,9 @@ public class UpdateBuilder {
         return this;
     }
 
+    /**
+     * 启动更新任务。可在任意线程进行启动。
+     */
     public void check() {
         Updater.getInstance().checkUpdate(this);
     }
