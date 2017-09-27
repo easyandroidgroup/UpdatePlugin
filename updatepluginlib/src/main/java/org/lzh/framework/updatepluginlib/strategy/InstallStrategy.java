@@ -19,6 +19,7 @@ import android.content.Context;
 
 import org.lzh.framework.updatepluginlib.UpdateBuilder;
 import org.lzh.framework.updatepluginlib.UpdateConfig;
+import org.lzh.framework.updatepluginlib.model.Update;
 
 /**
  * 提供一个安装策略。便于针对不同的应用场景。定制不同的安装策略实现。
@@ -38,6 +39,7 @@ public interface InstallStrategy {
      * 3. 热修复环境下，在此进行热修复dex合并及更多兼容操作
      * @param context application context
      * @param filename The apk filename
+     * @param update 更新数据实体类
      */
-    void install(Context context, String filename);
+    void install(Context context, String filename, Update update);
 }

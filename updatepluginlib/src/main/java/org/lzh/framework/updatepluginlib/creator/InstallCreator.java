@@ -60,13 +60,7 @@ public abstract class InstallCreator implements Recyclable {
 
     public void sendToInstall(String filename) {
         if (builder.getFileChecker().checkAfterDownload(update,filename)) {
-            builder.getInstallStrategy().install(ActivityManager.get().getApplicationContext(), filename);
-            if (update.isForced()) {
-                // 对于是强制更新的。当调起安装任务后。直接kill掉自身进程。
-                // 单独使用一种有时候会kill失效。两种一起用。。。双管齐下。。。
-                Process.killProcess(Process.myPid());
-                System.exit(0);
-            }
+            builder.getInstallStrategy().install(ActivityManager.get().getApplicationContext(), filename, update);
         } else {
             builder.getCheckCB().onCheckError(new RuntimeException(String.format("apk %s checked failed",filename)));
         }

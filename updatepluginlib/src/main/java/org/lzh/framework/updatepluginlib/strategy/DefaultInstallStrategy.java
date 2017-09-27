@@ -20,8 +20,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Process;
 import android.text.TextUtils;
 
+import org.lzh.framework.updatepluginlib.model.Update;
+import org.lzh.framework.updatepluginlib.util.ActivityManager;
 import org.lzh.framework.updatepluginlib.util.UpdateInstallProvider;
 import org.lzh.framework.updatepluginlib.util.Utils;
 
@@ -38,7 +41,7 @@ public final class DefaultInstallStrategy implements InstallStrategy{
     private static String DEFAULT_AUTHOR = null;
 
     @Override
-    public void install(Context context, String filename) {
+    public void install(Context context, String filename, Update update) {
         Intent intent = new Intent();
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.setAction(Intent.ACTION_VIEW);
@@ -57,6 +60,23 @@ public final class DefaultInstallStrategy implements InstallStrategy{
             ((Activity) context).startActivityForResult(intent,REQUEST_INSTALL);
         }
         context.startActivity(intent);
+
+        exitIfForceUpdate(update);
+    }
+
+    /**
+     * 进行判断是否是强制更新：若是则强制退出应用。
+     * @param update 更新实体数据
+     */
+    protected void exitIfForceUpdate(Update update) {
+        if (!update.isForced()) {
+            return;
+        }
+        // 释放Activity资源。避免进程被杀后导致自动重启
+        ActivityManager.get().finishAll();
+        // 两种kill进程方式一起使用。双管齐下！
+        Process.killProcess(Process.myPid());
+        System.exit(0);
     }
 
     private String getAuthor(Context context) {
