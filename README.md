@@ -4,22 +4,25 @@
 可任意定制的app更新组件。
 
 ### 引入方式：
-加入jcenter依赖。
+
+由于各种原因，现将依赖仓库地址，从jCenter迁移到JitPack，请升级新版使用时注意一下：
+
+加入JitPack仓库依赖。
 ```
 allprojects {
     repositories {
-        jcenter()
+        maven { url 'https://jitpack.io' }
     }
 }
 ```
 - 在要使用的项目的build.gradle中。添加依赖：
 
-LastestVersion= [![Download](https://api.bintray.com/packages/yjfnypeu/maven/UpdatePlugin/images/download.svg) ](https://bintray.com/yjfnypeu/maven/UpdatePlugin/_latestVersion)
+LastestVersion= [![](https://jitpack.io/v/yjfnypeu/UpdatePlugin.svg)](https://jitpack.io/#yjfnypeu/UpdatePlugin)
 
 ```
 dependencies {
     ...
-    compile "org.lzh.nonview.updateplugin:UpdatePlugin:LastestVersion"
+    compile "com.github.yjfnypeu:UpdatePlugin:$LastestVersion"
 }
 ```
 
