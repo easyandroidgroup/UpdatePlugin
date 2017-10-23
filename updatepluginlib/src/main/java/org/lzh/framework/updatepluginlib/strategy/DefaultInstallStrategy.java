@@ -72,11 +72,18 @@ public class DefaultInstallStrategy implements InstallStrategy{
         if (!update.isForced()) {
             return;
         }
-        // 释放Activity资源。避免进程被杀后导致自动重启
-        ActivityManager.get().finishAll();
-        // 两种kill进程方式一起使用。双管齐下！
-        Process.killProcess(Process.myPid());
-        System.exit(0);
+        // 延迟强制更新时的退出操作。因为部分机型上安装程序读取安装包的时机有延迟。
+        Utils.getMainHandler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // 释放Activity资源。避免进程被杀后导致自动重启
+                ActivityManager.get().finishAll();
+                // 两种kill进程方式一起使用。双管齐下！
+                Process.killProcess(Process.myPid());
+                System.exit(0);
+            }
+        }, 1500);
+
     }
 
     private String getAuthor(Context context) {
