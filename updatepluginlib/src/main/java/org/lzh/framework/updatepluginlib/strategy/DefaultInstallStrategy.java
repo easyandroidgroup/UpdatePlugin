@@ -41,7 +41,7 @@ public class DefaultInstallStrategy implements InstallStrategy{
     private static String DEFAULT_AUTHOR = null;
 
     @Override
-    public void install(Context context, String filename, Update update) {
+    public void install(Context context, String filename, final Update update) {
         Intent intent = new Intent();
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.setAction(Intent.ACTION_VIEW);
@@ -50,10 +50,16 @@ public class DefaultInstallStrategy implements InstallStrategy{
         Uri uri;
         if (Build.VERSION.SDK_INT >= 24) {
             // Adaptive with api version 24+
-            uri = UpdateInstallProvider.getUriByFile(pluginFile,getAuthor(context));
+            uri = UpdateInstallProvider.getUriByFile(pluginFile, getAuthor(context), new Runnable() {
+                @Override
+                public void run() {
+                    exitIfForceUpdate(update);
+                }
+            });
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         } else {
             uri = Uri.fromFile(pluginFile);
+            exitIfForceUpdate(update);
         }
         intent.setDataAndType(uri, type);
         if (context instanceof Activity) {
@@ -61,7 +67,6 @@ public class DefaultInstallStrategy implements InstallStrategy{
         }
         context.startActivity(intent);
 
-        exitIfForceUpdate(update);
     }
 
     /**
@@ -73,7 +78,7 @@ public class DefaultInstallStrategy implements InstallStrategy{
             return;
         }
         // 延迟强制更新时的退出操作。因为部分机型上安装程序读取安装包的时机有延迟。
-        Utils.getMainHandler().postDelayed(new Runnable() {
+        Utils.getMainHandler().post(new Runnable() {
             @Override
             public void run() {
                 // 释放Activity资源。避免进程被杀后导致自动重启
@@ -82,7 +87,7 @@ public class DefaultInstallStrategy implements InstallStrategy{
                 Process.killProcess(Process.myPid());
                 System.exit(0);
             }
-        }, 1500);
+        });
 
     }
 

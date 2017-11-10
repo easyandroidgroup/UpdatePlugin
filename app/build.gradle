@@ -21,15 +21,16 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
     testCompile 'junit:junit:4.12'
-    compile project(':updatepluginlib')
-//    compile 'com.github.yjfnypeu:UpdatePlugin:-2.5.0-g3523297'
-    compile 'com.android.support:appcompat-v7:25.1.0'
-    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.4-beta2'
-    compile 'com.jakewharton:butterknife:8.5.1'
+    implementation project(':updatepluginlib')
+//    implementation 'com.github.yjfnypeu:UpdatePlugin:-2.5.0-g3523297'
+    implementation 'com.android.support:appcompat-v7:25.1.0'
+    implementation 'com.jakewharton:butterknife:8.5.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
-    compile 'com.squareup.okhttp3:okhttp:3.6.0'
-    compile 'com.tbruyelle.rxpermissions:rxpermissions:0.9.2'
+    implementation 'com.squareup.okhttp3:okhttp:3.6.0'
+    implementation 'com.tbruyelle.rxpermissions:rxpermissions:0.9.2'
 
 }
+
+

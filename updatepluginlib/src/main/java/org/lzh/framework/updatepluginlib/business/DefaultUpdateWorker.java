@@ -57,6 +57,11 @@ public class DefaultUpdateWorker extends UpdateWorker {
         return sb.toString();
     }
 
+    @Override
+    protected boolean useAsync() {
+        return false;
+    }
+
     private HttpURLConnection createHttpRequest(CheckEntity entity) throws IOException {
         if (entity.getMethod().equalsIgnoreCase("GET")) {
             return createGetRequest(entity);

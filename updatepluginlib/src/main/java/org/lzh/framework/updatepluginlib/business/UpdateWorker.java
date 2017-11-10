@@ -51,31 +51,95 @@ public abstract class UpdateWorker extends UnifiedWorker implements Runnable,Rec
     @Override
     public void run() {
         try {
-            String response = check(builder.getCheckEntity());
+            if (useAsync()) {
+                asyncCheck(builder.getCheckEntity());
+            } else {
+                String response = check(builder.getCheckEntity());
+                onResponse(response);
+            }
+        } catch (Throwable t) {
+            onError(t);
+        }
+    }
+
+    /**
+     *
+     * 同步请求更新api。并将其接口数据直接返回。
+     *
+     * 此处运行于子线程。可直接使用网络库的同步操作
+     *
+     * @param entity 更新api数据实体类
+     * @return 通过此更新api接口返回的数据
+     * @throws Exception 当访问失败。请抛出一个异常。底层即可捕获此异常用于通知用户。
+     */
+    protected String check(CheckEntity entity) throws Exception {
+        throw new RuntimeException("You must implements this method for sync request");
+    }
+
+    /**
+     * 异步请求更新api。当{@link #useAsync()}返回true时被触发
+     *
+     * <p>当请求失败：需要手动调用{@link #onError(Throwable)}并传入失败异常
+     *
+     * <p>当请求成功：需要手动调用{@link #onResponse(String)}并传入接口返回原始数据。便于后续解析
+     *
+     * @param entity 更新api数据实体类
+     */
+    protected void asyncCheck(CheckEntity entity) {
+        throw new RuntimeException("You must implements this method for async request");
+    }
+
+    /**
+     * 用于指定此网络任务使用异步还是同步方式进行请求：
+     *
+     * <p>True:使用异步操作。则将触发{@link #asyncCheck(CheckEntity)}进行更新请求
+     *
+     * <p>False:使用同步操作，则将触发{@link #check(CheckEntity)}进行更新请求
+     *
+     * <p>默认为False.使用同步网络请求操作
+     *
+     * @return True:使用异步网络操作
+     */
+    protected boolean useAsync() {
+        return false;
+    }
+
+    /**
+     * 获取到更新接口api数据时的回调。在此进行后续的解析、检查是否需要更新等操作
+     *
+     * @param response 更新接口api返回的数据实体
+     */
+    public final void onResponse(String response) {
+        try {
             UpdateParser jsonParser = builder.getJsonParser();
-            Update parse = preHandle(jsonParser.parse(response));
-            if (parse == null) {
+            Update update = jsonParser.parse(response);
+            if (update == null) {
                 throw new IllegalArgumentException("parse response to update failed by " + jsonParser.getClass().getCanonicalName());
             }
-            if (builder.getUpdateChecker().check(parse)) {
-                sendHasUpdate(parse);
+            update = preHandle(update);
+            if (builder.getUpdateChecker().check(update)) {
+                sendHasUpdate(update);
             } else {
                 sendNoUpdate();
             }
-        } catch (Throwable e) {
-            sendOnErrorMsg(e);
+        } catch (Throwable t) {
+            onError(t);
         } finally {
             setRunning(false);
         }
     }
 
     /**
-     * 访问此更新api实体类，并将其api接口数据返回。
-     * @param entity 更新api数据实体类
-     * @return 通过此更新api接口返回的数据
-     * @throws Exception 当访问失败。请抛出一个异常。底层即可捕获此异常用于通知用户。
+     * 进行检查更新api失败时的回调。
+     * @param t 失败时的异常
      */
-    protected abstract String check(CheckEntity entity) throws Exception;
+    protected final void onError(Throwable t) {
+        try {
+            sendOnErrorMsg(t);
+        } finally {
+            setRunning(false);
+        }
+    }
 
     private void sendHasUpdate(final Update update) {
         if (checkCB == null) return;
