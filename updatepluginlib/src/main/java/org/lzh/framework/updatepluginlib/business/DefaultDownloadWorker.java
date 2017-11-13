@@ -66,25 +66,23 @@ public class DefaultDownloadWorker extends DownloadWorker {
         byte[] buffer = new byte[8 * 1024];
         int length;
         long start = System.currentTimeMillis();
-        try {
-            while ((length = inputStream.read(buffer)) != -1) {
-                raf.write(buffer, 0, length);
-                offset += length;
-                long end = System.currentTimeMillis();
-                if (end - start > 1000) {
-                    sendUpdateProgress(offset,contentLength);
-                    start = System.currentTimeMillis();
-                }
+        while ((length = inputStream.read(buffer)) != -1) {
+            raf.write(buffer, 0, length);
+            offset += length;
+            long end = System.currentTimeMillis();
+            if (end - start > 1000) {
+                sendDownloadProgress(offset,contentLength);
+                start = System.currentTimeMillis();
             }
-        } finally {
-            //
             UpdatePreference.saveDownloadSize(url,offset);
         }
-
 
         urlConn.disconnect();
         raf.close();
         urlConn = null;
+
+        // notify download completed
+        sendDownloadComplete(target);
     }
 
     private boolean checkIsDownAll(File target,String url,long contentLength) {

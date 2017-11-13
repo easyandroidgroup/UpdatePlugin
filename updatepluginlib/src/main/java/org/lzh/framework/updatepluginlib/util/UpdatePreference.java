@@ -42,25 +42,24 @@ public class UpdatePreference {
     public static void saveDownloadSize (String url,long size) {
         SharedPreferences.Editor editor = getUpdatePref().edit();
         editor.putLong(url,size);
-        editor.commit();
+        editor.apply();
     }
 
     public static void saveDownloadTotalSize(String url, long totalSize) {
         SharedPreferences.Editor editor = getUpdatePref().edit();
         editor.putLong(url + "_total_size",totalSize);
-        editor.commit();
+        editor.apply();
     }
 
     public static Set<String> getIgnoreVersions () {
-        Set<String> ignoreVersions = getUpdatePref().getStringSet("ignoreVersions", new HashSet<String>());
-        return ignoreVersions;
+        return getUpdatePref().getStringSet("ignoreVersions", new HashSet<String>());
     }
 
     public static void saveIgnoreVersion(int versionCode) {
         Set<String> ignoreVersions = getIgnoreVersions();
         if (!ignoreVersions.contains(String.valueOf(versionCode))) {
             ignoreVersions.add(String.valueOf(versionCode));
-            getUpdatePref().edit().putStringSet("ignoreVersions",ignoreVersions).commit();
+            getUpdatePref().edit().putStringSet("ignoreVersions",ignoreVersions).apply();
         }
     }
 

@@ -15,9 +15,9 @@
  */
 package org.lzh.framework.updatepluginlib.business;
 
+import org.lzh.framework.updatepluginlib.UpdateBuilder;
 import org.lzh.framework.updatepluginlib.callback.DefaultDownloadCB;
 import org.lzh.framework.updatepluginlib.callback.UpdateDownloadCB;
-import org.lzh.framework.updatepluginlib.creator.ApkFileCreator;
 import org.lzh.framework.updatepluginlib.model.Update;
 import org.lzh.framework.updatepluginlib.util.Recyclable;
 import org.lzh.framework.updatepluginlib.util.Utils;
@@ -34,27 +34,19 @@ import java.io.File;
 public abstract class DownloadWorker extends UnifiedWorker implements Runnable,Recyclable {
 
     /**
-     * 通过{@link Update#setUpdateUrl(String)}所设置的远程apk下载地址
-     */
-    protected String url;
-    /**
      * {@link DefaultDownloadCB}的实例。用于接收下载状态并进行后续流程通知
      */
     private UpdateDownloadCB downloadCB;
-    /**
-     * 下载的缓存文件全路径。此路径名通过{@link ApkFileCreator#create(String)}进行获取
-     */
-    private File cacheFileName;
-    // 将update实例提供给子类使用。
+
     protected Update update;
+    protected UpdateBuilder builder;
 
     public void setUpdate(Update update) {
         this.update = update;
-        this.url = update.getUpdateUrl();
     }
 
-    public void setCacheFileName(File cacheFileName) {
-        this.cacheFileName = cacheFileName;
+    public void setUpdateBuilder(UpdateBuilder builder) {
+        this.builder = builder;
     }
 
     public void setDownloadCB(UpdateDownloadCB downloadCB) {
@@ -64,20 +56,35 @@ public abstract class DownloadWorker extends UnifiedWorker implements Runnable,R
     @Override
     public void run() {
         try {
+            String url = update.getUpdateUrl();
+            File cacheFileName = this.builder.getFileCreator().create(update.getVersionName());
             cacheFileName.getParentFile().mkdirs();
-            sendUpdateStart();
+            sendDownloadStart();
             download(url,cacheFileName);
-            sendUpdateComplete(cacheFileName);
         } catch (Throwable e) {
-            sendUpdateError(e);
-        } finally {
-            setRunning(false);
+            sendDownloadError(e);
         }
     }
 
+    /**
+     * 此为更新插件apk下载任务触发入口。
+     *
+     * <p>定制自己的网络层下载任务。需要复写此方法。并执行网络下载任务。
+     *
+     * <p>定制网络下载任务需要自己进行状态通知：
+     * <ol>
+     *     <li>当使用的网络框架可以支持进度条通知时，调用{@link #sendDownloadProgress(long, long)}触发进度条消息通知</li>
+     *     <li>当下载出现异常时。若使用的是同步请求。则无需理会，若使用的是异步请求。则需手动调用{@link #sendDownloadError(Throwable)}</li>
+     *     <li>当下载任务执行完毕时：需手动调用{@link #sendDownloadComplete(File)}通知用户并启动下一步任务</li>
+     * </ol>
+     *
+     * @param url apk文件下载地址
+     * @param target 指定的下载文件地址
+     * @throws Exception 捕获出现的异常
+     */
     protected abstract void download(String url, File target) throws Exception;
 
-    private void sendUpdateStart() {
+    final void sendDownloadStart() {
         if (downloadCB == null) return;
 
         Utils.getMainHandler().post(new Runnable() {
@@ -89,7 +96,12 @@ public abstract class DownloadWorker extends UnifiedWorker implements Runnable,R
         });
     }
 
-    protected void sendUpdateProgress(final long current, final long total) {
+    /**
+     * 通知当前下载进度，若实现类不调用此方法。将不会触发更新进度条的消息
+     * @param current 当前下载长度
+     * @param total 下载文件总长度
+     */
+    public final void sendDownloadProgress(final long current, final long total) {
         if (downloadCB == null) return;
 
         Utils.getMainHandler().post(new Runnable() {
@@ -101,9 +113,13 @@ public abstract class DownloadWorker extends UnifiedWorker implements Runnable,R
         });
     }
 
-    private void sendUpdateComplete(final File file) {
+    /**
+     * 通知当前下载任务执行完毕！当下载完成后。此回调必须被调用
+     * @param file 被下载的文件
+     */
+    public final void sendDownloadComplete(final File file) {
+        setRunning(false);
         if (downloadCB == null) return;
-
         Utils.getMainHandler().post(new Runnable() {
             @Override
             public void run() {
@@ -114,7 +130,12 @@ public abstract class DownloadWorker extends UnifiedWorker implements Runnable,R
         });
     }
 
-    private void sendUpdateError (final Throwable t) {
+    /**
+     * 通知当前下载任务出错。当下载出错时，此回调必须被调用
+     * @param t 错误异常信息
+     */
+    public final void sendDownloadError(final Throwable t) {
+        setRunning(false);
         if (downloadCB == null) return;
 
         Utils.getMainHandler().post(new Runnable() {

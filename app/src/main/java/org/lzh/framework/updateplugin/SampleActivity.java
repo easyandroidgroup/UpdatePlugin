@@ -3,7 +3,6 @@ package org.lzh.framework.updateplugin;
 import android.Manifest;
 import android.app.Activity;
 import android.os.Bundle;
-import android.widget.Button;
 
 import com.tbruyelle.rxpermissions.RxPermissions;
 
@@ -41,7 +40,6 @@ public class SampleActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-
         requestStoragePermission();
     }
 

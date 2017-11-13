@@ -45,10 +45,11 @@ public class OkhttpDownloadWorker extends DownloadWorker {
             long end = System.currentTimeMillis();
             if (end - start > 1000) {
                 // 发送下载进度信息。便于用于更新界面等操作
-                sendUpdateProgress(offset,contentLength);
+                sendDownloadProgress(offset,contentLength);
             }
         }
-
+        // 下载完成。通知下载完成
+        sendDownloadComplete(target);
     }
 
     static {

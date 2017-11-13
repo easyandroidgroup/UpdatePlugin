@@ -44,11 +44,6 @@ public class OkhttpCheckWorker extends UpdateWorker {
         return call.execute().body().string();
     }
 
-    @Override
-    protected boolean useAsync() {
-        return false;
-    }
-
     static {
         sOkClient = new OkHttpClient();
     }

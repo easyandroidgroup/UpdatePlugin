@@ -95,8 +95,8 @@ public final class Updater {
         }
 
         downloadWorker.setUpdate(update);
+        downloadWorker.setUpdateBuilder(builder);
         downloadWorker.setDownloadCB(downloadCB);
-        downloadWorker.setCacheFileName(builder.getFileCreator().create(update.getVersionName()));
 
         executor.download(downloadWorker);
     }
