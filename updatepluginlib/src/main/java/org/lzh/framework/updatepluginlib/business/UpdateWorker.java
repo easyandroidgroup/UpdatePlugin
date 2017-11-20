@@ -40,22 +40,21 @@ public abstract class UpdateWorker extends UnifiedWorker implements Runnable,Rec
 
     private UpdateBuilder builder;
 
-    public void setBuilder (UpdateBuilder builder) {
+    public final void setBuilder (UpdateBuilder builder) {
         this.builder = builder;
     }
 
-    public void setCheckCB (DefaultCheckCB checkCB) {
+    public final void setCheckCB (DefaultCheckCB checkCB) {
         this.checkCB = checkCB;
     }
 
     @Override
-    public void run() {
+    public final void run() {
         try {
             if (useAsync()) {
                 asyncCheck(builder.getCheckEntity());
             } else {
-                String response = check(builder.getCheckEntity());
-                onResponse(response);
+                onResponse(check(builder.getCheckEntity()));
             }
         } catch (Throwable t) {
             onError(t);

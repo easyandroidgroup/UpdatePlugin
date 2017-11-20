@@ -80,11 +80,16 @@ public final class Updater {
 
         FileChecker fileChecker = builder.getFileChecker();
         File cacheFile = builder.getFileCreator().create(update.getVersionName());
-        if (cacheFile != null && cacheFile.exists()
-                && fileChecker.checkPreFile(update,cacheFile.getAbsolutePath())) {
-            // check success: skip download and show install dialog if needed.
-            downloadCB.showInstallDialogIfNeed(cacheFile);
-            return;
+
+        try {
+            if (cacheFile != null && cacheFile.exists()) {
+                fileChecker.check(update, cacheFile.getAbsolutePath());
+                // check success: skip download and show install dialog if needed.
+                downloadCB.showInstallDialogIfNeed(cacheFile);
+                return;
+            }
+        } catch (Exception e) {
+            // ignore
         }
 
         DownloadWorker downloadWorker = builder.getDownloadWorker();

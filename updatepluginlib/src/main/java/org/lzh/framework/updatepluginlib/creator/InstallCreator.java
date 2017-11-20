@@ -17,7 +17,6 @@ package org.lzh.framework.updatepluginlib.creator;
 
 import android.app.Activity;
 import android.app.Dialog;
-import android.os.Process;
 
 import org.lzh.framework.updatepluginlib.UpdateBuilder;
 import org.lzh.framework.updatepluginlib.UpdateConfig;
@@ -59,10 +58,11 @@ public abstract class InstallCreator implements Recyclable {
     public abstract Dialog create(Update update, String path, Activity activity);
 
     public void sendToInstall(String filename) {
-        if (builder.getFileChecker().checkAfterDownload(update,filename)) {
+        try {
+            builder.getFileChecker().check(update, filename);
             builder.getInstallStrategy().install(ActivityManager.get().getApplicationContext(), filename, update);
-        } else {
-            builder.getCheckCB().onCheckError(new RuntimeException(String.format("apk %s checked failed",filename)));
+        } catch (Exception e) {
+            builder.getCheckCB().onCheckError(new RuntimeException("check failed after download apk." + e.getMessage(), e));
         }
         release();
     }

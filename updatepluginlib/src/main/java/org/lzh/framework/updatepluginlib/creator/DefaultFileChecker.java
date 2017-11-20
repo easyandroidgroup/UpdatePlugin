@@ -19,7 +19,6 @@ import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 
-import org.lzh.framework.updatepluginlib.UpdateConfig;
 import org.lzh.framework.updatepluginlib.model.Update;
 import org.lzh.framework.updatepluginlib.util.ActivityManager;
 
@@ -30,20 +29,16 @@ import org.lzh.framework.updatepluginlib.util.ActivityManager;
 public class DefaultFileChecker implements FileChecker {
 
     @Override
-    public boolean checkPreFile(Update update, String file) {
-        try {
-            Context context = ActivityManager.get().getApplicationContext();
-            PackageManager packageManager = context.getPackageManager();
-            PackageInfo packageInfo = packageManager.getPackageArchiveInfo(file, PackageManager.GET_ACTIVITIES);
-            return  (update.getVersionCode() == packageInfo.versionCode);
-        } catch (Throwable t) {
-            return false;
+    public void check(Update update, String file) throws Exception {
+        Context context = ActivityManager.get().getApplicationContext();
+        PackageManager packageManager = context.getPackageManager();
+        PackageInfo packageInfo = packageManager.getPackageArchiveInfo(file, PackageManager.GET_ACTIVITIES);
+        if (packageInfo.versionCode != update.getVersionCode()) {
+            throw new IllegalStateException(
+                    String.format("The version code not matched between apk and update entity. apk is %s but update is %s",
+                            packageInfo.versionCode, update.getVersionCode())
+            );
         }
     }
 
-    @Override
-    public boolean checkAfterDownload(Update update, String file) {
-        // For default: skip checked.
-        return true;
-    }
 }

@@ -31,22 +31,22 @@ import org.lzh.framework.updatepluginlib.model.Update;
 public interface FileChecker {
 
     /**
-     * 在启动下载任务前。通过对设置的文件下载缓存路径进行验证。
+     * 在此进行文件检查。
      *
-     * <p>当验证成功时，则代表此文件在之前已经被下载好了。则将跳过下载任务。
+     * <p>调用时机：
+     * <ol>
+     *     <li>
+     *         当检查到有新版本需要更新时。且在启动下载任务前。进行检查。当检查成功时，则将跳过文件下载任务。避免重复下载，
+     *         检查失败。则启动下载任务。
+     *     </li>
+     *     <li>
+     *         当下载完成后。启动安装包程序之前。进行检查。检查成功后即可调起安装任务。检查失败将失败信息通知给用户
+     *     </li>
+     * </ol>
      *
      * @param update 更新数据实体类
      * @param file 被{@link ApkFileCreator}所创建的缓存文件地址
-     * @return True代表验证成功
+     * @throws Exception 若检查失败。抛出异常。外部将捕获后提供给用户具体的异常信心。便于定位问题。
      */
-    boolean checkPreFile(Update update, String file);
-
-    /**
-     * 当下载完成后。触发到此。进行文件安全校验检查。当检查成功。即可启动安装任务。安装更新apk
-     *
-     * @param update 更新数据实体类
-     * @param file 被{@link ApkFileCreator}所创建的缓存文件地址
-     * @return True代表验证成功
-     */
-    boolean checkAfterDownload (Update update, String file);
+    void check(Update update, String file) throws Exception;
 }
