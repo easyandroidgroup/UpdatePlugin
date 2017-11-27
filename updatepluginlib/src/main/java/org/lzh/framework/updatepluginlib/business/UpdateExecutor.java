@@ -29,8 +29,7 @@ import java.util.concurrent.ThreadFactory;
 public class UpdateExecutor{
 
     private static ExecutorService pool;
-    private static UpdateExecutor executor;
-    private UpdateExecutor () {
+    public UpdateExecutor () {
         pool = Executors.newSingleThreadExecutor(new ThreadFactory() {
             @Override
             public Thread newThread(Runnable r) {
@@ -40,13 +39,6 @@ public class UpdateExecutor{
                 return thread;
             }
         });
-    }
-
-    public synchronized static UpdateExecutor getInstance () {
-        if (executor == null) {
-            executor = new UpdateExecutor();
-        }
-        return executor;
     }
 
     public synchronized void check(UpdateWorker worker) {

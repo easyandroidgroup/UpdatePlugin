@@ -32,6 +32,7 @@ public class Update {
     private String updateUrl;
     private int versionCode;
     private String versionName;
+    private String md5;
 
     /**
      * <p>指定是否要求展示忽略此版本更新按钮：
@@ -85,6 +86,14 @@ public class Update {
         this.versionName = versionName;
     }
 
+    /**
+     * 指定下载文件的md5值。用于对下载文件进行检查时使用。
+     * @param md5 MD5
+     */
+    public void setMd5(String md5) {
+        this.md5 = md5;
+    }
+
     public boolean isForced() {
         return forced;
     }
@@ -107,6 +116,10 @@ public class Update {
 
     public String getVersionName() {
         return versionName;
+    }
+
+    public String getMd5() {
+        return md5;
     }
 
     @Override

@@ -36,7 +36,7 @@ public abstract class DownloadWorker extends UnifiedWorker implements Runnable,R
     /**
      * {@link DefaultDownloadCB}的实例。用于接收下载状态并进行后续流程通知
      */
-    private UpdateDownloadCB downloadCB;
+    private DefaultDownloadCB downloadCB;
 
     protected Update update;
     protected UpdateBuilder builder;
@@ -49,18 +49,24 @@ public abstract class DownloadWorker extends UnifiedWorker implements Runnable,R
         this.builder = builder;
     }
 
-    public void setDownloadCB(UpdateDownloadCB downloadCB) {
+    public void setDownloadCB(DefaultDownloadCB downloadCB) {
         this.downloadCB = downloadCB;
     }
 
     @Override
     public void run() {
         try {
-            String url = update.getUpdateUrl();
-            File cacheFileName = this.builder.getFileCreator().create(update.getVersionName());
-            cacheFileName.getParentFile().mkdirs();
             sendDownloadStart();
-            download(url,cacheFileName);
+            File cacheFile = builder.getFileCreator().create(update);
+            if (cacheFile != null && cacheFile.exists()
+                    && builder.getFileChecker().checkForDownload(update, cacheFile.getAbsolutePath())) {
+                // check success: skip download and show install dialog if needed.
+                sendDownloadComplete(cacheFile);
+                return;
+            }
+            String url = update.getUpdateUrl();
+            cacheFile.getParentFile().mkdirs();
+            download(url,cacheFile);
         } catch (Throwable e) {
             sendDownloadError(e);
         }

@@ -54,6 +54,8 @@ public class DefaultDownloadWorker extends DownloadWorker {
         if (checkIsDownAll(target,url,contentLength)) {
             urlConn.disconnect();
             urlConn = null;
+            // notify download completed
+            sendDownloadComplete(target);
             return;
         }
         RandomAccessFile raf = supportBreakpointDownload(target, httpUrl, url);

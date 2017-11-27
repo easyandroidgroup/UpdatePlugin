@@ -22,14 +22,16 @@ import android.content.pm.PackageManager;
 import org.lzh.framework.updatepluginlib.model.Update;
 import org.lzh.framework.updatepluginlib.util.ActivityManager;
 
+import java.io.File;
+
 /**
  * 默认的apk文件检查器。
  * @author haoge
  */
 public class DefaultFileChecker implements FileChecker {
 
-    @Override
-    public void check(Update update, String file) throws Exception {
+    private void check(Update update, String file) throws Exception {
+        // TODO: 2017/11/27 添加MD5支持
         Context context = ActivityManager.get().getApplicationContext();
         PackageManager packageManager = context.getPackageManager();
         PackageInfo packageInfo = packageManager.getPackageArchiveInfo(file, PackageManager.GET_ACTIVITIES);
@@ -40,5 +42,21 @@ public class DefaultFileChecker implements FileChecker {
             );
         }
     }
+
+    @Override
+    public boolean checkForDownload(Update update, String file) {
+        try {
+            check(update, file);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    @Override
+    public void checkForInstall(Update update, String file) throws Exception {
+        check(update, file);
+    }
+
 
 }

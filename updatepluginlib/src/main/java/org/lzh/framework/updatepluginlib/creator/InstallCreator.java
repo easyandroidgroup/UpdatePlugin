@@ -59,7 +59,7 @@ public abstract class InstallCreator implements Recyclable {
 
     public void sendToInstall(String filename) {
         try {
-            builder.getFileChecker().check(update, filename);
+            builder.getFileChecker().checkForInstall(update, filename);
             builder.getInstallStrategy().install(ActivityManager.get().getApplicationContext(), filename, update);
         } catch (Exception e) {
             builder.getCheckCB().onCheckError(new RuntimeException("check failed after download apk." + e.getMessage(), e));

@@ -16,6 +16,7 @@
 package org.lzh.framework.updatepluginlib;
 
 import org.lzh.framework.updatepluginlib.business.DownloadWorker;
+import org.lzh.framework.updatepluginlib.business.UpdateExecutor;
 import org.lzh.framework.updatepluginlib.business.UpdateWorker;
 import org.lzh.framework.updatepluginlib.callback.UpdateCheckCB;
 import org.lzh.framework.updatepluginlib.callback.UpdateDownloadCB;
@@ -258,6 +259,10 @@ public class UpdateBuilder {
             installStrategy = config.getInstallStrategy();
         }
         return installStrategy;
+    }
+
+    final UpdateExecutor getExecutor() {
+        return config.getExecutor();
     }
 
 }

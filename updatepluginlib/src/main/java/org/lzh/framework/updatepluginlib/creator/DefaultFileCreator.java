@@ -17,6 +17,7 @@ package org.lzh.framework.updatepluginlib.creator;
 
 import android.content.Context;
 
+import org.lzh.framework.updatepluginlib.model.Update;
 import org.lzh.framework.updatepluginlib.util.ActivityManager;
 
 import java.io.File;
@@ -28,10 +29,10 @@ import java.io.File;
  */
 public class DefaultFileCreator implements ApkFileCreator {
     @Override
-    public File create(String versionName) {
+    public File create(Update update) {
         File cacheDir = getCacheDir();
         cacheDir.mkdirs();
-        return new File(cacheDir,"update_v_" + versionName);
+        return new File(cacheDir,"update_v_" + update.getVersionName());
     }
 
     private File getCacheDir() {

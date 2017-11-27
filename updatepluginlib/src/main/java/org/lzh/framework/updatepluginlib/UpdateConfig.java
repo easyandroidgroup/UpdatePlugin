@@ -20,6 +20,7 @@ import android.text.TextUtils;
 import org.lzh.framework.updatepluginlib.business.DefaultDownloadWorker;
 import org.lzh.framework.updatepluginlib.business.DefaultUpdateWorker;
 import org.lzh.framework.updatepluginlib.business.DownloadWorker;
+import org.lzh.framework.updatepluginlib.business.UpdateExecutor;
 import org.lzh.framework.updatepluginlib.business.UpdateWorker;
 import org.lzh.framework.updatepluginlib.callback.LogCallback;
 import org.lzh.framework.updatepluginlib.callback.UpdateCheckCB;
@@ -66,6 +67,8 @@ public class UpdateConfig {
     private UpdateChecker updateChecker;
     private FileChecker fileChecker;
     private InstallStrategy installStrategy;
+
+    private UpdateExecutor executor = new UpdateExecutor();
 
     private static UpdateConfig DEFAULT;
 
@@ -366,6 +369,10 @@ public class UpdateConfig {
             downloadCB = LogCallback.get();
         }
         return downloadCB;
+    }
+
+    final UpdateExecutor getExecutor() {
+        return executor;
     }
 }
 

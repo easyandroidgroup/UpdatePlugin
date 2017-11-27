@@ -17,6 +17,7 @@ package org.lzh.framework.updatepluginlib.creator;
 
 import org.lzh.framework.updatepluginlib.UpdateBuilder;
 import org.lzh.framework.updatepluginlib.UpdateConfig;
+import org.lzh.framework.updatepluginlib.model.Update;
 
 import java.io.File;
 
@@ -33,5 +34,5 @@ import java.io.File;
  */
 public interface ApkFileCreator {
 
-    File create(String versionName);
+    File create(Update update);
 }

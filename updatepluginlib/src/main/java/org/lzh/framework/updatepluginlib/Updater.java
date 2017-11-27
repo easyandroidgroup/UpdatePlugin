@@ -18,7 +18,6 @@ package org.lzh.framework.updatepluginlib;
 import android.util.Log;
 
 import org.lzh.framework.updatepluginlib.business.DownloadWorker;
-import org.lzh.framework.updatepluginlib.business.UpdateExecutor;
 import org.lzh.framework.updatepluginlib.business.UpdateWorker;
 import org.lzh.framework.updatepluginlib.callback.DefaultCheckCB;
 import org.lzh.framework.updatepluginlib.callback.DefaultDownloadCB;
@@ -28,15 +27,17 @@ import org.lzh.framework.updatepluginlib.model.Update;
 import java.io.File;
 
 /**
- * The Dispatcher class to request to launch check-task or download-task
+ * 此类用于调起更新流程中的两处网络任务进行执行。
+ *
+ * <p>1. 检查更新api网络任务:{@link #checkUpdate(UpdateBuilder)}
+ *
+ * <p>2. 发起apk文件下载任务:{@link #downUpdate(Update, UpdateBuilder)}
+ *
+ * @author haoge
  */
 public final class Updater {
     private static Updater updater;
-    private UpdateExecutor executor;
 
-    private Updater() {
-        executor = UpdateExecutor.getInstance();
-    }
     public static Updater getInstance() {
         if (updater == null) {
             updater = new Updater();
@@ -45,12 +46,12 @@ public final class Updater {
     }
 
     /**
-     * Request to launch a {@link UpdateWorker} task from this builder
+     * 调起检查api更新任务。
      *
-     * @param builder The {@link UpdateWorker} instance provider.
+     * @param builder 更新任务实例
      */
-    void checkUpdate(UpdateBuilder builder) {
-        // define a default callback to receive update event send by check task
+    public void checkUpdate(UpdateBuilder builder) {
+        // 定义一个默认的检查更新回调监听。用于接收api检查更新任务所发出的通知。并链接后续流程。
         DefaultCheckCB checkCB = new DefaultCheckCB();
         checkCB.setBuilder(builder);
         checkCB.onCheckStart();
@@ -63,34 +64,20 @@ public final class Updater {
         }
         checkWorker.setBuilder(builder);
         checkWorker.setCheckCB(checkCB);
-        executor.check(checkWorker);
+        builder.getExecutor().check(checkWorker);
     }
 
     /**
-     * Request to launch a {@link DownloadWorker} task from this builder.
+     * 调起apk文件下载任务。
      *
-     * @param update update instance, should not be null;
-     * @param builder The {@link DownloadWorker} instance provider
+     * @param update 更新api实体类。不能为null
+     * @param builder 更新任务实例
      */
     public void downUpdate(Update update,UpdateBuilder builder) {
-        // define a default download callback to receive callback from download task
+        // 定义一个默认的下载状态回调监听。用于接收文件下载任务所发出的通知。并链接下载后续流程
         DefaultDownloadCB downloadCB = new DefaultDownloadCB();
         downloadCB.setBuilder(builder);
         downloadCB.setUpdate(update);
-
-        FileChecker fileChecker = builder.getFileChecker();
-        File cacheFile = builder.getFileCreator().create(update.getVersionName());
-
-        try {
-            if (cacheFile != null && cacheFile.exists()) {
-                fileChecker.check(update, cacheFile.getAbsolutePath());
-                // check success: skip download and show install dialog if needed.
-                downloadCB.showInstallDialogIfNeed(cacheFile);
-                return;
-            }
-        } catch (Exception e) {
-            // ignore
-        }
 
         DownloadWorker downloadWorker = builder.getDownloadWorker();
         if (downloadWorker.isRunning()) {
@@ -103,7 +90,7 @@ public final class Updater {
         downloadWorker.setUpdateBuilder(builder);
         downloadWorker.setDownloadCB(downloadCB);
 
-        executor.download(downloadWorker);
+        builder.getExecutor().download(downloadWorker);
     }
 
 }

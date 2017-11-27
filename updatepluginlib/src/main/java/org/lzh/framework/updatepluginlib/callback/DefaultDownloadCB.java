@@ -22,7 +22,6 @@ import org.lzh.framework.updatepluginlib.UpdateBuilder;
 import org.lzh.framework.updatepluginlib.business.DownloadWorker;
 import org.lzh.framework.updatepluginlib.creator.InstallCreator;
 import org.lzh.framework.updatepluginlib.model.Update;
-import org.lzh.framework.updatepluginlib.strategy.UpdateStrategy;
 import org.lzh.framework.updatepluginlib.util.ActivityManager;
 import org.lzh.framework.updatepluginlib.util.Recyclable;
 import org.lzh.framework.updatepluginlib.util.SafeDialogOper;
@@ -96,18 +95,22 @@ public final class DefaultDownloadCB implements UpdateDownloadCB ,Recyclable {
         }
     }
 
-    public void showInstallDialogIfNeed(File file) {
-        Activity current = ActivityManager.get().topActivity();
-
-        InstallCreator creator = builder.getInstallDialogCreator();
-        creator.setBuilder(builder);
-        creator.setUpdate(update);
-        if (builder.getStrategy().isAutoInstall()) {
-            creator.sendToInstall(file.getAbsolutePath());
-        } else {
-            Dialog dialog = creator.create(update, file.getAbsolutePath(),current);
-            SafeDialogOper.safeShowDialog(dialog);
-        }
+    public void showInstallDialogIfNeed(final File file) {
+        final Activity current = ActivityManager.get().topActivity();
+        current.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                InstallCreator creator = builder.getInstallDialogCreator();
+                creator.setBuilder(builder);
+                creator.setUpdate(update);
+                if (builder.getStrategy().isAutoInstall()) {
+                    creator.sendToInstall(file.getAbsolutePath());
+                } else {
+                    Dialog dialog = creator.create(update, file.getAbsolutePath(),current);
+                    SafeDialogOper.safeShowDialog(dialog);
+                }
+            }
+        });
     }
 
     @Override
