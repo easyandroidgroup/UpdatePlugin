@@ -25,7 +25,7 @@ import org.lzh.framework.updatepluginlib.model.Update;
 /**
  * 检查更新的回调监听。
  *
- * <p>设置方式：通过{@link UpdateConfig#checkCB(UpdateCheckCB)}或者{@link UpdateBuilder#checkCB(UpdateCheckCB)}进行设置。
+ * <p>设置方式：通过{@link UpdateConfig#setCheckCallback(UpdateCheckCB)}或者{@link UpdateBuilder#setCheckCallback(UpdateCheckCB)}进行设置。
  *
  * @author haoge
  */

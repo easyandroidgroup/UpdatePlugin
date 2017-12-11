@@ -63,31 +63,31 @@ public class SampleActivity extends Activity {
         }
         // 根据各项是否选择使用默认配置进行使用更新。
         if (!updateWorker.isDefaultSelected()) {
-            builder.checkWorker(new OkhttpCheckWorker());
+            builder.setCheckWorker(new OkhttpCheckWorker());
         }
 
         if (!hasUpdateNotice.isDefaultSelected()) {
-            builder.updateDialogCreator(new NotificationUpdateCreator());
+            builder.setUpdateDialogCreator(new NotificationUpdateCreator());
         }
 
         if (!downloadCompleteNotice.isDefaultSelected()) {
-            builder.installDialogCreator(new NotificationInstallCreator());
+            builder.setInstallDialogCreator(new NotificationInstallCreator());
         }
 
         if (!fileCreator.isDefaultSelected() && isPermissionGrant) {
-            builder.fileCreator(new CustomApkFileCreator());
+            builder.setFileCreator(new CustomApkFileCreator());
         }
 
         if (!updateStrategy.isDefaultSelected()) {
-            builder.strategy(new AllDialogShowStrategy());
+            builder.setUpdateStrategy(new AllDialogShowStrategy());
         }
 
         if (!downloadNotice.isDefaultSelected()) {
-            builder.downloadDialogCreator(new NotificationDownloadCreator());
+            builder.setDownloadDialogCreator(new NotificationDownloadCreator());
         }
 
         if (!downloadWorker.isDefaultSelected()) {
-            builder.downloadWorker(new OkhttpDownloadWorker());
+            builder.setDownloadWorker(new OkhttpDownloadWorker());
         }
         /*
          * 以上为常用的需要定制的功能模块。如果需要更多的定制需求。请参考
@@ -99,8 +99,8 @@ public class SampleActivity extends Activity {
 
     private UpdateConfig createNewConfig() {
         return UpdateConfig.createConfig()
-                .url("https://raw.githubusercontent.com/yjfnypeu/UpdatePlugin/master/update.json")
-                .jsonParser(new UpdateParser() {
+                .setUrl("https://raw.githubusercontent.com/yjfnypeu/UpdatePlugin/master/update.json")
+                .setUpdateParser(new UpdateParser() {
                     @Override
                     public Update parse(String httpResponse) throws Exception {
                         JSONObject object = new JSONObject(httpResponse);

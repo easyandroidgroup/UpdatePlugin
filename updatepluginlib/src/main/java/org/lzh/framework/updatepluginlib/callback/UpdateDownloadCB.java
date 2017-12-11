@@ -23,7 +23,7 @@ import java.io.File;
 /**
  * 更新下载回调。
  *
- * <p>设置方式：{@link UpdateConfig#downloadCB(UpdateDownloadCB)} 或者 {@link UpdateBuilder#downloadCB(UpdateDownloadCB)}
+ * <p>设置方式：{@link UpdateConfig#setDownloadCallback(UpdateDownloadCB)} 或者 {@link UpdateBuilder#setDownloadCallback(UpdateDownloadCB)}
  *
  * @author haoge
  */

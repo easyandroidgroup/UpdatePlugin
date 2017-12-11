@@ -25,7 +25,7 @@ import org.lzh.framework.updatepluginlib.model.Update;
 /**
  * 此类用于提供定制更新时的各处通知显示逻辑。
  *
- * <p>配置方式：通过{@link UpdateConfig#strategy(UpdateStrategy)}或者{@link UpdateBuilder#strategy(UpdateStrategy)}
+ * <p>配置方式：通过{@link UpdateConfig#setUpdateStrategy(UpdateStrategy)}或者{@link UpdateBuilder#setUpdateStrategy(UpdateStrategy)}
  *
  * <p>默认实现: {@link WifiFirstStrategy}
  *

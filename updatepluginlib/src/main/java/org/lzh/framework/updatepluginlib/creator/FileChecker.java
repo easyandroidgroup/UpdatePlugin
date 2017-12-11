@@ -22,7 +22,7 @@ import org.lzh.framework.updatepluginlib.model.Update;
 /**
  * 用于提供在更新中对apk进行有效性、安全性检查的接口
  *
- * <p>配置方式：通过{@link UpdateConfig#fileChecker(FileChecker)}或者{@link UpdateBuilder#fileChecker(FileChecker)}
+ * <p>配置方式：通过{@link UpdateConfig#setFileChecker(FileChecker)}或者{@link UpdateBuilder#setFileChecker(FileChecker)}
  *
  * <p>默认实现：{@link DefaultFileChecker}
  *

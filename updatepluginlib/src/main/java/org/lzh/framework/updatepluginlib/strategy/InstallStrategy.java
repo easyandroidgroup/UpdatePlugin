@@ -24,7 +24,7 @@ import org.lzh.framework.updatepluginlib.model.Update;
 /**
  * 提供一个安装策略。便于针对不同的应用场景。定制不同的安装策略实现。
  *
- * <p>配置方式：通过{@link UpdateConfig#installStrategy(InstallStrategy)}或者{@link UpdateBuilder#installStrategy(InstallStrategy)}
+ * <p>配置方式：通过{@link UpdateConfig#setInstallStrategy(InstallStrategy)}或者{@link UpdateBuilder#setInstallStrategy(InstallStrategy)}
  *
  * <p>默认实现：{@link DefaultInstallStrategy}
  *

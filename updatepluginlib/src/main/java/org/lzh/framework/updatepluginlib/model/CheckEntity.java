@@ -24,7 +24,7 @@ import java.util.Map;
 /**
  * 配置的更新api实体类。此实体类将被{@link UpdateWorker}进行使用。
  *
- * <p>配置方式：通过{@link UpdateConfig#checkEntity(CheckEntity)}对复杂api数据进行定制，或者通过{@link UpdateConfig#url(String)}对简单GET请求的更新api进行定制。
+ * <p>配置方式：通过{@link UpdateConfig#setCheckEntity(CheckEntity)}对复杂api数据进行定制，或者通过{@link UpdateConfig#setUrl(String)}对简单GET请求的更新api进行定制。
  *
  * @author haoge
  */

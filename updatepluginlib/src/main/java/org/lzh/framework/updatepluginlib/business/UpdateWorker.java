@@ -187,7 +187,7 @@ public abstract class UpdateWorker extends UnifiedWorker implements Runnable,Rec
         // 当需要进行强制更新时。覆盖替换更新策略，且关闭忽略功能
         if (update.isForced()) {
             update.setIgnore(false);
-            builder.strategy(new ForcedUpdateStrategy());
+            builder.setUpdateStrategy(new ForcedUpdateStrategy());
         }
         return update;
     }

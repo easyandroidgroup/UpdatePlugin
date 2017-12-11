@@ -31,7 +31,7 @@ import org.lzh.framework.updatepluginlib.util.UpdatePreference;
 /**
  * <p>此类为当检查到更新时的通知创建器基类。
  *
- * <p>配置方式：通过{@link UpdateConfig#updateDialogCreator(DialogCreator)}或者{@link UpdateBuilder#updateDialogCreator(DialogCreator)}
+ * <p>配置方式：通过{@link UpdateConfig#setUpdateDialogCreator(DialogCreator)}或者{@link UpdateBuilder#setUpdateDialogCreator(DialogCreator)}
  *
  * <p>默认实现：{@link DefaultNeedUpdateCreator}
  *

@@ -82,77 +82,77 @@ public class UpdateBuilder {
         return new UpdateBuilder(config);
     }
 
-    public UpdateBuilder url(String url) {
+    public UpdateBuilder setUrl(String url) {
         this.entity = new CheckEntity().setUrl(url);
         return this;
     }
 
-    public UpdateBuilder checkEntity (CheckEntity entity) {
+    public UpdateBuilder setCheckEntity(CheckEntity entity) {
         this.entity = entity;
         return this;
     }
 
-    public UpdateBuilder updateChecker (UpdateChecker checker) {
+    public UpdateBuilder setUpdateChecker(UpdateChecker checker) {
         this.updateChecker = checker;
         return this;
     }
 
-    public UpdateBuilder fileChecker(FileChecker checker) {
+    public UpdateBuilder setFileChecker(FileChecker checker) {
         this.fileChecker = checker;
         return this;
     }
 
-    public UpdateBuilder checkWorker(UpdateWorker checkWorker) {
+    public UpdateBuilder setCheckWorker(UpdateWorker checkWorker) {
         this.checkWorker = checkWorker;
         return this;
     }
 
-    public UpdateBuilder downloadWorker(DownloadWorker downloadWorker) {
+    public UpdateBuilder setDownloadWorker(DownloadWorker downloadWorker) {
         this.downloadWorker = downloadWorker;
         return this;
     }
 
-    public UpdateBuilder downloadCB(UpdateDownloadCB downloadCB) {
-        this.config.downloadCB(downloadCB);
+    public UpdateBuilder setDownloadCallback(UpdateDownloadCB downloadCB) {
+        this.config.setDownloadCallback(downloadCB);
         return this;
     }
 
-    public UpdateBuilder checkCB (UpdateCheckCB checkCB) {
-        this.config.checkCB(checkCB);
+    public UpdateBuilder setCheckCallback(UpdateCheckCB checkCB) {
+        this.config.setCheckCallback(checkCB);
         return this;
     }
 
-    public UpdateBuilder jsonParser (UpdateParser jsonParser) {
+    public UpdateBuilder setUpdateParser(UpdateParser jsonParser) {
         this.jsonParser = jsonParser;
         return this;
     }
 
-    public UpdateBuilder fileCreator (ApkFileCreator fileCreator) {
+    public UpdateBuilder setFileCreator(ApkFileCreator fileCreator) {
         this.fileCreator = fileCreator;
         return this;
     }
 
-    public UpdateBuilder downloadDialogCreator (DownloadCreator downloadDialogCreator) {
+    public UpdateBuilder setDownloadDialogCreator(DownloadCreator downloadDialogCreator) {
         this.downloadDialogCreator = downloadDialogCreator;
         return this;
     }
 
-    public UpdateBuilder installDialogCreator (InstallCreator installDialogCreator) {
+    public UpdateBuilder setInstallDialogCreator(InstallCreator installDialogCreator) {
         this.installDialogCreator = installDialogCreator;
         return this;
     }
 
-    public UpdateBuilder updateDialogCreator(DialogCreator updateDialogCreator) {
+    public UpdateBuilder setUpdateDialogCreator(DialogCreator updateDialogCreator) {
         this.updateDialogCreator = updateDialogCreator;
         return this;
     }
 
-    public UpdateBuilder strategy(UpdateStrategy strategy) {
+    public UpdateBuilder setUpdateStrategy(UpdateStrategy strategy) {
         this.strategy = strategy;
         return this;
     }
 
-    public UpdateBuilder installStrategy(InstallStrategy installStrategy) {
+    public UpdateBuilder setInstallStrategy(InstallStrategy installStrategy) {
         this.installStrategy = installStrategy;
         return this;
     }

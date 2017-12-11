@@ -22,7 +22,7 @@ import org.lzh.framework.updatepluginlib.business.UpdateWorker;
 /**
  * 此类用于解析通过{@link UpdateWorker}访问的更新api地址返回的数据。解析出框架所需的{@link Update}实体类数据以提供框架内部各处使用
  *
- * <p>配置方式：通过{@link UpdateConfig#jsonParser(UpdateParser)}或者{@link UpdateBuilder#jsonParser(UpdateParser)}
+ * <p>配置方式：通过{@link UpdateConfig#setUpdateParser(UpdateParser)}或者{@link UpdateBuilder#setUpdateParser(UpdateParser)}
  *
  * @author haoge
  */

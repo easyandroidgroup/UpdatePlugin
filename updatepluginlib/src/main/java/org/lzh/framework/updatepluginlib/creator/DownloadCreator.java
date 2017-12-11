@@ -27,7 +27,7 @@ import org.lzh.framework.updatepluginlib.util.ActivityManager;
 /**
  * apk下载任务的通知创建器
  *
- * <p>配置方式：通过{@link UpdateConfig#downloadDialogCreator(DownloadCreator)}或者{@link UpdateBuilder#downloadDialogCreator(DownloadCreator)}
+ * <p>配置方式：通过{@link UpdateConfig#setDownloadDialogCreator(DownloadCreator)}或者{@link UpdateBuilder#setDownloadDialogCreator(DownloadCreator)}
  *
  * <p>默认实现：{@link DefaultNeedDownloadCreator}
  *

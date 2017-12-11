@@ -29,7 +29,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 /**
- * 默认的apk下载任务。若需定制，则可通过{@link UpdateBuilder#downloadWorker(DownloadWorker)}或者{@link UpdateConfig#downloadWorker(DownloadWorker)}进行定制使用
+ * 默认的apk下载任务。若需定制，则可通过{@link UpdateBuilder#setDownloadWorker(DownloadWorker)}或者{@link UpdateConfig#setDownloadWorker(DownloadWorker)}进行定制使用
  *
  * <p>此默认下载任务。支持断点下载功能。
  *

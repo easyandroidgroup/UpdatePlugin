@@ -99,25 +99,25 @@ public class UpdateConfig {
     /**
      * 配置更新api。此方法设置的api是对于只有url数据。请求方式为GET请求时所使用的。
      *
-     * <p>请注意：此配置方法与{@link #checkEntity(CheckEntity)}互斥。
+     * <p>请注意：此配置方法与{@link #setCheckEntity(CheckEntity)}互斥。
      *
      * @param url 用于进行检查更新的url地址
      * @return itself
-     * @see #checkEntity(CheckEntity)
+     * @see #setCheckEntity(CheckEntity)
      */
-    public UpdateConfig url(String url) {
+    public UpdateConfig setUrl(String url) {
         this.entity = new CheckEntity().setUrl(url);
         return this;
     }
 
     /**
      * 配置更新api。此方法是用于针对复杂api的需求进行配置的。本身提供url,method,params。对于其他需要的数据。
-     * 可通过继承此{@link CheckEntity}实体类，加入更多数据。并通过{@link #checkWorker(UpdateWorker)}配置对应
+     * 可通过继承此{@link CheckEntity}实体类，加入更多数据。并通过{@link #setCheckWorker(UpdateWorker)}配置对应
      * 的网络任务进行匹配兼容
      * @param entity 更新api数据实体类
      * @return itself
      */
-    public UpdateConfig checkEntity (CheckEntity entity) {
+    public UpdateConfig setCheckEntity(CheckEntity entity) {
         this.entity = entity;
         return this;
     }
@@ -129,7 +129,7 @@ public class UpdateConfig {
      * @return itself
      * @see UpdateChecker
      */
-    public UpdateConfig updateChecker(UpdateChecker checker) {
+    public UpdateConfig setUpdateChecker(UpdateChecker checker) {
         this.updateChecker = checker;
         return this;
     }
@@ -140,7 +140,7 @@ public class UpdateConfig {
      * @return itself
      * @see FileChecker
      */
-    public UpdateConfig fileChecker (FileChecker checker) {
+    public UpdateConfig setFileChecker(FileChecker checker) {
         this.fileChecker = checker;
         return this;
     }
@@ -151,7 +151,7 @@ public class UpdateConfig {
      * @return itself
      * @see UpdateWorker
      */
-    public UpdateConfig checkWorker(UpdateWorker checkWorker) {
+    public UpdateConfig setCheckWorker(UpdateWorker checkWorker) {
         this.checkWorker = checkWorker;
         return this;
     }
@@ -162,7 +162,7 @@ public class UpdateConfig {
      * @return itself
      * @see DownloadWorker
      */
-    public UpdateConfig downloadWorker(DownloadWorker downloadWorker) {
+    public UpdateConfig setDownloadWorker(DownloadWorker downloadWorker) {
         this.downloadWorker = downloadWorker;
         return this;
     }
@@ -173,7 +173,7 @@ public class UpdateConfig {
      * @return itself
      * @see UpdateDownloadCB
      */
-    public UpdateConfig downloadCB(UpdateDownloadCB downloadCB) {
+    public UpdateConfig setDownloadCallback(UpdateDownloadCB downloadCB) {
         this.callbackDelegate.setDownloadDelegate(downloadCB);
         return this;
     }
@@ -185,7 +185,7 @@ public class UpdateConfig {
      * @return itself
      * @see UpdateCheckCB
      */
-    public UpdateConfig checkCB (UpdateCheckCB checkCB) {
+    public UpdateConfig setCheckCallback(UpdateCheckCB checkCB) {
         this.callbackDelegate.setCheckDelegate(checkCB);
         return this;
     }
@@ -196,7 +196,7 @@ public class UpdateConfig {
      * @return itself
      * @see UpdateParser
      */
-    public UpdateConfig jsonParser (UpdateParser jsonParser) {
+    public UpdateConfig setUpdateParser(UpdateParser jsonParser) {
         this.jsonParser = jsonParser;
         return this;
     }
@@ -207,7 +207,7 @@ public class UpdateConfig {
      * @return itself
      * @see ApkFileCreator
      */
-    public UpdateConfig fileCreator (ApkFileCreator fileCreator) {
+    public UpdateConfig setFileCreator(ApkFileCreator fileCreator) {
         this.fileCreator = fileCreator;
         return this;
     }
@@ -218,7 +218,7 @@ public class UpdateConfig {
      * @return itself
      * @see DownloadCreator
      */
-    public UpdateConfig downloadDialogCreator (DownloadCreator downloadDialogCreator) {
+    public UpdateConfig setDownloadDialogCreator(DownloadCreator downloadDialogCreator) {
         this.downloadDialogCreator = downloadDialogCreator;
         return this;
     }
@@ -230,7 +230,7 @@ public class UpdateConfig {
      * @return itself
      * @see InstallCreator
      */
-    public UpdateConfig installDialogCreator (InstallCreator installDialogCreator) {
+    public UpdateConfig setInstallDialogCreator(InstallCreator installDialogCreator) {
         this.installDialogCreator = installDialogCreator;
         return this;
     }
@@ -241,7 +241,7 @@ public class UpdateConfig {
      * @return itself
      * @see DialogCreator
      */
-    public UpdateConfig updateDialogCreator(DialogCreator updateDialogCreator) {
+    public UpdateConfig setUpdateDialogCreator(DialogCreator updateDialogCreator) {
         this.updateDialogCreator = updateDialogCreator;
         return this;
     }
@@ -254,7 +254,7 @@ public class UpdateConfig {
      * @see WifiFirstStrategy
      * @see ForcedUpdateStrategy
      */
-    public UpdateConfig strategy(UpdateStrategy strategy) {
+    public UpdateConfig setUpdateStrategy(UpdateStrategy strategy) {
         this.strategy = strategy;
         return this;
     }
@@ -266,7 +266,7 @@ public class UpdateConfig {
      * @return itself
      * @see InstallStrategy
      */
-    public UpdateConfig installStrategy(InstallStrategy installStrategy) {
+    public UpdateConfig setInstallStrategy(InstallStrategy installStrategy) {
         this.installStrategy = installStrategy;
         return this;
     }
@@ -280,7 +280,7 @@ public class UpdateConfig {
 
     public CheckEntity getCheckEntity () {
         if (this.entity == null || TextUtils.isEmpty(this.entity.getUrl())) {
-            throw new IllegalArgumentException("Do not set url in CheckEntity");
+            throw new IllegalArgumentException("Do not set setUrl in CheckEntity");
         }
         return this.entity;
     }

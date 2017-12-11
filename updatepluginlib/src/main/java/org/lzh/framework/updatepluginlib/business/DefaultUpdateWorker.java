@@ -29,7 +29,7 @@ import java.util.Map;
 /**
  * 默认提供的检查更新api网络任务：
  *
- * <p>若需定制。则可通过 {@link UpdateBuilder#checkWorker(UpdateWorker)}或者 {@link UpdateConfig#checkWorker(UpdateWorker)}进行定制
+ * <p>若需定制。则可通过 {@link UpdateBuilder#setCheckWorker(UpdateWorker)}或者 {@link UpdateConfig#setCheckWorker(UpdateWorker)}进行定制
  *
  * @author haoge
  */
