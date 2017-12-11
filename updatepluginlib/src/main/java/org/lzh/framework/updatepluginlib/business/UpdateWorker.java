@@ -69,7 +69,7 @@ public abstract class UpdateWorker extends UnifiedWorker implements Runnable,Rec
      *
      * @param entity 更新api数据实体类
      * @return 通过此更新api接口返回的数据
-     * @throws Exception 当访问失败。请抛出一个异常。底层即可捕获此异常用于通知用户。
+     * @throws Exception 当访问失败。请抛出一个异常。底层将捕获此异常用于通知用户。
      */
     protected String check(CheckEntity entity) throws Exception {
         throw new RuntimeException("You must implements this method for sync request");
@@ -113,7 +113,9 @@ public abstract class UpdateWorker extends UnifiedWorker implements Runnable,Rec
             UpdateParser jsonParser = builder.getJsonParser();
             Update update = jsonParser.parse(response);
             if (update == null) {
-                throw new IllegalArgumentException("parse response to update failed by " + jsonParser.getClass().getCanonicalName());
+                throw new IllegalArgumentException(String.format(
+                        "Could not returns null by %s.parse()", jsonParser.getClass().getCanonicalName()
+                ));
             }
             update = preHandle(update);
             if (builder.getUpdateChecker().check(update)) {
@@ -182,10 +184,6 @@ public abstract class UpdateWorker extends UnifiedWorker implements Runnable,Rec
     }
 
     private Update preHandle(Update update) {
-        if (update == null) {
-            return null;
-        }
-
         // 当需要进行强制更新时。覆盖替换更新策略，且关闭忽略功能
         if (update.isForced()) {
             update.setIgnore(false);

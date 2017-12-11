@@ -30,7 +30,7 @@ import org.lzh.framework.updatepluginlib.UpdateConfig;
 public interface UpdateChecker {
 
     /**
-     * 对提供的更新实体类进行检查。判断是否
+     * 对提供的更新实体类进行检查。判断是否需要进行更新。
      * @param update 更新数据实体类
      * @return True代表检查通过。此版本需要被更新
      * @throws Exception error occurs.

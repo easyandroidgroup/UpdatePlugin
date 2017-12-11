@@ -49,8 +49,6 @@ public class UpdateBuilder {
 
     private UpdateWorker checkWorker;
     private DownloadWorker downloadWorker;
-    private UpdateCheckCB checkCB;
-    private UpdateDownloadCB downloadCB;
     private CheckEntity entity;
     private UpdateStrategy strategy;
     private DialogCreator updateDialogCreator;
@@ -115,12 +113,12 @@ public class UpdateBuilder {
     }
 
     public UpdateBuilder downloadCB(UpdateDownloadCB downloadCB) {
-        this.downloadCB = downloadCB;
+        this.config.downloadCB(downloadCB);
         return this;
     }
 
     public UpdateBuilder checkCB (UpdateCheckCB checkCB) {
-        this.checkCB = checkCB;
+        this.config.checkCB(checkCB);
         return this;
     }
 
@@ -241,17 +239,11 @@ public class UpdateBuilder {
     }
 
     public UpdateCheckCB getCheckCB() {
-        if (checkCB == null) {
-            checkCB = config.getCheckCB();
-        }
-        return checkCB;
+        return config.getCheckCB();
     }
 
     public UpdateDownloadCB getDownloadCB() {
-        if (downloadCB == null) {
-            downloadCB = config.getDownloadCB();
-        }
-        return downloadCB;
+        return config.getDownloadCB();
     }
 
     public InstallStrategy getInstallStrategy() {

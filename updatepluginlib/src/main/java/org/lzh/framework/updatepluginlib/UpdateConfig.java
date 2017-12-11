@@ -22,7 +22,7 @@ import org.lzh.framework.updatepluginlib.business.DefaultUpdateWorker;
 import org.lzh.framework.updatepluginlib.business.DownloadWorker;
 import org.lzh.framework.updatepluginlib.business.UpdateExecutor;
 import org.lzh.framework.updatepluginlib.business.UpdateWorker;
-import org.lzh.framework.updatepluginlib.callback.LogCallback;
+import org.lzh.framework.updatepluginlib.callback.CallbackDelegate;
 import org.lzh.framework.updatepluginlib.callback.UpdateCheckCB;
 import org.lzh.framework.updatepluginlib.callback.UpdateDownloadCB;
 import org.lzh.framework.updatepluginlib.creator.ApkFileCreator;
@@ -55,8 +55,6 @@ public class UpdateConfig {
 
     private UpdateWorker checkWorker;
     private DownloadWorker downloadWorker;
-    private UpdateCheckCB checkCB;
-    private UpdateDownloadCB downloadCB;
     private CheckEntity entity;
     private UpdateStrategy strategy;
     private DialogCreator updateDialogCreator;
@@ -67,6 +65,7 @@ public class UpdateConfig {
     private UpdateChecker updateChecker;
     private FileChecker fileChecker;
     private InstallStrategy installStrategy;
+    private CallbackDelegate callbackDelegate = new CallbackDelegate();
 
     private UpdateExecutor executor = new UpdateExecutor();
 
@@ -169,25 +168,25 @@ public class UpdateConfig {
     }
 
     /**
-     * 配置下载回调监听。 默认使用{@link LogCallback}
+     * 配置下载回调监听。 默认使用{@link CallbackDelegate}
      * @param downloadCB 下载回调监听
      * @return itself
      * @see UpdateDownloadCB
      */
     public UpdateConfig downloadCB(UpdateDownloadCB downloadCB) {
-        this.downloadCB = downloadCB;
+        this.callbackDelegate.setDownloadDelegate(downloadCB);
         return this;
     }
 
     /**
-     * 配置更新检查回调监听，默认使用{@link LogCallback}
+     * 配置更新检查回调监听，默认使用{@link CallbackDelegate}
      *
      * @param checkCB 更新检查回调器
      * @return itself
      * @see UpdateCheckCB
      */
     public UpdateConfig checkCB (UpdateCheckCB checkCB) {
-        this.checkCB = checkCB;
+        this.callbackDelegate.setCheckDelegate(checkCB);
         return this;
     }
 
@@ -259,7 +258,6 @@ public class UpdateConfig {
         this.strategy = strategy;
         return this;
     }
-
 
     /**
      * 配置安装策略 默认参考 {@link DefaultInstallStrategy}
@@ -358,17 +356,11 @@ public class UpdateConfig {
     }
 
     public UpdateCheckCB getCheckCB() {
-        if (checkCB == null) {
-            checkCB = LogCallback.get();
-        }
-        return checkCB;
+        return callbackDelegate;
     }
 
     public UpdateDownloadCB getDownloadCB() {
-        if (downloadCB == null) {
-            downloadCB = LogCallback.get();
-        }
-        return downloadCB;
+        return callbackDelegate;
     }
 
     final UpdateExecutor getExecutor() {

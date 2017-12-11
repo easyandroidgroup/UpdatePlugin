@@ -7,79 +7,114 @@ import org.lzh.framework.updatepluginlib.model.Update;
 import java.io.File;
 
 /**
- * 默认提供的更新回调器。用于对更新状态进行打印
+ * 更新回调的代理类，用于统一进行回调分发。并打印日志辅助调试
  *
  * @author haoge on 2017/9/26.
  */
-public final class LogCallback implements UpdateCheckCB, UpdateDownloadCB{
-
-    private static LogCallback callback = new LogCallback();
-    private LogCallback() {}
-    public static LogCallback get() {
-        return callback;
-    }
+public final class CallbackDelegate implements UpdateCheckCB, UpdateDownloadCB{
 
     private final String TAG = "UpdatePluginLog";
-    public static boolean LOG = true;
+    public boolean ENABLE = true;
+
+    public UpdateCheckCB checkProxy;
+    public UpdateDownloadCB downloadProxy;
+
+    public void setCheckDelegate(UpdateCheckCB checkProxy) {
+        this.checkProxy = checkProxy;
+    }
+
+    public void setDownloadDelegate(UpdateDownloadCB downloadProxy) {
+        this.downloadProxy = downloadProxy;
+    }
 
     @Override
     public void onDownloadStart() {
         log("start downloading。。。");
+        if (downloadProxy != null) {
+            downloadProxy.onDownloadStart();
+        }
     }
 
     @Override
     public void onDownloadComplete(File file) {
         log(String.format("Download completed with file [%s]", file.getAbsoluteFile()));
+        if (downloadProxy != null) {
+            downloadProxy.onDownloadComplete(file);
+        }
     }
 
     @Override
     public void onDownloadProgress(long current, long total) {
         log(String.format("Downloading... current is %s and total is %s", current, total));
+        if (downloadProxy != null) {
+            downloadProxy.onDownloadProgress(current, total);
+        }
     }
 
     @Override
     public void onDownloadError(Throwable t) {
         log(t.getMessage());
-        if (LOG) {
+        if (ENABLE) {
             t.printStackTrace();
+        }
+        if (downloadProxy != null) {
+            downloadProxy.onDownloadError(t);
         }
     }
 
     @Override
     public void onCheckStart() {
         log("starting check update task.");
+        if (checkProxy != null) {
+            checkProxy.onCheckStart();
+        }
     }
 
     @Override
     public void hasUpdate(Update update) {
         log(String.format("Checkout a new version apk is exist: update is %s", update));
+        if (checkProxy != null) {
+            checkProxy.hasUpdate(update);
+        }
     }
 
     @Override
     public void noUpdate() {
         log("no new version exist");
+        if (checkProxy != null) {
+            checkProxy.noUpdate();
+        }
     }
 
     @Override
     public void onCheckError(Throwable t) {
         log("check update failed: cause by : " + t.getMessage());
-        if (LOG) {
+        if (ENABLE) {
             t.printStackTrace();
+        }
+        if (checkProxy != null) {
+            checkProxy.onCheckError(t);
         }
     }
 
     @Override
     public void onUserCancel() {
         log("canceled update by user");
+        if (checkProxy != null) {
+            checkProxy.onUserCancel();
+        }
     }
 
     @Override
     public void onCheckIgnore(Update update) {
         log("ignored for this update: " + update);
+        if (checkProxy != null) {
+            checkProxy.onCheckIgnore(update);
+        }
     }
 
     private void log(String message) {
-        if (LOG) {
+        if (ENABLE) {
             Log.d(TAG, message);
         }
     }
