@@ -5,8 +5,9 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.support.v7.app.NotificationCompat;
 
-import org.lzh.framework.updatepluginlib.callback.UpdateDownloadCB;
-import org.lzh.framework.updatepluginlib.creator.DownloadCreator;
+import org.lzh.framework.updatepluginlib.base.DownloadCallback;
+import org.lzh.framework.updatepluginlib.base.DownloadNotifier;
+import org.lzh.framework.updatepluginlib.impl.DefaultDownloadNotifier;
 import org.lzh.framework.updatepluginlib.model.Update;
 
 import java.io.File;
@@ -16,17 +17,17 @@ import java.util.UUID;
  * <p>
  *     很多小伙伴提意见说需要一个下载时在通知栏进行进度条显示更新的功能。
  *     此类用于提供此种需求的解决方案。以及如何对其进行定制。满足任意场景使用
- *     默认使用参考：{@link org.lzh.framework.updatepluginlib.creator.DefaultNeedDownloadCreator}
+ *     默认使用参考：{@link DefaultDownloadNotifier}
  * </p>
  */
-public class NotificationDownloadCreator implements DownloadCreator {
+public class NotificationDownloadCreator implements DownloadNotifier {
     @Override
-    public UpdateDownloadCB create(Update update, Activity activity) {
+    public DownloadCallback create(Update update, Activity activity) {
         // 返回一个UpdateDownloadCB对象用于下载时使用来更新界面。
         return new NotificationCB(activity);
     }
 
-    private static class NotificationCB implements UpdateDownloadCB {
+    private static class NotificationCB implements DownloadCallback {
 
         NotificationManager manager;
         NotificationCompat.Builder builder;

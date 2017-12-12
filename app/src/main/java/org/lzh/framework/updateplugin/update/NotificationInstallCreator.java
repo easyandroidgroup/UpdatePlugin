@@ -12,24 +12,21 @@ import android.content.IntentFilter;
 import android.support.v7.app.NotificationCompat;
 
 import org.lzh.framework.updateplugin.R;
-import org.lzh.framework.updatepluginlib.creator.InstallCreator;
-import org.lzh.framework.updatepluginlib.model.Update;
+import org.lzh.framework.updatepluginlib.base.InstallNotifier;
 
 import java.util.UUID;
 
-public class NotificationInstallCreator extends InstallCreator {
+public class NotificationInstallCreator extends InstallNotifier {
     private final static String ACTION_INSTALL = "action.complete.install";
     private final static String ACTION_CANCEL = "action.complete.cancel";
     private RequestInstallReceiver requestInstallReceiver;
-    private String path;
     int id;
     NotificationManager manager;
     @Override
-    public Dialog create(Update update, String path, Activity activity) {
+    public Dialog create(Activity activity) {
         requestInstallReceiver = new RequestInstallReceiver();
         registerReceiver(activity);
         createNotification(activity);
-        this.path = path;
 
         // 由于需要使用通知实现。此处返回null即可
         return null;
@@ -70,7 +67,7 @@ public class NotificationInstallCreator extends InstallCreator {
 
             if (ACTION_INSTALL.equals(intent.getAction())) {
                 // 发送安装请求。继续更新流程
-                sendToInstall(path);
+                sendToInstall();
             } else {
                 // 中断更新流程并通知用户取消更新
                 sendUserCancel();

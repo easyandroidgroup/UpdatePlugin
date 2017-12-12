@@ -6,7 +6,7 @@ import org.json.JSONObject;
 import org.lzh.framework.updateplugin.widget.ToastTool;
 import org.lzh.framework.updatepluginlib.UpdateConfig;
 import org.lzh.framework.updatepluginlib.model.Update;
-import org.lzh.framework.updatepluginlib.model.UpdateParser;
+import org.lzh.framework.updatepluginlib.base.UpdateParser;
 
 /**
  * @author Administrator
@@ -62,7 +62,7 @@ public class MyApplication extends Application {
                     }
                 })
                  // 自定义更新接口的访问任务
-                .setCheckWorker(new UpdateWorker() {
+                .setCheckWorker(new CheckWorker() {
                     @Override
                     protected String check(CheckEntity setUrl) throws Exception {
                         // TODO: 2016/5/11 此处运行于子线程。在此进行更新接口访问
@@ -77,7 +77,7 @@ public class MyApplication extends Application {
                     }
                 })
                 // 自定义下载文件缓存,默认下载至系统自带的缓存目录下
-                .setFileCreator(new ApkFileCreator() {
+                .setFileCreator(new FileCreator() {
                     @Override
                     public File create(String versionName) {
                         // TODO: 2016/5/11 versionName 为解析的Update实例中的update_url数据。在些可自定义下载文件缓存路径及文件名。放置于File中
@@ -105,7 +105,7 @@ public class MyApplication extends Application {
                     }
                 })
                 // 自定义检查出更新后显示的Dialog，
-                .setUpdateDialogCreator(new DialogCreator() {
+                .setCheckNotifier(new CheckNotifier() {
                     @Override
                     public Dialog create(Update update, Activity context) {
                         // TODO: 2016/5/11 此处为检查出有新版本需要更新时的回调。运行于主线程，在此进行更新Dialog的创建
@@ -113,16 +113,16 @@ public class MyApplication extends Application {
                     }
                 })
                 // 自定义下载时的进度条Dialog
-                .setDownloadDialogCreator(new DownloadCreator() {
+                .setDownloadNotifier(new DownloadNotifier() {
                     @Override
-                    public UpdateDownloadCB create(Update update, Activity activity) {
+                    public DownloadCallback create(Update update, Activity activity) {
                         // TODO: 2016/5/11 此处为正在下载APK时的回调。运行于主线程。在此进行Dialog自定义与显示操作。
                         // TODO: 2016/5/11 需要在此创建并返回一个UpdateDownloadCB回调。用于对Dialog进行更新。
                         return null;
                     }
                 })
                 // 自定义下载完成后。显示的Dialog
-                .setInstallDialogCreator(new InstallCreator() {
+                .setInstallNotifier(new InstallNotifier() {
                     @Override
                     public Dialog create(Update update, String s, Activity activity) {
                         // TODO: 2016/5/11 此处为下载APK完成后的回调。运行于主线程。在此创建Dialog

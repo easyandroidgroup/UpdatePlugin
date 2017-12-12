@@ -12,7 +12,7 @@ import android.content.IntentFilter;
 import android.support.v7.app.NotificationCompat;
 
 import org.lzh.framework.updateplugin.R;
-import org.lzh.framework.updatepluginlib.creator.DialogCreator;
+import org.lzh.framework.updatepluginlib.base.CheckNotifier;
 import org.lzh.framework.updatepluginlib.model.Update;
 
 import java.util.UUID;
@@ -20,7 +20,7 @@ import java.util.UUID;
 /**
  * 简单实现：使用通知对用户提示：检查到有更新
  */
-public class NotificationUpdateCreator extends DialogCreator {
+public class NotificationUpdateCreator extends CheckNotifier {
     private final static String ACTION_UPDATE = "action.update.shot";
     private final static String ACTION_CANCEL = "action.update.cancel";
     private RequestUpdateReceiver requestUpdateReceiver;
@@ -29,7 +29,7 @@ public class NotificationUpdateCreator extends DialogCreator {
     int id;
 
     @Override
-    public Dialog create(Update update, Activity context) {
+    public Dialog create(Activity context) {
         requestUpdateReceiver = new RequestUpdateReceiver();
         registerReceiver(context);
         createNotification(context);
@@ -73,7 +73,7 @@ public class NotificationUpdateCreator extends DialogCreator {
             unregisterReceiver(context);
             if (ACTION_UPDATE.equals(intent.getAction())) {
                 // 发送下载请求。继续更新流程
-                sendDownloadRequest(update);
+                sendDownloadRequest();
             } else {
                 // 中断更新流程并通知用户取消更新
                 sendUserCancel();

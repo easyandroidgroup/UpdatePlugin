@@ -18,7 +18,7 @@ import org.lzh.framework.updateplugin.widget.CheckedView;
 import org.lzh.framework.updatepluginlib.UpdateBuilder;
 import org.lzh.framework.updatepluginlib.UpdateConfig;
 import org.lzh.framework.updatepluginlib.model.Update;
-import org.lzh.framework.updatepluginlib.model.UpdateParser;
+import org.lzh.framework.updatepluginlib.base.UpdateParser;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -67,11 +67,11 @@ public class SampleActivity extends Activity {
         }
 
         if (!hasUpdateNotice.isDefaultSelected()) {
-            builder.setUpdateDialogCreator(new NotificationUpdateCreator());
+            builder.setCheckNotifier(new NotificationUpdateCreator());
         }
 
         if (!downloadCompleteNotice.isDefaultSelected()) {
-            builder.setInstallDialogCreator(new NotificationInstallCreator());
+            builder.setInstallNotifier(new NotificationInstallCreator());
         }
 
         if (!fileCreator.isDefaultSelected() && isPermissionGrant) {
@@ -83,7 +83,7 @@ public class SampleActivity extends Activity {
         }
 
         if (!downloadNotice.isDefaultSelected()) {
-            builder.setDownloadDialogCreator(new NotificationDownloadCreator());
+            builder.setDownloadNotifier(new NotificationDownloadCreator());
         }
 
         if (!downloadWorker.isDefaultSelected()) {

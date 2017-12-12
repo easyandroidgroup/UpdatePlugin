@@ -17,33 +17,33 @@ package org.lzh.framework.updatepluginlib;
 
 import android.text.TextUtils;
 
-import org.lzh.framework.updatepluginlib.business.DefaultDownloadWorker;
-import org.lzh.framework.updatepluginlib.business.DefaultUpdateWorker;
-import org.lzh.framework.updatepluginlib.business.DownloadWorker;
-import org.lzh.framework.updatepluginlib.business.UpdateExecutor;
-import org.lzh.framework.updatepluginlib.business.UpdateWorker;
-import org.lzh.framework.updatepluginlib.callback.CallbackDelegate;
-import org.lzh.framework.updatepluginlib.callback.UpdateCheckCB;
-import org.lzh.framework.updatepluginlib.callback.UpdateDownloadCB;
-import org.lzh.framework.updatepluginlib.creator.ApkFileCreator;
-import org.lzh.framework.updatepluginlib.creator.DefaultFileChecker;
-import org.lzh.framework.updatepluginlib.creator.DefaultFileCreator;
-import org.lzh.framework.updatepluginlib.creator.DefaultNeedDownloadCreator;
-import org.lzh.framework.updatepluginlib.creator.DefaultNeedInstallCreator;
-import org.lzh.framework.updatepluginlib.creator.DefaultNeedUpdateCreator;
-import org.lzh.framework.updatepluginlib.creator.DialogCreator;
-import org.lzh.framework.updatepluginlib.creator.DownloadCreator;
-import org.lzh.framework.updatepluginlib.creator.FileChecker;
-import org.lzh.framework.updatepluginlib.creator.InstallCreator;
+import org.lzh.framework.updatepluginlib.base.DownloadNotifier;
+import org.lzh.framework.updatepluginlib.base.CheckNotifier;
+import org.lzh.framework.updatepluginlib.base.CheckWorker;
+import org.lzh.framework.updatepluginlib.base.DownloadCallback;
+import org.lzh.framework.updatepluginlib.base.FileCreator;
+import org.lzh.framework.updatepluginlib.base.InstallNotifier;
+import org.lzh.framework.updatepluginlib.impl.DefaultDownloadWorker;
+import org.lzh.framework.updatepluginlib.impl.DefaultCheckWorker;
+import org.lzh.framework.updatepluginlib.base.DownloadWorker;
+import org.lzh.framework.updatepluginlib.flow.UpdateExecutor;
+import org.lzh.framework.updatepluginlib.flow.CallbackDelegate;
+import org.lzh.framework.updatepluginlib.base.CheckCallback;
+import org.lzh.framework.updatepluginlib.impl.DefaultFileChecker;
+import org.lzh.framework.updatepluginlib.impl.DefaultFileCreator;
+import org.lzh.framework.updatepluginlib.impl.DefaultDownloadNotifier;
+import org.lzh.framework.updatepluginlib.impl.DefaultInstallNotifier;
+import org.lzh.framework.updatepluginlib.impl.DefaultUpdateNotifier;
+import org.lzh.framework.updatepluginlib.base.FileChecker;
 import org.lzh.framework.updatepluginlib.model.CheckEntity;
-import org.lzh.framework.updatepluginlib.model.DefaultChecker;
-import org.lzh.framework.updatepluginlib.model.UpdateChecker;
-import org.lzh.framework.updatepluginlib.model.UpdateParser;
-import org.lzh.framework.updatepluginlib.strategy.DefaultInstallStrategy;
-import org.lzh.framework.updatepluginlib.strategy.ForcedUpdateStrategy;
-import org.lzh.framework.updatepluginlib.strategy.InstallStrategy;
-import org.lzh.framework.updatepluginlib.strategy.UpdateStrategy;
-import org.lzh.framework.updatepluginlib.strategy.WifiFirstStrategy;
+import org.lzh.framework.updatepluginlib.impl.DefaultUpdateChecker;
+import org.lzh.framework.updatepluginlib.base.UpdateChecker;
+import org.lzh.framework.updatepluginlib.base.UpdateParser;
+import org.lzh.framework.updatepluginlib.impl.DefaultInstallStrategy;
+import org.lzh.framework.updatepluginlib.impl.ForcedUpdateStrategy;
+import org.lzh.framework.updatepluginlib.base.InstallStrategy;
+import org.lzh.framework.updatepluginlib.base.UpdateStrategy;
+import org.lzh.framework.updatepluginlib.impl.WifiFirstStrategy;
 
 /**
  * 此类用于提供一些默认使用的更新配置。在进行更新任务时，当{@link UpdateBuilder} 中未设置对应的配置时。
@@ -53,15 +53,15 @@ import org.lzh.framework.updatepluginlib.strategy.WifiFirstStrategy;
  */
 public class UpdateConfig {
 
-    private UpdateWorker checkWorker;
+    private CheckWorker checkWorker;
     private DownloadWorker downloadWorker;
     private CheckEntity entity;
-    private UpdateStrategy strategy;
-    private DialogCreator updateDialogCreator;
-    private InstallCreator installDialogCreator;
-    private DownloadCreator downloadDialogCreator;
+    private UpdateStrategy updateStrategy;
+    private CheckNotifier updateDialogCreator;
+    private InstallNotifier installDialogCreator;
+    private DownloadNotifier downloadDialogCreator;
     private UpdateParser jsonParser;
-    private ApkFileCreator fileCreator;
+    private FileCreator fileCreator;
     private UpdateChecker updateChecker;
     private FileChecker fileChecker;
     private InstallStrategy installStrategy;
@@ -112,7 +112,7 @@ public class UpdateConfig {
 
     /**
      * 配置更新api。此方法是用于针对复杂api的需求进行配置的。本身提供url,method,params。对于其他需要的数据。
-     * 可通过继承此{@link CheckEntity}实体类，加入更多数据。并通过{@link #setCheckWorker(UpdateWorker)}配置对应
+     * 可通过继承此{@link CheckEntity}实体类，加入更多数据。并通过{@link #setCheckWorker(CheckWorker)}配置对应
      * 的网络任务进行匹配兼容
      * @param entity 更新api数据实体类
      * @return itself
@@ -123,7 +123,7 @@ public class UpdateConfig {
     }
 
     /**
-     * 配置更新数据检查器。默认使用{@link DefaultChecker}
+     * 配置更新数据检查器。默认使用{@link DefaultUpdateChecker}
      *
      * @param checker 更新检查器。
      * @return itself
@@ -146,12 +146,12 @@ public class UpdateConfig {
     }
 
     /**
-     * 配置更新api的访问网络任务，默认使用{@link DefaultUpdateWorker}
+     * 配置更新api的访问网络任务，默认使用{@link DefaultCheckWorker}
      * @param checkWorker 更新api访问网络任务。
      * @return itself
-     * @see UpdateWorker
+     * @see CheckWorker
      */
-    public UpdateConfig setCheckWorker(UpdateWorker checkWorker) {
+    public UpdateConfig setCheckWorker(CheckWorker checkWorker) {
         this.checkWorker = checkWorker;
         return this;
     }
@@ -171,9 +171,9 @@ public class UpdateConfig {
      * 配置下载回调监听。 默认使用{@link CallbackDelegate}
      * @param downloadCB 下载回调监听
      * @return itself
-     * @see UpdateDownloadCB
+     * @see DownloadCallback
      */
-    public UpdateConfig setDownloadCallback(UpdateDownloadCB downloadCB) {
+    public UpdateConfig setDownloadCallback(DownloadCallback downloadCB) {
         this.callbackDelegate.setDownloadDelegate(downloadCB);
         return this;
     }
@@ -183,9 +183,9 @@ public class UpdateConfig {
      *
      * @param checkCB 更新检查回调器
      * @return itself
-     * @see UpdateCheckCB
+     * @see CheckCallback
      */
-    public UpdateConfig setCheckCallback(UpdateCheckCB checkCB) {
+    public UpdateConfig setCheckCallback(CheckCallback checkCB) {
         this.callbackDelegate.setCheckDelegate(checkCB);
         return this;
     }
@@ -205,43 +205,43 @@ public class UpdateConfig {
      * 配置apk下载缓存文件创建器 默认参考{@link DefaultFileCreator}
      * @param fileCreator 文件创建器
      * @return itself
-     * @see ApkFileCreator
+     * @see FileCreator
      */
-    public UpdateConfig setFileCreator(ApkFileCreator fileCreator) {
+    public UpdateConfig setFileCreator(FileCreator fileCreator) {
         this.fileCreator = fileCreator;
         return this;
     }
 
     /**
-     * 配置下载进度通知创建器 默认参考{@link DefaultNeedDownloadCreator}
+     * 配置下载进度通知创建器 默认参考{@link DefaultDownloadNotifier}
      * @param downloadDialogCreator 下载进度通知创建器
      * @return itself
-     * @see DownloadCreator
+     * @see DownloadNotifier
      */
-    public UpdateConfig setDownloadDialogCreator(DownloadCreator downloadDialogCreator) {
+    public UpdateConfig setDownloadNotifier(DownloadNotifier downloadDialogCreator) {
         this.downloadDialogCreator = downloadDialogCreator;
         return this;
     }
 
     /**
-     * 配置启动安装任务前通知创建器 默认参考{@link DefaultNeedInstallCreator}
+     * 配置启动安装任务前通知创建器 默认参考{@link DefaultInstallNotifier}
      *
      * @param installDialogCreator 下载完成后。启动安装前的通知创建器
      * @return itself
-     * @see InstallCreator
+     * @see InstallNotifier
      */
-    public UpdateConfig setInstallDialogCreator(InstallCreator installDialogCreator) {
+    public UpdateConfig setInstallNotifier(InstallNotifier installDialogCreator) {
         this.installDialogCreator = installDialogCreator;
         return this;
     }
 
     /**
-     * 配置检查到有更新时的通知创建器 默认参考{@link DefaultNeedUpdateCreator}
+     * 配置检查到有更新时的通知创建器 默认参考{@link DefaultUpdateNotifier}
      * @param updateDialogCreator 通知创建器
      * @return itself
-     * @see DialogCreator
+     * @see CheckNotifier
      */
-    public UpdateConfig setUpdateDialogCreator(DialogCreator updateDialogCreator) {
+    public UpdateConfig setCheckNotifier(CheckNotifier updateDialogCreator) {
         this.updateDialogCreator = updateDialogCreator;
         return this;
     }
@@ -255,7 +255,7 @@ public class UpdateConfig {
      * @see ForcedUpdateStrategy
      */
     public UpdateConfig setUpdateStrategy(UpdateStrategy strategy) {
-        this.strategy = strategy;
+        this.updateStrategy = strategy;
         return this;
     }
 
@@ -271,11 +271,11 @@ public class UpdateConfig {
         return this;
     }
 
-    public UpdateStrategy getStrategy() {
-        if (strategy == null) {
-            strategy = new WifiFirstStrategy();
+    public UpdateStrategy getUpdateStrategy() {
+        if (updateStrategy == null) {
+            updateStrategy = new WifiFirstStrategy();
         }
-        return strategy;
+        return updateStrategy;
     }
 
     public CheckEntity getCheckEntity () {
@@ -285,23 +285,23 @@ public class UpdateConfig {
         return this.entity;
     }
 
-    public DialogCreator getUpdateDialogCreator() {
+    public CheckNotifier getUpdateDialogCreator() {
         if (updateDialogCreator == null) {
-            updateDialogCreator = new DefaultNeedUpdateCreator();
+            updateDialogCreator = new DefaultUpdateNotifier();
         }
         return updateDialogCreator;
     }
 
-    public InstallCreator getInstallDialogCreator() {
+    public InstallNotifier getInstallDialogCreator() {
         if (installDialogCreator == null) {
-            installDialogCreator = new DefaultNeedInstallCreator();
+            installDialogCreator = new DefaultInstallNotifier();
         }
         return installDialogCreator;
     }
 
     public UpdateChecker getUpdateChecker() {
         if (updateChecker == null) {
-            updateChecker = new DefaultChecker();
+            updateChecker = new DefaultUpdateChecker();
         }
         return updateChecker;
     }
@@ -313,9 +313,9 @@ public class UpdateConfig {
         return fileChecker;
     }
 
-    public DownloadCreator getDownloadDialogCreator() {
+    public DownloadNotifier getDownloadDialogCreator() {
         if (downloadDialogCreator == null) {
-            downloadDialogCreator = new DefaultNeedDownloadCreator();
+            downloadDialogCreator = new DefaultDownloadNotifier();
         }
         return downloadDialogCreator;
     }
@@ -327,9 +327,9 @@ public class UpdateConfig {
         return jsonParser;
     }
 
-    public UpdateWorker getCheckWorker() {
+    public CheckWorker getCheckWorker() {
         if (checkWorker == null) {
-            checkWorker = new DefaultUpdateWorker();
+            checkWorker = new DefaultCheckWorker();
         }
         return checkWorker;
     }
@@ -341,7 +341,7 @@ public class UpdateConfig {
         return downloadWorker;
     }
 
-    public ApkFileCreator getFileCreator() {
+    public FileCreator getFileCreator() {
         if (fileCreator == null) {
             fileCreator = new DefaultFileCreator();
         }
@@ -355,11 +355,11 @@ public class UpdateConfig {
         return installStrategy;
     }
 
-    public UpdateCheckCB getCheckCB() {
+    public CheckCallback getCheckCB() {
         return callbackDelegate;
     }
 
-    public UpdateDownloadCB getDownloadCB() {
+    public DownloadCallback getDownloadCB() {
         return callbackDelegate;
     }
 

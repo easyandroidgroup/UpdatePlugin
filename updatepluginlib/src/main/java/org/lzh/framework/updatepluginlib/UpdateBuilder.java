@@ -15,21 +15,22 @@
  */
 package org.lzh.framework.updatepluginlib;
 
-import org.lzh.framework.updatepluginlib.business.DownloadWorker;
-import org.lzh.framework.updatepluginlib.business.UpdateExecutor;
-import org.lzh.framework.updatepluginlib.business.UpdateWorker;
-import org.lzh.framework.updatepluginlib.callback.UpdateCheckCB;
-import org.lzh.framework.updatepluginlib.callback.UpdateDownloadCB;
-import org.lzh.framework.updatepluginlib.creator.ApkFileCreator;
-import org.lzh.framework.updatepluginlib.creator.DialogCreator;
-import org.lzh.framework.updatepluginlib.creator.DownloadCreator;
-import org.lzh.framework.updatepluginlib.creator.FileChecker;
-import org.lzh.framework.updatepluginlib.creator.InstallCreator;
+import org.lzh.framework.updatepluginlib.base.DownloadNotifier;
+import org.lzh.framework.updatepluginlib.base.CheckNotifier;
+import org.lzh.framework.updatepluginlib.base.CheckWorker;
+import org.lzh.framework.updatepluginlib.base.DownloadWorker;
+import org.lzh.framework.updatepluginlib.base.FileCreator;
+import org.lzh.framework.updatepluginlib.base.InstallNotifier;
+import org.lzh.framework.updatepluginlib.flow.UpdateExecutor;
+import org.lzh.framework.updatepluginlib.base.CheckCallback;
+import org.lzh.framework.updatepluginlib.base.DownloadCallback;
+import org.lzh.framework.updatepluginlib.base.FileChecker;
+import org.lzh.framework.updatepluginlib.flow.Launcher;
 import org.lzh.framework.updatepluginlib.model.CheckEntity;
-import org.lzh.framework.updatepluginlib.model.UpdateChecker;
-import org.lzh.framework.updatepluginlib.model.UpdateParser;
-import org.lzh.framework.updatepluginlib.strategy.InstallStrategy;
-import org.lzh.framework.updatepluginlib.strategy.UpdateStrategy;
+import org.lzh.framework.updatepluginlib.base.UpdateChecker;
+import org.lzh.framework.updatepluginlib.base.UpdateParser;
+import org.lzh.framework.updatepluginlib.base.InstallStrategy;
+import org.lzh.framework.updatepluginlib.base.UpdateStrategy;
 
 /**
  * 此类用于建立真正的更新任务。每个更新任务对应于一个{@link UpdateBuilder}实例。
@@ -47,15 +48,15 @@ import org.lzh.framework.updatepluginlib.strategy.UpdateStrategy;
  */
 public class UpdateBuilder {
 
-    private UpdateWorker checkWorker;
+    private CheckWorker checkWorker;
     private DownloadWorker downloadWorker;
     private CheckEntity entity;
-    private UpdateStrategy strategy;
-    private DialogCreator updateDialogCreator;
-    private InstallCreator installDialogCreator;
-    private DownloadCreator downloadDialogCreator;
+    private UpdateStrategy updateStrategy;
+    private CheckNotifier updateDialogCreator;
+    private InstallNotifier installDialogCreator;
+    private DownloadNotifier downloadDialogCreator;
     private UpdateParser jsonParser;
-    private ApkFileCreator fileCreator;
+    private FileCreator fileCreator;
     private UpdateChecker updateChecker;
     private FileChecker fileChecker;
     private InstallStrategy installStrategy;
@@ -102,7 +103,7 @@ public class UpdateBuilder {
         return this;
     }
 
-    public UpdateBuilder setCheckWorker(UpdateWorker checkWorker) {
+    public UpdateBuilder setCheckWorker(CheckWorker checkWorker) {
         this.checkWorker = checkWorker;
         return this;
     }
@@ -112,12 +113,12 @@ public class UpdateBuilder {
         return this;
     }
 
-    public UpdateBuilder setDownloadCallback(UpdateDownloadCB downloadCB) {
+    public UpdateBuilder setDownloadCallback(DownloadCallback downloadCB) {
         this.config.setDownloadCallback(downloadCB);
         return this;
     }
 
-    public UpdateBuilder setCheckCallback(UpdateCheckCB checkCB) {
+    public UpdateBuilder setCheckCallback(CheckCallback checkCB) {
         this.config.setCheckCallback(checkCB);
         return this;
     }
@@ -127,28 +128,28 @@ public class UpdateBuilder {
         return this;
     }
 
-    public UpdateBuilder setFileCreator(ApkFileCreator fileCreator) {
+    public UpdateBuilder setFileCreator(FileCreator fileCreator) {
         this.fileCreator = fileCreator;
         return this;
     }
 
-    public UpdateBuilder setDownloadDialogCreator(DownloadCreator downloadDialogCreator) {
+    public UpdateBuilder setDownloadNotifier(DownloadNotifier downloadDialogCreator) {
         this.downloadDialogCreator = downloadDialogCreator;
         return this;
     }
 
-    public UpdateBuilder setInstallDialogCreator(InstallCreator installDialogCreator) {
+    public UpdateBuilder setInstallNotifier(InstallNotifier installDialogCreator) {
         this.installDialogCreator = installDialogCreator;
         return this;
     }
 
-    public UpdateBuilder setUpdateDialogCreator(DialogCreator updateDialogCreator) {
+    public UpdateBuilder setCheckNotifier(CheckNotifier updateDialogCreator) {
         this.updateDialogCreator = updateDialogCreator;
         return this;
     }
 
     public UpdateBuilder setUpdateStrategy(UpdateStrategy strategy) {
-        this.strategy = strategy;
+        this.updateStrategy = strategy;
         return this;
     }
 
@@ -161,14 +162,14 @@ public class UpdateBuilder {
      * 启动更新任务。可在任意线程进行启动。
      */
     public void check() {
-        Updater.getInstance().checkUpdate(this);
+        Launcher.getInstance().launchCheck(this);
     }
 
-    public UpdateStrategy getStrategy() {
-        if (strategy == null) {
-            strategy = config.getStrategy();
+    public UpdateStrategy getUpdateStrategy() {
+        if (updateStrategy == null) {
+            updateStrategy = config.getUpdateStrategy();
         }
-        return strategy;
+        return updateStrategy;
     }
 
     public CheckEntity getCheckEntity () {
@@ -189,21 +190,21 @@ public class UpdateBuilder {
         return fileChecker != null ? fileChecker : config.getFileChecker();
     }
 
-    public DialogCreator getUpdateDialogCreator() {
+    public CheckNotifier getUpdateDialogCreator() {
         if (updateDialogCreator == null) {
             updateDialogCreator = config.getUpdateDialogCreator();
         }
         return updateDialogCreator;
     }
 
-    public InstallCreator getInstallDialogCreator() {
+    public InstallNotifier getInstallDialogCreator() {
         if (installDialogCreator == null) {
             installDialogCreator = config.getInstallDialogCreator();
         }
         return installDialogCreator;
     }
 
-    public DownloadCreator getDownloadDialogCreator() {
+    public DownloadNotifier getDownloadDialogCreator() {
         if (downloadDialogCreator == null) {
             downloadDialogCreator = config.getDownloadDialogCreator();
         }
@@ -217,7 +218,7 @@ public class UpdateBuilder {
         return jsonParser;
     }
 
-    public UpdateWorker getCheckWorker() {
+    public CheckWorker getCheckWorker() {
         if (checkWorker == null) {
             checkWorker = config.getCheckWorker();
         }
@@ -231,18 +232,18 @@ public class UpdateBuilder {
         return downloadWorker;
     }
 
-    public ApkFileCreator getFileCreator() {
+    public FileCreator getFileCreator() {
         if (fileCreator == null) {
             fileCreator = config.getFileCreator();
         }
         return fileCreator;
     }
 
-    public UpdateCheckCB getCheckCB() {
+    public CheckCallback getCheckCB() {
         return config.getCheckCB();
     }
 
-    public UpdateDownloadCB getDownloadCB() {
+    public DownloadCallback getDownloadCB() {
         return config.getDownloadCB();
     }
 
@@ -253,7 +254,7 @@ public class UpdateBuilder {
         return installStrategy;
     }
 
-    final UpdateExecutor getExecutor() {
+    public final UpdateExecutor getExecutor() {
         return config.getExecutor();
     }
 

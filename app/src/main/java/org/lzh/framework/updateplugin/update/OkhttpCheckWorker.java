@@ -1,6 +1,7 @@
 package org.lzh.framework.updateplugin.update;
 
-import org.lzh.framework.updatepluginlib.business.UpdateWorker;
+import org.lzh.framework.updatepluginlib.base.CheckWorker;
+import org.lzh.framework.updatepluginlib.impl.DefaultCheckWorker;
 import org.lzh.framework.updatepluginlib.model.CheckEntity;
 
 import java.util.HashMap;
@@ -15,10 +16,10 @@ import okhttp3.Request;
 /**
  * <p>
  * 定制一个简单的使用okHttp做更新接口检查的网络任务。
- * 框架默认使用参考：{@link org.lzh.framework.updatepluginlib.business.DefaultUpdateWorker}
+ * 框架默认使用参考：{@link DefaultCheckWorker}
  * </p>
  */
-public class OkhttpCheckWorker extends UpdateWorker {
+public class OkhttpCheckWorker extends CheckWorker {
 
     private static OkHttpClient sOkClient;
     @Override

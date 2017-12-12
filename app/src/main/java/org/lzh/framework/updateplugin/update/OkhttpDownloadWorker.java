@@ -1,6 +1,6 @@
 package org.lzh.framework.updateplugin.update;
 
-import org.lzh.framework.updatepluginlib.business.DownloadWorker;
+import org.lzh.framework.updatepluginlib.base.DownloadWorker;
 
 import java.io.File;
 import java.io.FileOutputStream;

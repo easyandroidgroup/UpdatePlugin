@@ -15,9 +15,10 @@
  */
 package org.lzh.framework.updatepluginlib.model;
 
-import org.lzh.framework.updatepluginlib.creator.DefaultNeedInstallCreator;
-import org.lzh.framework.updatepluginlib.creator.DefaultNeedUpdateCreator;
-import org.lzh.framework.updatepluginlib.strategy.ForcedUpdateStrategy;
+import org.lzh.framework.updatepluginlib.impl.DefaultUpdateChecker;
+import org.lzh.framework.updatepluginlib.impl.DefaultInstallNotifier;
+import org.lzh.framework.updatepluginlib.impl.DefaultUpdateNotifier;
+import org.lzh.framework.updatepluginlib.impl.ForcedUpdateStrategy;
 
 /**
  * 此实体类用于存储框架所需的更新数据。
@@ -37,7 +38,7 @@ public class Update {
     /**
      * <p>指定是否要求展示忽略此版本更新按钮：
      *
-     * <p>此属性为非必须属性。即框架核心操作层并未依赖此属性。此属性只用于提供的默认弹窗通知中：{@link DefaultNeedInstallCreator} 和 {@link DefaultNeedUpdateCreator}
+     * <p>此属性为非必须属性。即框架核心操作层并未依赖此属性。此属性只用于提供的默认弹窗通知中：{@link DefaultInstallNotifier} 和 {@link DefaultUpdateNotifier}
      *
      * @param ignore True代表在弹出通知中进行展示 <b>忽略此版本更新按钮</b>
      */
@@ -71,7 +72,7 @@ public class Update {
     }
 
     /**
-     * 新版本apk的版本号。此版本号将被用于与本地apk进行版本号比对。判断该版本是否应该被更新. 默认版本号检查器为：{@link DefaultChecker}.
+     * 新版本apk的版本号。此版本号将被用于与本地apk进行版本号比对。判断该版本是否应该被更新. 默认版本号检查器为：{@link DefaultUpdateChecker}.
      * @param versionCode apk版本号
      */
     public void setVersionCode(int versionCode) {
