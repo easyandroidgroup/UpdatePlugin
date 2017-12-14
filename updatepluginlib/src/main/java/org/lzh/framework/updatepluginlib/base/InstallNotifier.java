@@ -81,12 +81,7 @@ public abstract class InstallNotifier implements Recyclable {
      * 请求调起安装任务
      */
     public final void sendToInstall() {
-        try {
-            builder.getFileChecker().onCheckBeforeInstall();
-            builder.getInstallStrategy().install(ActivityManager.get().getApplicationContext(), file.getAbsolutePath(), update);
-        } catch (Exception e) {
-            builder.getCheckCB().onCheckError(new RuntimeException("check failed after download apk." + e.getMessage(), e));
-        }
+        builder.getInstallStrategy().install(ActivityManager.get().getApplicationContext(), file.getAbsolutePath(), update);
         release();
     }
 

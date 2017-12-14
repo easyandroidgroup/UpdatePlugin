@@ -126,6 +126,14 @@ public abstract class DownloadWorker extends UnifiedWorker implements Runnable,R
      */
     protected final void sendDownloadComplete(final File file) {
         setRunning(false);
+
+        try {
+            builder.getFileChecker().onCheckBeforeInstall();
+        } catch (Exception e) {
+            sendDownloadError(e);
+            return;
+        }
+
         if (downloadCB == null) return;
         Utils.getMainHandler().post(new Runnable() {
             @Override
