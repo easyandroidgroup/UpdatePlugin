@@ -58,8 +58,9 @@ public abstract class DownloadWorker extends UnifiedWorker implements Runnable,R
         try {
             sendDownloadStart();
             File cacheFile = builder.getFileCreator().create(update);
-            if (cacheFile != null && cacheFile.exists()
-                    && builder.getFileChecker().checkForDownload(update, cacheFile.getAbsolutePath())) {
+            FileChecker checker = builder.getFileChecker();
+            checker.attach(update, cacheFile);
+            if (builder.getFileChecker().checkBeforeDownload()) {
                 // check success: skip download and show install dialog if needed.
                 sendDownloadComplete(cacheFile);
                 return;
