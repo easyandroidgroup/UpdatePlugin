@@ -42,7 +42,6 @@ import java.security.MessageDigest;
 public class DefaultFileChecker extends FileChecker {
 
     private void check() throws Exception {
-        // TODO: 2017/11/27 添加MD5支持
         if (!TextUtils.isEmpty(update.getMd5())) {
             // 当md5值不为null时。使用md5进行检查
             checkByMD5();

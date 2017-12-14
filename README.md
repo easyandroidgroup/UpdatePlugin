@@ -12,7 +12,7 @@ UpdatePlugin主要基于对整个更新流程的梳理，针对更新流程中�
 
 框架提供了最大的可定制性。轻松应付各种奇葩需求：
 
-**对于各种提供的可定制接口任务。请参考[更新配置说明](https://github.com/yjfnypeu/UpdatePlugin/wiki/%E6%9B%B4%E6%96%B0%E9%85%8D%E7%BD%AE%E8%AF%B4%E6%98%8E)**
+**对于各种提供的可定制接口任务。请参考[更新配置说明](https://github.com/yjfnypeu/UpdatePlugin/wiki/Configurations-Explains)**
 
 基于以上配置。框架提供了以下特性：
 

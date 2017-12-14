@@ -17,7 +17,7 @@ package org.lzh.framework.updatepluginlib.base;
 
 import org.lzh.framework.updatepluginlib.UpdateBuilder;
 import org.lzh.framework.updatepluginlib.UpdateConfig;
-import org.lzh.framework.updatepluginlib.impl.DefaultFileChecker;
+import org.lzh.framework.updatepluginlib.impl.DefaultFileCreator;
 import org.lzh.framework.updatepluginlib.model.Update;
 
 import java.io.File;
@@ -27,7 +27,7 @@ import java.io.File;
  *
  * <p>设置方式：通过{@link UpdateConfig#setFileCreator(FileCreator)}或者{@link UpdateBuilder#setFileCreator(FileCreator)}进行配置
  *
- * <p>默认实现方式：{@link DefaultFileChecker}
+ * <p>默认实现方式：{@link DefaultFileCreator}
  *
  * <p>注意事项：在Android 7.0上，对于非私有目录的访问是需要进行动态权限申请的。所以当你将下载缓存路径配置到非私有目录下时，请注意权限问题。
  *
