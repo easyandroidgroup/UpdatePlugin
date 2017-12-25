@@ -1,5 +1,6 @@
 package org.lzh.framework.updatepluginlib.flow;
 
+import android.text.TextUtils;
 import android.util.Log;
 
 import org.lzh.framework.updatepluginlib.base.CheckCallback;
@@ -116,7 +117,7 @@ public final class CallbackDelegate implements CheckCallback, DownloadCallback {
     }
 
     private void log(String message) {
-        if (ENABLE) {
+        if (ENABLE && !TextUtils.isEmpty(message)) {
             Log.d(TAG, message);
         }
     }
