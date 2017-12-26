@@ -45,13 +45,16 @@ import org.lzh.framework.updatepluginlib.base.InstallStrategy;
 import org.lzh.framework.updatepluginlib.base.UpdateStrategy;
 import org.lzh.framework.updatepluginlib.impl.WifiFirstStrategy;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 /**
  * 此类用于提供一些默认使用的更新配置。在进行更新任务时，当{@link UpdateBuilder} 中未设置对应的配置时。
  * 将从此配置类中读取默认的配置进行使用
  *
  * @author haoge
  */
-public class UpdateConfig {
+public final class UpdateConfig {
 
     private CheckWorker checkWorker;
     private DownloadWorker downloadWorker;
@@ -65,9 +68,8 @@ public class UpdateConfig {
     private UpdateChecker updateChecker;
     private FileChecker fileChecker;
     private InstallStrategy installStrategy;
+    private ExecutorService executor;
     private CallbackDelegate callbackDelegate = new CallbackDelegate();
-
-    private UpdateExecutor executor = new UpdateExecutor();
 
     private static UpdateConfig DEFAULT;
 
@@ -355,6 +357,13 @@ public class UpdateConfig {
         return installStrategy;
     }
 
+    public ExecutorService getExecutor() {
+        if (executor == null) {
+            executor = Executors.newSingleThreadExecutor();
+        }
+        return executor;
+    }
+
     public CheckCallback getCheckCB() {
         return callbackDelegate;
     }
@@ -363,8 +372,6 @@ public class UpdateConfig {
         return callbackDelegate;
     }
 
-    final UpdateExecutor getExecutor() {
-        return executor;
-    }
+
 }
 

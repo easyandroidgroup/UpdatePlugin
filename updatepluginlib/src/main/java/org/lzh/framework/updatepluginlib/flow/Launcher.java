@@ -16,8 +16,8 @@
 package org.lzh.framework.updatepluginlib.flow;
 
 import org.lzh.framework.updatepluginlib.UpdateBuilder;
-import org.lzh.framework.updatepluginlib.base.DownloadWorker;
 import org.lzh.framework.updatepluginlib.base.CheckWorker;
+import org.lzh.framework.updatepluginlib.base.DownloadWorker;
 import org.lzh.framework.updatepluginlib.model.Update;
 
 /**
@@ -31,7 +31,7 @@ import org.lzh.framework.updatepluginlib.model.Update;
  */
 public final class Launcher {
     private static Launcher launcher;
-
+    private Launcher() {}
     public static Launcher getInstance() {
         if (launcher == null) {
             launcher = new Launcher();
@@ -51,13 +51,9 @@ public final class Launcher {
         checkCB.onCheckStart();
 
         CheckWorker checkWorker = builder.getCheckWorker();
-        if (checkWorker.isRunning()) {
-            checkCB.onCheckError(new RuntimeException("Already have a update task running"));
-            return;
-        }
         checkWorker.setBuilder(builder);
         checkWorker.setCheckCB(checkCB);
-        builder.getExecutor().check(checkWorker);
+        builder.getConfig().getExecutor().execute(checkWorker);
     }
 
     /**
@@ -67,22 +63,19 @@ public final class Launcher {
      * @param builder 更新任务实例
      */
     public void launchDownload(Update update, UpdateBuilder builder) {
+
+
         // 定义一个默认的下载状态回调监听。用于接收文件下载任务所发出的通知。并链接下载后续流程
         DefaultDownloadCallback downloadCB = new DefaultDownloadCallback();
         downloadCB.setBuilder(builder);
         downloadCB.setUpdate(update);
 
         DownloadWorker downloadWorker = builder.getDownloadWorker();
-        if (downloadWorker.isRunning()) {
-            downloadCB.onDownloadError(new RuntimeException("Already have a download task running"));
-            return;
-        }
-
         downloadWorker.setUpdate(update);
         downloadWorker.setUpdateBuilder(builder);
-        downloadWorker.setDownloadCB(downloadCB);
+        downloadWorker.setCallback(downloadCB);
 
-        builder.getExecutor().download(downloadWorker);
+        builder.getConfig().getExecutor().execute(downloadWorker);
     }
 
 }

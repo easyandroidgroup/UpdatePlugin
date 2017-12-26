@@ -26,6 +26,7 @@ import org.lzh.framework.updatepluginlib.model.Update;
 import org.lzh.framework.updatepluginlib.util.ActivityManager;
 import org.lzh.framework.updatepluginlib.util.Recyclable;
 import org.lzh.framework.updatepluginlib.util.SafeDialogOper;
+import org.lzh.framework.updatepluginlib.util.Utils;
 
 import java.io.File;
 
@@ -88,26 +89,30 @@ public final class DefaultDownloadCallback implements DownloadCallback,Recyclabl
                 innerCB.onDownloadComplete(file);
             }
 
-            showInstallDialogIfNeed(file);
-
             release();
         } catch (Throwable t) {
             onDownloadError(t);
         }
     }
 
-    public void showInstallDialogIfNeed(final File file) {
-        final Activity current = ActivityManager.get().topActivity();
-        InstallNotifier creator = builder.getInstallDialogCreator();
-        creator.setBuilder(builder);
-        creator.setUpdate(update);
-        creator.setFile(file);
-        if (builder.getUpdateStrategy().isAutoInstall()) {
-            creator.sendToInstall();
-        } else {
-            Dialog dialog = creator.create(current);
-            SafeDialogOper.safeShowDialog(dialog);
-        }
+    public void postForInstall(final File file) {
+        Utils.getMainHandler().post(new Runnable() {
+            @Override
+            public void run() {
+                InstallNotifier creator = builder.getInstallDialogCreator();
+                creator.setBuilder(builder);
+                creator.setUpdate(update);
+                creator.setFile(file);
+                if (builder.getUpdateStrategy().isAutoInstall()) {
+                    creator.sendToInstall();
+                } else {
+                    final Activity current = ActivityManager.get().topActivity();
+                    Dialog dialog = creator.create(current);
+                    SafeDialogOper.safeShowDialog(dialog);
+                }
+            }
+        });
+
     }
 
     @Override

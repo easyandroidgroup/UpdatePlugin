@@ -17,7 +17,6 @@ package org.lzh.framework.updatepluginlib.base;
 
 import org.lzh.framework.updatepluginlib.UpdateBuilder;
 import org.lzh.framework.updatepluginlib.flow.DefaultCheckCallback;
-import org.lzh.framework.updatepluginlib.flow.UnifiedWorker;
 import org.lzh.framework.updatepluginlib.impl.ForcedUpdateStrategy;
 import org.lzh.framework.updatepluginlib.model.CheckEntity;
 import org.lzh.framework.updatepluginlib.model.Update;
@@ -31,7 +30,7 @@ import org.lzh.framework.updatepluginlib.util.Utils;
  *
  * @author haoge
  */
-public abstract class CheckWorker extends UnifiedWorker implements Runnable,Recyclable {
+public abstract class CheckWorker implements Runnable,Recyclable {
 
     /**
      * {@link DefaultCheckCallback}的实例，用于接收网络任务状态。并连接后续流程
@@ -108,7 +107,7 @@ public abstract class CheckWorker extends UnifiedWorker implements Runnable,Recy
      *
      * @param response 更新接口api返回的数据实体
      */
-    public void onResponse(String response) {
+    public final void onResponse(String response) {
         try {
             UpdateParser jsonParser = builder.getJsonParser();
             Update update = jsonParser.parse(response);
@@ -125,8 +124,6 @@ public abstract class CheckWorker extends UnifiedWorker implements Runnable,Recy
             }
         } catch (Throwable t) {
             onError(t);
-        } finally {
-            setRunning(false);
         }
     }
 
@@ -134,12 +131,8 @@ public abstract class CheckWorker extends UnifiedWorker implements Runnable,Recy
      * 进行检查更新api失败时的回调。
      * @param t 失败时的异常
      */
-    public void onError(Throwable t) {
-        try {
-            sendOnErrorMsg(t);
-        } finally {
-            setRunning(false);
-        }
+    public final void onError(Throwable t) {
+        sendOnErrorMsg(t);
     }
 
     private void sendHasUpdate(final Update update) {

@@ -254,8 +254,8 @@ public class UpdateBuilder {
         return installStrategy;
     }
 
-    public final UpdateExecutor getExecutor() {
-        return config.getExecutor();
+    public final UpdateConfig getConfig() {
+        return config;
     }
 
 }

@@ -17,7 +17,6 @@ package org.lzh.framework.updatepluginlib.base;
 
 import org.lzh.framework.updatepluginlib.UpdateBuilder;
 import org.lzh.framework.updatepluginlib.flow.DefaultDownloadCallback;
-import org.lzh.framework.updatepluginlib.flow.UnifiedWorker;
 import org.lzh.framework.updatepluginlib.model.Update;
 import org.lzh.framework.updatepluginlib.util.Recyclable;
 import org.lzh.framework.updatepluginlib.util.Utils;
@@ -31,12 +30,12 @@ import java.io.File;
  *
  * @author lzh
  */
-public abstract class DownloadWorker extends UnifiedWorker implements Runnable,Recyclable {
+public abstract class DownloadWorker implements Runnable,Recyclable {
 
     /**
      * {@link DefaultDownloadCallback}的实例。用于接收下载状态并进行后续流程通知
      */
-    private DefaultDownloadCallback downloadCB;
+    private DefaultDownloadCallback callback;
 
     protected Update update;
     protected UpdateBuilder builder;
@@ -49,22 +48,22 @@ public abstract class DownloadWorker extends UnifiedWorker implements Runnable,R
         this.builder = builder;
     }
 
-    public final void setDownloadCB(DefaultDownloadCallback downloadCB) {
-        this.downloadCB = downloadCB;
+    public final void setCallback(DefaultDownloadCallback callback) {
+        this.callback = callback;
     }
 
     @Override
     public final void run() {
         try {
-            sendDownloadStart();
             File cacheFile = builder.getFileCreator().create(update);
             FileChecker checker = builder.getFileChecker();
             checker.attach(update, cacheFile);
             if (builder.getFileChecker().checkBeforeDownload()) {
                 // check success: skip download and show install dialog if needed.
-                sendDownloadComplete(cacheFile);
+                callback.postForInstall(cacheFile);
                 return;
             }
+            sendDownloadStart();
             String url = update.getUpdateUrl();
             cacheFile.getParentFile().mkdirs();
             download(url,cacheFile);
@@ -92,13 +91,13 @@ public abstract class DownloadWorker extends UnifiedWorker implements Runnable,R
     protected abstract void download(String url, File target) throws Exception;
 
     protected final void sendDownloadStart() {
-        if (downloadCB == null) return;
+        if (callback == null) return;
 
         Utils.getMainHandler().post(new Runnable() {
             @Override
             public void run() {
-                if (downloadCB == null) return;
-                downloadCB.onDownloadStart();
+                if (callback == null) return;
+                callback.onDownloadStart();
             }
         });
     }
@@ -109,13 +108,13 @@ public abstract class DownloadWorker extends UnifiedWorker implements Runnable,R
      * @param total 下载文件总长度
      */
     protected final void sendDownloadProgress(final long current, final long total) {
-        if (downloadCB == null) return;
+        if (callback == null) return;
 
         Utils.getMainHandler().post(new Runnable() {
             @Override
             public void run() {
-                if (downloadCB == null) return;
-                downloadCB.onDownloadProgress(current, total);
+                if (callback == null) return;
+                callback.onDownloadProgress(current, total);
             }
         });
     }
@@ -125,8 +124,6 @@ public abstract class DownloadWorker extends UnifiedWorker implements Runnable,R
      * @param file 被下载的文件
      */
     protected final void sendDownloadComplete(final File file) {
-        setRunning(false);
-
         try {
             builder.getFileChecker().onCheckBeforeInstall();
         } catch (Exception e) {
@@ -134,12 +131,13 @@ public abstract class DownloadWorker extends UnifiedWorker implements Runnable,R
             return;
         }
 
-        if (downloadCB == null) return;
+        if (callback == null) return;
         Utils.getMainHandler().post(new Runnable() {
             @Override
             public void run() {
-                if (downloadCB == null) return;
-                downloadCB.onDownloadComplete(file);
+                if (callback == null) return;
+                callback.onDownloadComplete(file);
+                callback.postForInstall(file);
                 release();
             }
         });
@@ -150,14 +148,13 @@ public abstract class DownloadWorker extends UnifiedWorker implements Runnable,R
      * @param t 错误异常信息
      */
     protected final void sendDownloadError(final Throwable t) {
-        setRunning(false);
-        if (downloadCB == null) return;
+        if (callback == null) return;
 
         Utils.getMainHandler().post(new Runnable() {
             @Override
             public void run() {
-                if (downloadCB == null) return;
-                downloadCB.onDownloadError(t);
+                if (callback == null) return;
+                callback.onDownloadError(t);
                 release();
             }
         });
@@ -165,7 +162,7 @@ public abstract class DownloadWorker extends UnifiedWorker implements Runnable,R
 
     @Override
     public final void release() {
-        this.downloadCB = null;
+        this.callback = null;
         this.update = null;
     }
 }
