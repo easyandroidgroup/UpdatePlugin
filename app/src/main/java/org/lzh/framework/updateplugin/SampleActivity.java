@@ -63,7 +63,7 @@ public class SampleActivity extends Activity {
         }
         // 根据各项是否选择使用默认配置进行使用更新。
         if (!updateWorker.isDefaultSelected()) {
-            builder.setCheckWorker(new OkhttpCheckWorker());
+            builder.setCheckWorker(OkhttpCheckWorker.class);
         }
 
         if (!hasUpdateNotice.isDefaultSelected()) {
@@ -87,7 +87,7 @@ public class SampleActivity extends Activity {
         }
 
         if (!downloadWorker.isDefaultSelected()) {
-            builder.setDownloadWorker(new OkhttpDownloadWorker());
+            builder.setDownloadWorker(OkhttpDownloadWorker.class);
         }
         /*
          * 以上为常用的需要定制的功能模块。如果需要更多的定制需求。请参考

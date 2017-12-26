@@ -17,33 +17,32 @@ package org.lzh.framework.updatepluginlib;
 
 import android.text.TextUtils;
 
-import org.lzh.framework.updatepluginlib.base.DownloadNotifier;
+import org.lzh.framework.updatepluginlib.base.CheckCallback;
 import org.lzh.framework.updatepluginlib.base.CheckNotifier;
 import org.lzh.framework.updatepluginlib.base.CheckWorker;
 import org.lzh.framework.updatepluginlib.base.DownloadCallback;
+import org.lzh.framework.updatepluginlib.base.DownloadNotifier;
+import org.lzh.framework.updatepluginlib.base.DownloadWorker;
+import org.lzh.framework.updatepluginlib.base.FileChecker;
 import org.lzh.framework.updatepluginlib.base.FileCreator;
 import org.lzh.framework.updatepluginlib.base.InstallNotifier;
-import org.lzh.framework.updatepluginlib.impl.DefaultDownloadWorker;
-import org.lzh.framework.updatepluginlib.impl.DefaultCheckWorker;
-import org.lzh.framework.updatepluginlib.base.DownloadWorker;
-import org.lzh.framework.updatepluginlib.flow.UpdateExecutor;
-import org.lzh.framework.updatepluginlib.flow.CallbackDelegate;
-import org.lzh.framework.updatepluginlib.base.CheckCallback;
-import org.lzh.framework.updatepluginlib.impl.DefaultFileChecker;
-import org.lzh.framework.updatepluginlib.impl.DefaultFileCreator;
-import org.lzh.framework.updatepluginlib.impl.DefaultDownloadNotifier;
-import org.lzh.framework.updatepluginlib.impl.DefaultInstallNotifier;
-import org.lzh.framework.updatepluginlib.impl.DefaultUpdateNotifier;
-import org.lzh.framework.updatepluginlib.base.FileChecker;
-import org.lzh.framework.updatepluginlib.model.CheckEntity;
-import org.lzh.framework.updatepluginlib.impl.DefaultUpdateChecker;
+import org.lzh.framework.updatepluginlib.base.InstallStrategy;
 import org.lzh.framework.updatepluginlib.base.UpdateChecker;
 import org.lzh.framework.updatepluginlib.base.UpdateParser;
-import org.lzh.framework.updatepluginlib.impl.DefaultInstallStrategy;
-import org.lzh.framework.updatepluginlib.impl.ForcedUpdateStrategy;
-import org.lzh.framework.updatepluginlib.base.InstallStrategy;
 import org.lzh.framework.updatepluginlib.base.UpdateStrategy;
+import org.lzh.framework.updatepluginlib.flow.CallbackDelegate;
+import org.lzh.framework.updatepluginlib.impl.DefaultCheckWorker;
+import org.lzh.framework.updatepluginlib.impl.DefaultDownloadNotifier;
+import org.lzh.framework.updatepluginlib.impl.DefaultDownloadWorker;
+import org.lzh.framework.updatepluginlib.impl.DefaultFileChecker;
+import org.lzh.framework.updatepluginlib.impl.DefaultFileCreator;
+import org.lzh.framework.updatepluginlib.impl.DefaultInstallNotifier;
+import org.lzh.framework.updatepluginlib.impl.DefaultInstallStrategy;
+import org.lzh.framework.updatepluginlib.impl.DefaultUpdateChecker;
+import org.lzh.framework.updatepluginlib.impl.DefaultUpdateNotifier;
+import org.lzh.framework.updatepluginlib.impl.ForcedUpdateStrategy;
 import org.lzh.framework.updatepluginlib.impl.WifiFirstStrategy;
+import org.lzh.framework.updatepluginlib.model.CheckEntity;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -56,8 +55,8 @@ import java.util.concurrent.Executors;
  */
 public final class UpdateConfig {
 
-    private CheckWorker checkWorker;
-    private DownloadWorker downloadWorker;
+    private Class<? extends CheckWorker> checkWorker;
+    private Class<? extends DownloadWorker> downloadWorker;
     private CheckEntity entity;
     private UpdateStrategy updateStrategy;
     private CheckNotifier updateDialogCreator;
@@ -114,7 +113,7 @@ public final class UpdateConfig {
 
     /**
      * 配置更新api。此方法是用于针对复杂api的需求进行配置的。本身提供url,method,params。对于其他需要的数据。
-     * 可通过继承此{@link CheckEntity}实体类，加入更多数据。并通过{@link #setCheckWorker(CheckWorker)}配置对应
+     * 可通过继承此{@link CheckEntity}实体类，加入更多数据。并通过{@link #setCheckWorker(Class)}配置对应
      * 的网络任务进行匹配兼容
      * @param entity 更新api数据实体类
      * @return itself
@@ -153,7 +152,7 @@ public final class UpdateConfig {
      * @return itself
      * @see CheckWorker
      */
-    public UpdateConfig setCheckWorker(CheckWorker checkWorker) {
+    public UpdateConfig setCheckWorker(Class<? extends CheckWorker> checkWorker) {
         this.checkWorker = checkWorker;
         return this;
     }
@@ -164,7 +163,7 @@ public final class UpdateConfig {
      * @return itself
      * @see DownloadWorker
      */
-    public UpdateConfig setDownloadWorker(DownloadWorker downloadWorker) {
+    public UpdateConfig setDownloadWorker(Class<? extends DownloadWorker> downloadWorker) {
         this.downloadWorker = downloadWorker;
         return this;
     }
@@ -329,16 +328,16 @@ public final class UpdateConfig {
         return jsonParser;
     }
 
-    public CheckWorker getCheckWorker() {
+    public Class<? extends CheckWorker> getCheckWorker() {
         if (checkWorker == null) {
-            checkWorker = new DefaultCheckWorker();
+            checkWorker = DefaultCheckWorker.class;
         }
         return checkWorker;
     }
 
-    public DownloadWorker getDownloadWorker() {
+    public Class<? extends DownloadWorker> getDownloadWorker() {
         if (downloadWorker == null) {
-            downloadWorker = new DefaultDownloadWorker();
+            downloadWorker = DefaultDownloadWorker.class;
         }
         return downloadWorker;
     }
@@ -359,7 +358,7 @@ public final class UpdateConfig {
 
     public ExecutorService getExecutor() {
         if (executor == null) {
-            executor = Executors.newSingleThreadExecutor();
+            executor = Executors.newFixedThreadPool(2);
         }
         return executor;
     }

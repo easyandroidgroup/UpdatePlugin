@@ -50,7 +50,14 @@ public final class Launcher {
         checkCB.setBuilder(builder);
         checkCB.onCheckStart();
 
-        CheckWorker checkWorker = builder.getCheckWorker();
+        CheckWorker checkWorker = null;
+        try {
+            checkWorker = builder.getCheckWorker().newInstance();
+        } catch (Exception e) {
+            throw new RuntimeException(String.format(
+                    "Could not create instance for %s", builder.getCheckWorker().getCanonicalName()
+            ), e);
+        }
         checkWorker.setBuilder(builder);
         checkWorker.setCheckCB(checkCB);
         builder.getConfig().getExecutor().execute(checkWorker);
@@ -70,7 +77,14 @@ public final class Launcher {
         downloadCB.setBuilder(builder);
         downloadCB.setUpdate(update);
 
-        DownloadWorker downloadWorker = builder.getDownloadWorker();
+        DownloadWorker downloadWorker = null;
+        try {
+            downloadWorker = builder.getDownloadWorker().newInstance();
+        } catch (Exception e) {
+            throw new RuntimeException(String.format(
+                    "Could not create instance for %s", builder.getDownloadWorker().getCanonicalName()
+            ), e);
+        }
         downloadWorker.setUpdate(update);
         downloadWorker.setUpdateBuilder(builder);
         downloadWorker.setCallback(downloadCB);

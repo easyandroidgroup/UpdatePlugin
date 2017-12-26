@@ -15,22 +15,21 @@
  */
 package org.lzh.framework.updatepluginlib;
 
-import org.lzh.framework.updatepluginlib.base.DownloadNotifier;
+import org.lzh.framework.updatepluginlib.base.CheckCallback;
 import org.lzh.framework.updatepluginlib.base.CheckNotifier;
 import org.lzh.framework.updatepluginlib.base.CheckWorker;
+import org.lzh.framework.updatepluginlib.base.DownloadCallback;
+import org.lzh.framework.updatepluginlib.base.DownloadNotifier;
 import org.lzh.framework.updatepluginlib.base.DownloadWorker;
+import org.lzh.framework.updatepluginlib.base.FileChecker;
 import org.lzh.framework.updatepluginlib.base.FileCreator;
 import org.lzh.framework.updatepluginlib.base.InstallNotifier;
-import org.lzh.framework.updatepluginlib.flow.UpdateExecutor;
-import org.lzh.framework.updatepluginlib.base.CheckCallback;
-import org.lzh.framework.updatepluginlib.base.DownloadCallback;
-import org.lzh.framework.updatepluginlib.base.FileChecker;
-import org.lzh.framework.updatepluginlib.flow.Launcher;
-import org.lzh.framework.updatepluginlib.model.CheckEntity;
+import org.lzh.framework.updatepluginlib.base.InstallStrategy;
 import org.lzh.framework.updatepluginlib.base.UpdateChecker;
 import org.lzh.framework.updatepluginlib.base.UpdateParser;
-import org.lzh.framework.updatepluginlib.base.InstallStrategy;
 import org.lzh.framework.updatepluginlib.base.UpdateStrategy;
+import org.lzh.framework.updatepluginlib.flow.Launcher;
+import org.lzh.framework.updatepluginlib.model.CheckEntity;
 
 /**
  * 此类用于建立真正的更新任务。每个更新任务对应于一个{@link UpdateBuilder}实例。
@@ -48,8 +47,8 @@ import org.lzh.framework.updatepluginlib.base.UpdateStrategy;
  */
 public class UpdateBuilder {
 
-    private CheckWorker checkWorker;
-    private DownloadWorker downloadWorker;
+    private Class<? extends CheckWorker> checkWorker;
+    private Class<? extends DownloadWorker> downloadWorker;
     private CheckEntity entity;
     private UpdateStrategy updateStrategy;
     private CheckNotifier updateDialogCreator;
@@ -103,12 +102,12 @@ public class UpdateBuilder {
         return this;
     }
 
-    public UpdateBuilder setCheckWorker(CheckWorker checkWorker) {
+    public UpdateBuilder setCheckWorker(Class<? extends CheckWorker> checkWorker) {
         this.checkWorker = checkWorker;
         return this;
     }
 
-    public UpdateBuilder setDownloadWorker(DownloadWorker downloadWorker) {
+    public UpdateBuilder setDownloadWorker(Class<? extends DownloadWorker> downloadWorker) {
         this.downloadWorker = downloadWorker;
         return this;
     }
@@ -218,14 +217,14 @@ public class UpdateBuilder {
         return jsonParser;
     }
 
-    public CheckWorker getCheckWorker() {
+    public Class<? extends CheckWorker> getCheckWorker() {
         if (checkWorker == null) {
             checkWorker = config.getCheckWorker();
         }
         return checkWorker;
     }
 
-    public DownloadWorker getDownloadWorker() {
+    public Class<? extends DownloadWorker> getDownloadWorker() {
         if (downloadWorker == null) {
             downloadWorker = config.getDownloadWorker();
         }

@@ -22,6 +22,8 @@ import org.lzh.framework.updatepluginlib.util.Recyclable;
 import org.lzh.framework.updatepluginlib.util.Utils;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * <b>核心操作类</b>
@@ -36,6 +38,9 @@ public abstract class DownloadWorker implements Runnable,Recyclable {
      * {@link DefaultDownloadCallback}的实例。用于接收下载状态并进行后续流程通知
      */
     private DefaultDownloadCallback callback;
+
+    // 维护一个所有下载任务的下载文件集合。用于避免出现多个下载任务同时下载同一个文件。避免冲突。
+    private static Map<DownloadWorker, File> downloading = new HashMap<>();
 
     protected Update update;
     protected UpdateBuilder builder;
@@ -55,21 +60,35 @@ public abstract class DownloadWorker implements Runnable,Recyclable {
     @Override
     public final void run() {
         try {
-            File cacheFile = builder.getFileCreator().create(update);
+            File file = builder.getFileCreator().create(update);
             FileChecker checker = builder.getFileChecker();
-            checker.attach(update, cacheFile);
+            checker.attach(update, file);
             if (builder.getFileChecker().checkBeforeDownload()) {
                 // check success: skip download and show install dialog if needed.
-                callback.postForInstall(cacheFile);
+                callback.postForInstall(file);
                 return;
             }
+            checkDuplicateDownload(file);
+
             sendDownloadStart();
             String url = update.getUpdateUrl();
-            cacheFile.getParentFile().mkdirs();
-            download(url,cacheFile);
+            file.getParentFile().mkdirs();
+            download(url,file);
         } catch (Throwable e) {
             sendDownloadError(e);
         }
+    }
+
+    private void checkDuplicateDownload(File file) {
+        if (downloading.containsValue(file)) {
+            System.out.println("===checkDuplicateDownload==failed=" + file.getAbsolutePath());
+            throw new RuntimeException(String.format(
+                    "You can not download the same file using multiple download tasks simultaneously，the file path is %s",
+                    file.getAbsolutePath()
+            ));
+        }
+        System.out.println("===checkDuplicateDownload==success=" + file.getAbsolutePath());
+        downloading.put(this, file);
     }
 
     /**
@@ -164,5 +183,6 @@ public abstract class DownloadWorker implements Runnable,Recyclable {
     public final void release() {
         this.callback = null;
         this.update = null;
+        downloading.remove(this);
     }
 }
