@@ -60,7 +60,7 @@ public abstract class DownloadWorker implements Runnable,Recyclable {
     @Override
     public final void run() {
         try {
-            File file = builder.getFileCreator().create(update);
+            File file = builder.getFileCreator().createWithBuilder(update, builder);
             FileChecker checker = builder.getFileChecker();
             checker.attach(update, file);
             if (builder.getFileChecker().checkBeforeDownload()) {
@@ -81,13 +81,11 @@ public abstract class DownloadWorker implements Runnable,Recyclable {
 
     private void checkDuplicateDownload(File file) {
         if (downloading.containsValue(file)) {
-            System.out.println("===checkDuplicateDownload==failed=" + file.getAbsolutePath());
             throw new RuntimeException(String.format(
                     "You can not download the same file using multiple download tasks simultaneously，the file path is %s",
                     file.getAbsolutePath()
             ));
         }
-        System.out.println("===checkDuplicateDownload==success=" + file.getAbsolutePath());
         downloading.put(this, file);
     }
 

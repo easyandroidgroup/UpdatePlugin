@@ -30,7 +30,6 @@ import org.lzh.framework.updatepluginlib.base.InstallStrategy;
 import org.lzh.framework.updatepluginlib.base.UpdateChecker;
 import org.lzh.framework.updatepluginlib.base.UpdateParser;
 import org.lzh.framework.updatepluginlib.base.UpdateStrategy;
-import org.lzh.framework.updatepluginlib.flow.CallbackDelegate;
 import org.lzh.framework.updatepluginlib.impl.DefaultCheckWorker;
 import org.lzh.framework.updatepluginlib.impl.DefaultDownloadNotifier;
 import org.lzh.framework.updatepluginlib.impl.DefaultDownloadWorker;
@@ -68,7 +67,8 @@ public final class UpdateConfig {
     private FileChecker fileChecker;
     private InstallStrategy installStrategy;
     private ExecutorService executor;
-    private CallbackDelegate callbackDelegate = new CallbackDelegate();
+    private CheckCallback checkCallback;
+    private DownloadCallback downloadCallback;
 
     private static UpdateConfig DEFAULT;
 
@@ -169,25 +169,25 @@ public final class UpdateConfig {
     }
 
     /**
-     * 配置下载回调监听。 默认使用{@link CallbackDelegate}
-     * @param downloadCB 下载回调监听
+     * 配置下载回调监听。
+     * @param callback 下载回调监听
      * @return itself
      * @see DownloadCallback
      */
-    public UpdateConfig setDownloadCallback(DownloadCallback downloadCB) {
-        this.callbackDelegate.setDownloadDelegate(downloadCB);
+    public UpdateConfig setDownloadCallback(DownloadCallback callback) {
+        this.downloadCallback = callback;
         return this;
     }
 
     /**
-     * 配置更新检查回调监听，默认使用{@link CallbackDelegate}
+     * 配置更新检查回调监听
      *
-     * @param checkCB 更新检查回调器
+     * @param callback 更新检查回调器
      * @return itself
      * @see CheckCallback
      */
-    public UpdateConfig setCheckCallback(CheckCallback checkCB) {
-        this.callbackDelegate.setCheckDelegate(checkCB);
+    public UpdateConfig setCheckCallback(CheckCallback callback) {
+        this.checkCallback = callback;
         return this;
     }
 
@@ -363,12 +363,12 @@ public final class UpdateConfig {
         return executor;
     }
 
-    public CheckCallback getCheckCB() {
-        return callbackDelegate;
+    public CheckCallback getCheckCallback() {
+        return checkCallback;
     }
 
-    public DownloadCallback getDownloadCB() {
-        return callbackDelegate;
+    public DownloadCallback getDownloadCallback() {
+        return downloadCallback;
     }
 
 

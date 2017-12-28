@@ -28,12 +28,19 @@ import java.io.File;
  *
  * @author haoge
  */
-public class DefaultFileCreator implements FileCreator {
+public class DefaultFileCreator extends FileCreator {
     @Override
     public File create(Update update) {
         File cacheDir = getCacheDir();
         cacheDir.mkdirs();
-        return new File(cacheDir,"update_v_" + update.getVersionName());
+        return new File(cacheDir,"update_normal_" + update.getVersionName());
+    }
+
+    @Override
+    public File createForDaemon(Update update) {
+        File cacheDir = getCacheDir();
+        cacheDir.mkdirs();
+        return new File(cacheDir,"update_daemon_" + update.getVersionName());
     }
 
     private File getCacheDir() {

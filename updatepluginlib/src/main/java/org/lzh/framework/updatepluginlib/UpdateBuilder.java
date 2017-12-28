@@ -28,7 +28,9 @@ import org.lzh.framework.updatepluginlib.base.InstallStrategy;
 import org.lzh.framework.updatepluginlib.base.UpdateChecker;
 import org.lzh.framework.updatepluginlib.base.UpdateParser;
 import org.lzh.framework.updatepluginlib.base.UpdateStrategy;
+import org.lzh.framework.updatepluginlib.flow.CallbackDelegate;
 import org.lzh.framework.updatepluginlib.flow.Launcher;
+import org.lzh.framework.updatepluginlib.flow.RetryCallback;
 import org.lzh.framework.updatepluginlib.model.CheckEntity;
 
 /**
@@ -47,6 +49,7 @@ import org.lzh.framework.updatepluginlib.model.CheckEntity;
  */
 public class UpdateBuilder {
 
+    private boolean isDaemon;
     private Class<? extends CheckWorker> checkWorker;
     private Class<? extends DownloadWorker> downloadWorker;
     private CheckEntity entity;
@@ -60,9 +63,14 @@ public class UpdateBuilder {
     private FileChecker fileChecker;
     private InstallStrategy installStrategy;
     private UpdateConfig config;
+
+    private RetryCallback retryCallback;
+    private CallbackDelegate callbackDelegate = new CallbackDelegate();
     
     private UpdateBuilder(UpdateConfig config) {
         this.config = config;
+        callbackDelegate.setCheckDelegate(config.getCheckCallback());
+        callbackDelegate.setDownloadDelegate(config.getDownloadCallback());
     }
 
     /**
@@ -112,13 +120,21 @@ public class UpdateBuilder {
         return this;
     }
 
-    public UpdateBuilder setDownloadCallback(DownloadCallback downloadCB) {
-        this.config.setDownloadCallback(downloadCB);
+    public UpdateBuilder setDownloadCallback(DownloadCallback callback) {
+        if (callback == null) {
+            this.callbackDelegate.setDownloadDelegate(config.getDownloadCallback());
+        } else {
+            this.callbackDelegate.setDownloadDelegate(callback);
+        }
         return this;
     }
 
-    public UpdateBuilder setCheckCallback(CheckCallback checkCB) {
-        this.config.setCheckCallback(checkCB);
+    public UpdateBuilder setCheckCallback(CheckCallback callback) {
+        if (callback == null) {
+            this.callbackDelegate.setCheckDelegate(config.getCheckCallback());
+        } else {
+            this.callbackDelegate.setCheckDelegate(callback);
+        }
         return this;
     }
 
@@ -157,12 +173,6 @@ public class UpdateBuilder {
         return this;
     }
 
-    /**
-     * 启动更新任务。可在任意线程进行启动。
-     */
-    public void check() {
-        Launcher.getInstance().launchCheck(this);
-    }
 
     public UpdateStrategy getUpdateStrategy() {
         if (updateStrategy == null) {
@@ -239,11 +249,11 @@ public class UpdateBuilder {
     }
 
     public CheckCallback getCheckCB() {
-        return config.getCheckCB();
+        return callbackDelegate;
     }
 
     public DownloadCallback getDownloadCB() {
-        return config.getDownloadCB();
+        return callbackDelegate;
     }
 
     public InstallStrategy getInstallStrategy() {
@@ -257,4 +267,32 @@ public class UpdateBuilder {
         return config;
     }
 
+    public boolean isDaemon() {
+        return isDaemon;
+    }
+
+    public RetryCallback getRetryCallback() {
+        if (retryCallback == null) {
+            retryCallback = new RetryCallback(this);
+        }
+        return retryCallback;
+    }
+
+    /**
+     * 启动更新任务。可在任意线程进行启动。
+     */
+    public void check() {
+        Launcher.getInstance().launchCheck(this);
+    }
+
+    /**
+     * @param retryTime 重试时间间隔，当
+     */
+    public void checkWithDaemon(long retryTime) {
+        RetryCallback retryCallback = getRetryCallback();
+        retryCallback.setRetryTime(retryTime);
+        this.callbackDelegate.setRetryCallback(retryCallback);
+        isDaemon = true;
+        Launcher.getInstance().launchCheck(this);
+    }
 }

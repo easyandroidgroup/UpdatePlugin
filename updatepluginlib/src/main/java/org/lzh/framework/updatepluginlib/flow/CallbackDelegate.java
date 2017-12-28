@@ -16,11 +16,12 @@ import java.io.File;
  */
 public final class CallbackDelegate implements CheckCallback, DownloadCallback {
 
-    private final String TAG = "UpdatePluginLog";
+    static final String TAG = "UpdatePluginLog";
     public boolean ENABLE = true;
 
     public CheckCallback checkProxy;
     public DownloadCallback downloadProxy;
+    private RetryCallback retryCallback;
 
     public void setCheckDelegate(CheckCallback checkProxy) {
         this.checkProxy = checkProxy;
@@ -36,6 +37,10 @@ public final class CallbackDelegate implements CheckCallback, DownloadCallback {
         if (downloadProxy != null) {
             downloadProxy.onDownloadStart();
         }
+
+        if (retryCallback != null) {
+            retryCallback.onDownloadStart();
+        }
     }
 
     @Override
@@ -44,6 +49,10 @@ public final class CallbackDelegate implements CheckCallback, DownloadCallback {
         if (downloadProxy != null) {
             downloadProxy.onDownloadComplete(file);
         }
+
+        if (retryCallback != null) {
+            retryCallback.onDownloadComplete(file);
+        }
     }
 
     @Override
@@ -51,6 +60,10 @@ public final class CallbackDelegate implements CheckCallback, DownloadCallback {
         log(String.format("Downloading... current is %s and total is %s", current, total));
         if (downloadProxy != null) {
             downloadProxy.onDownloadProgress(current, total);
+        }
+
+        if (retryCallback != null) {
+            retryCallback.onDownloadProgress(current, total);
         }
     }
 
@@ -63,6 +76,10 @@ public final class CallbackDelegate implements CheckCallback, DownloadCallback {
         if (downloadProxy != null) {
             downloadProxy.onDownloadError(t);
         }
+
+        if (retryCallback != null) {
+            retryCallback.onDownloadError(t);
+        }
     }
 
     @Override
@@ -70,6 +87,10 @@ public final class CallbackDelegate implements CheckCallback, DownloadCallback {
         log("starting check update task.");
         if (checkProxy != null) {
             checkProxy.onCheckStart();
+        }
+
+        if (retryCallback != null) {
+            retryCallback.onCheckStart();
         }
     }
 
@@ -79,6 +100,10 @@ public final class CallbackDelegate implements CheckCallback, DownloadCallback {
         if (checkProxy != null) {
             checkProxy.hasUpdate(update);
         }
+
+        if (retryCallback != null) {
+            retryCallback.hasUpdate(update);
+        }
     }
 
     @Override
@@ -86,6 +111,10 @@ public final class CallbackDelegate implements CheckCallback, DownloadCallback {
         log("no new version exist");
         if (checkProxy != null) {
             checkProxy.noUpdate();
+        }
+
+        if (retryCallback != null) {
+            retryCallback.noUpdate();
         }
     }
 
@@ -98,6 +127,10 @@ public final class CallbackDelegate implements CheckCallback, DownloadCallback {
         if (checkProxy != null) {
             checkProxy.onCheckError(t);
         }
+
+        if (retryCallback != null) {
+            retryCallback.onCheckError(t);
+        }
     }
 
     @Override
@@ -105,6 +138,10 @@ public final class CallbackDelegate implements CheckCallback, DownloadCallback {
         log("canceled update by user");
         if (checkProxy != null) {
             checkProxy.onUserCancel();
+        }
+
+        if (retryCallback != null) {
+            retryCallback.onUserCancel();
         }
     }
 
@@ -114,11 +151,19 @@ public final class CallbackDelegate implements CheckCallback, DownloadCallback {
         if (checkProxy != null) {
             checkProxy.onCheckIgnore(update);
         }
+
+        if (retryCallback != null) {
+            retryCallback.onCheckIgnore(update);
+        }
     }
 
     private void log(String message) {
         if (ENABLE && !TextUtils.isEmpty(message)) {
             Log.d(TAG, message);
         }
+    }
+
+    public void setRetryCallback(RetryCallback retryCallback) {
+        this.retryCallback = retryCallback;
     }
 }
