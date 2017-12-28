@@ -20,7 +20,6 @@ import org.lzh.framework.updatepluginlib.flow.DefaultCheckCallback;
 import org.lzh.framework.updatepluginlib.impl.ForcedUpdateStrategy;
 import org.lzh.framework.updatepluginlib.model.CheckEntity;
 import org.lzh.framework.updatepluginlib.model.Update;
-import org.lzh.framework.updatepluginlib.util.Recyclable;
 import org.lzh.framework.updatepluginlib.util.Utils;
 
 /**
@@ -30,7 +29,7 @@ import org.lzh.framework.updatepluginlib.util.Utils;
  *
  * @author haoge
  */
-public abstract class CheckWorker implements Runnable,Recyclable {
+public abstract class CheckWorker implements Runnable {
 
     /**
      * {@link DefaultCheckCallback}的实例，用于接收网络任务状态。并连接后续流程
@@ -142,7 +141,6 @@ public abstract class CheckWorker implements Runnable,Recyclable {
             public void run() {
                 if (checkCB == null) return;
                 checkCB.hasUpdate(update);
-                release();
             }
         });
     }
@@ -154,7 +152,6 @@ public abstract class CheckWorker implements Runnable,Recyclable {
             public void run() {
                 if (checkCB == null) return;
                 checkCB.noUpdate();
-                release();
             }
         });
     }
@@ -166,14 +163,8 @@ public abstract class CheckWorker implements Runnable,Recyclable {
             public void run() {
                 if (checkCB == null) return;
                 checkCB.onCheckError(t);
-                release();
             }
         });
-    }
-
-    @Override
-    public final void release() {
-        this.checkCB = null;
     }
 
     private Update preHandle(Update update) {

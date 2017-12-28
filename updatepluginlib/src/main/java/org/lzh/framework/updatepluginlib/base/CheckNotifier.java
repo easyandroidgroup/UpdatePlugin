@@ -24,7 +24,6 @@ import org.lzh.framework.updatepluginlib.flow.Launcher;
 import org.lzh.framework.updatepluginlib.impl.DefaultUpdateNotifier;
 import org.lzh.framework.updatepluginlib.model.Update;
 import org.lzh.framework.updatepluginlib.util.ActivityManager;
-import org.lzh.framework.updatepluginlib.util.Recyclable;
 import org.lzh.framework.updatepluginlib.util.UpdatePreference;
 
 /**
@@ -43,7 +42,7 @@ import org.lzh.framework.updatepluginlib.util.UpdatePreference;
  *
  * @author haoge
  */
-public abstract class CheckNotifier implements Recyclable {
+public abstract class CheckNotifier {
 
     protected UpdateBuilder builder;
     protected Update update;
@@ -77,7 +76,6 @@ public abstract class CheckNotifier implements Recyclable {
      */
     protected final void sendDownloadRequest() {
         Launcher.getInstance().launchDownload(update,builder);
-        release();
     }
 
     /**
@@ -87,7 +85,6 @@ public abstract class CheckNotifier implements Recyclable {
         if (this.checkCB != null) {
             this.checkCB.onUserCancel();
         }
-        release();
     }
 
     /**
@@ -98,12 +95,6 @@ public abstract class CheckNotifier implements Recyclable {
             this.checkCB.onCheckIgnore(update);
         }
         UpdatePreference.saveIgnoreVersion(update.getVersionCode());
-        release();
     }
 
-    @Override
-    public final void release() {
-        this.builder = null;
-        this.checkCB = null;
-    }
 }

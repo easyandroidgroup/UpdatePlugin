@@ -23,7 +23,6 @@ import org.lzh.framework.updatepluginlib.UpdateConfig;
 import org.lzh.framework.updatepluginlib.impl.DefaultInstallNotifier;
 import org.lzh.framework.updatepluginlib.model.Update;
 import org.lzh.framework.updatepluginlib.util.ActivityManager;
-import org.lzh.framework.updatepluginlib.util.Recyclable;
 import org.lzh.framework.updatepluginlib.util.UpdatePreference;
 
 import java.io.File;
@@ -44,7 +43,7 @@ import java.io.File;
  *
  * @author haoge
  */
-public abstract class InstallNotifier implements Recyclable {
+public abstract class InstallNotifier {
 
     protected UpdateBuilder builder;
     protected Update update;
@@ -82,7 +81,6 @@ public abstract class InstallNotifier implements Recyclable {
      */
     public final void sendToInstall() {
         builder.getInstallStrategy().install(ActivityManager.get().getApplicationContext(), file.getAbsolutePath(), update);
-        release();
     }
 
     /**
@@ -93,7 +91,6 @@ public abstract class InstallNotifier implements Recyclable {
             builder.getCheckCB().onUserCancel();
         }
 
-        release();
     }
 
     /**
@@ -104,12 +101,6 @@ public abstract class InstallNotifier implements Recyclable {
             builder.getCheckCB().onCheckIgnore(update);
         }
         UpdatePreference.saveIgnoreVersion(update.getVersionCode());
-        release();
     }
 
-    @Override
-    public final void release() {
-        this.builder = null;
-        this.update = null;
-    }
 }

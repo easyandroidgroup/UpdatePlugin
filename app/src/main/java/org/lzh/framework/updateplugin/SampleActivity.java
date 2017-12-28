@@ -41,15 +41,6 @@ public class SampleActivity extends Activity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         requestStoragePermission();
-
-        UpdateBuilder.create()
-                .setUpdateParser(new UpdateParser() {
-                    @Override
-                    public Update parse(String response) throws Exception {
-                        return null;
-                    }
-                })
-                .checkWithDaemon(5 * 1000);
     }
 
     /** 请求文件读写权限。*/

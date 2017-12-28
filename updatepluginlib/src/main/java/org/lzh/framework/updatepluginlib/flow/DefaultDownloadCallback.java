@@ -24,7 +24,6 @@ import org.lzh.framework.updatepluginlib.base.DownloadWorker;
 import org.lzh.framework.updatepluginlib.base.InstallNotifier;
 import org.lzh.framework.updatepluginlib.model.Update;
 import org.lzh.framework.updatepluginlib.util.ActivityManager;
-import org.lzh.framework.updatepluginlib.util.Recyclable;
 import org.lzh.framework.updatepluginlib.util.SafeDialogOper;
 import org.lzh.framework.updatepluginlib.util.Utils;
 
@@ -35,7 +34,7 @@ import java.io.File;
  *
  * @author haoge
  */
-public final class DefaultDownloadCallback implements DownloadCallback,Recyclable {
+public final class DefaultDownloadCallback implements DownloadCallback {
 
     private UpdateBuilder builder;
     // 通过UpdateConfig或者UpdateBuilder所设置的下载回调监听。通过此监听器进行通知用户下载状态
@@ -88,22 +87,21 @@ public final class DefaultDownloadCallback implements DownloadCallback,Recyclabl
             if (innerCB != null) {
                 innerCB.onDownloadComplete(file);
             }
-
-            release();
         } catch (Throwable t) {
             onDownloadError(t);
         }
     }
 
     public void postForInstall(final File file) {
+        final UpdateBuilder updateBuilder = this.builder;
         Utils.getMainHandler().post(new Runnable() {
             @Override
             public void run() {
-                InstallNotifier creator = builder.getInstallDialogCreator();
-                creator.setBuilder(builder);
+                InstallNotifier creator = updateBuilder.getInstallDialogCreator();
+                creator.setBuilder(updateBuilder);
                 creator.setUpdate(update);
                 creator.setFile(file);
-                if (builder.getUpdateStrategy().isAutoInstall()) {
+                if (updateBuilder.getUpdateStrategy().isAutoInstall()) {
                     creator.sendToInstall();
                 } else {
                     final Activity current = ActivityManager.get().topActivity();
@@ -142,16 +140,6 @@ public final class DefaultDownloadCallback implements DownloadCallback,Recyclabl
             }
         } catch (Throwable ignore) {
             ignore.printStackTrace();
-        } finally {
-            release();
         }
-    }
-
-    @Override
-    public void release() {
-        this.builder = null;
-        this.innerCB = null;
-        this.downloadCB = null;
-        this.update = null;
     }
 }

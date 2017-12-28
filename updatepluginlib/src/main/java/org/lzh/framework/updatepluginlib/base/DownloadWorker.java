@@ -18,7 +18,6 @@ package org.lzh.framework.updatepluginlib.base;
 import org.lzh.framework.updatepluginlib.UpdateBuilder;
 import org.lzh.framework.updatepluginlib.flow.DefaultDownloadCallback;
 import org.lzh.framework.updatepluginlib.model.Update;
-import org.lzh.framework.updatepluginlib.util.Recyclable;
 import org.lzh.framework.updatepluginlib.util.Utils;
 
 import java.io.File;
@@ -32,7 +31,7 @@ import java.util.Map;
  *
  * @author lzh
  */
-public abstract class DownloadWorker implements Runnable,Recyclable {
+public abstract class DownloadWorker implements Runnable {
 
     /**
      * {@link DefaultDownloadCallback}的实例。用于接收下载状态并进行后续流程通知
@@ -155,7 +154,7 @@ public abstract class DownloadWorker implements Runnable,Recyclable {
                 if (callback == null) return;
                 callback.onDownloadComplete(file);
                 callback.postForInstall(file);
-                release();
+                downloading.remove(DownloadWorker.this);
             }
         });
     }
@@ -172,15 +171,9 @@ public abstract class DownloadWorker implements Runnable,Recyclable {
             public void run() {
                 if (callback == null) return;
                 callback.onDownloadError(t);
-                release();
+                downloading.remove(DownloadWorker.this);
             }
         });
     }
 
-    @Override
-    public final void release() {
-        this.callback = null;
-        this.update = null;
-        downloading.remove(this);
-    }
 }

@@ -19,12 +19,11 @@ import android.app.Activity;
 import android.app.Dialog;
 
 import org.lzh.framework.updatepluginlib.UpdateBuilder;
-import org.lzh.framework.updatepluginlib.base.CheckWorker;
 import org.lzh.framework.updatepluginlib.base.CheckCallback;
 import org.lzh.framework.updatepluginlib.base.CheckNotifier;
+import org.lzh.framework.updatepluginlib.base.CheckWorker;
 import org.lzh.framework.updatepluginlib.model.Update;
 import org.lzh.framework.updatepluginlib.util.ActivityManager;
-import org.lzh.framework.updatepluginlib.util.Recyclable;
 import org.lzh.framework.updatepluginlib.util.SafeDialogOper;
 
 /**
@@ -34,7 +33,7 @@ import org.lzh.framework.updatepluginlib.util.SafeDialogOper;
  *
  * @author haoge
  */
-public final class DefaultCheckCallback implements CheckCallback,Recyclable {
+public final class DefaultCheckCallback implements CheckCallback {
     private UpdateBuilder builder;
     private CheckCallback checkCB;
 
@@ -73,8 +72,6 @@ public final class DefaultCheckCallback implements CheckCallback,Recyclable {
             creator.setUpdate(update);
             Dialog dialog = creator.create(current);
             SafeDialogOper.safeShowDialog(dialog);
-
-            release();
         } catch (Throwable t) {
             onCheckError(t);
         }
@@ -86,7 +83,6 @@ public final class DefaultCheckCallback implements CheckCallback,Recyclable {
             if (checkCB != null) {
                 checkCB.noUpdate();
             }
-            release();
         } catch (Throwable t) {
             onCheckError(t);
         }
@@ -101,8 +97,6 @@ public final class DefaultCheckCallback implements CheckCallback,Recyclable {
             }
         } catch (Throwable ignore) {
             ignore.printStackTrace();
-        } finally {
-            release();
         }
     }
 
@@ -112,7 +106,6 @@ public final class DefaultCheckCallback implements CheckCallback,Recyclable {
             if (checkCB != null) {
                 checkCB.onUserCancel();
             }
-            release();
         } catch (Throwable t) {
             onCheckError(t);
         }
@@ -125,15 +118,9 @@ public final class DefaultCheckCallback implements CheckCallback,Recyclable {
             if (checkCB != null) {
                 checkCB.onCheckIgnore(update);
             }
-            release();
         } catch (Throwable t) {
             onCheckError(t);
         }
     }
 
-    @Override
-    public void release() {
-        this.builder = null;
-        this.checkCB = null;
-    }
 }
