@@ -90,6 +90,25 @@ public class UpdateBuilder {
         return new UpdateBuilder(config);
     }
 
+    /**
+     * 启动更新任务。可在任意线程进行启动。
+     */
+    public void check() {
+        Launcher.getInstance().launchCheck(this);
+    }
+
+    /**
+     * 启动后台更新任务。此任务特性：当检查更新失败或者当前无更新。则等待指定时间之后，自动重启更新任务。
+     * @param retryTime 重试时间间隔
+     */
+    public void checkWithDaemon(long retryTime) {
+        RetryCallback retryCallback = getRetryCallback();
+        retryCallback.setRetryTime(retryTime);
+        this.callbackDelegate.setRetryCallback(retryCallback);
+        isDaemon = true;
+        Launcher.getInstance().launchCheck(this);
+    }
+
     public UpdateBuilder setUrl(String url) {
         this.entity = new CheckEntity().setUrl(url);
         return this;
@@ -278,21 +297,6 @@ public class UpdateBuilder {
         return retryCallback;
     }
 
-    /**
-     * 启动更新任务。可在任意线程进行启动。
-     */
-    public void check() {
-        Launcher.getInstance().launchCheck(this);
-    }
 
-    /**
-     * @param retryTime 重试时间间隔，当
-     */
-    public void checkWithDaemon(long retryTime) {
-        RetryCallback retryCallback = getRetryCallback();
-        retryCallback.setRetryTime(retryTime);
-        this.callbackDelegate.setRetryCallback(retryCallback);
-        isDaemon = true;
-        Launcher.getInstance().launchCheck(this);
-    }
+
 }

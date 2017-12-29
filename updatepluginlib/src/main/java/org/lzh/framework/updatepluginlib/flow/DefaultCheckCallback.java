@@ -60,16 +60,16 @@ public final class DefaultCheckCallback implements CheckCallback {
                 checkCB.hasUpdate(update);
             }
 
+            CheckNotifier creator = builder.getUpdateDialogCreator();
+            creator.setBuilder(builder);
+            creator.setUpdate(update);
+
             if (!builder.getUpdateStrategy().isShowUpdateDialog(update)) {
-                Launcher.getInstance().launchDownload(update,builder);
+                creator.sendDownloadRequest();
                 return;
             }
 
             Activity current = ActivityManager.get().topActivity();
-
-            CheckNotifier creator = builder.getUpdateDialogCreator();
-            creator.setBuilder(builder);
-            creator.setUpdate(update);
             Dialog dialog = creator.create(current);
             SafeDialogOper.safeShowDialog(dialog);
         } catch (Throwable t) {

@@ -74,7 +74,7 @@ public abstract class CheckNotifier {
     /**
      * 当需要进行后续更新操作时：需要更新，启动下载任务时，调用此方法进行流程连接
      */
-    protected final void sendDownloadRequest() {
+    public final void sendDownloadRequest() {
         Launcher.getInstance().launchDownload(update,builder);
     }
 
