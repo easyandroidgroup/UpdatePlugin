@@ -3,6 +3,7 @@ package org.lzh.framework.updateplugin;
 import android.Manifest;
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 
 import com.tbruyelle.rxpermissions.RxPermissions;
 
@@ -55,8 +56,18 @@ public class SampleActivity extends Activity {
                 });
     }
 
+    @OnClick(R.id.start_daemon_update)
+    void onDaemonStartClick() {
+        createBuilder().checkWithDaemon(1000 * 5);// 后台更新时间间隔设置为5秒。
+    }
+
     @OnClick(R.id.start_update)
     void onStartClick () {
+        createBuilder().check();
+    }
+
+    @NonNull
+    private UpdateBuilder createBuilder() {
         UpdateBuilder builder = UpdateBuilder.create();
         if (!newConfig.isDefaultSelected()) {
             builder = UpdateBuilder.create(createNewConfig());
@@ -89,12 +100,7 @@ public class SampleActivity extends Activity {
         if (!downloadWorker.isDefaultSelected()) {
             builder.setDownloadWorker(OkhttpDownloadWorker.class);
         }
-        /*
-         * 以上为常用的需要定制的功能模块。如果需要更多的定制需求。请参考
-         * {@link org.lzh.framework.updatepluginlib.UpdateConfig}
-         * 类中所使用的其他模块的默认实现方式。
-         * */
-        builder.check();
+        return builder;
     }
 
     private UpdateConfig createNewConfig() {

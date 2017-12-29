@@ -70,7 +70,6 @@ public final class RetryCallback implements CheckCallback, DownloadCallback, Run
 
     @Override
     public void onUserCancel() {
-        retry();
     }
 
     @Override
@@ -78,7 +77,7 @@ public final class RetryCallback implements CheckCallback, DownloadCallback, Run
         retry();
     }
 
-    private final synchronized void retry() {
+    private synchronized void retry() {
         Utils.getMainHandler().removeCallbacks(this);
         Utils.getMainHandler().postDelayed(this, retryTime);
     }
