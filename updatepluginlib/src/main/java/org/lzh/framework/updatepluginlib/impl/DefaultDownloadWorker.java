@@ -23,23 +23,29 @@ import org.lzh.framework.updatepluginlib.base.DownloadWorker;
 import org.lzh.framework.updatepluginlib.util.UpdatePreference;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.RandomAccessFile;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
 /**
- * 默认的apk下载任务。若需定制，则可通过{@link UpdateBuilder#setDownloadWorker(DownloadWorker)}或者{@link UpdateConfig#setDownloadWorker(DownloadWorker)}进行定制使用
+ * 默认的apk下载任务。若需定制，则可通过{@link UpdateBuilder#setDownloadWorker(Class)}或者{@link UpdateConfig#setDownloadWorker(Class)}进行定制使用
  *
  * <p>此默认下载任务。支持断点下载功能。
  *
  * @author haoge
  */
 public class DefaultDownloadWorker extends DownloadWorker {
+
     private HttpURLConnection urlConn;
+    private File original;
+    private File bak;
+    private long contentLength;
+
     @Override
     protected void download(String url, File target) throws Exception{
+        original = target;
         URL httpUrl = new URL(url);
         urlConn = (HttpURLConnection) httpUrl.openConnection();
         setDefaultProperties();
@@ -51,72 +57,57 @@ public class DefaultDownloadWorker extends DownloadWorker {
             throw new HttpException(responseCode,urlConn.getResponseMessage());
         }
 
-        long contentLength = urlConn.getContentLength();
-        if (checkIsDownAll(target,url,contentLength)) {
+        contentLength = urlConn.getContentLength();
+        // 使用此bak文件进行下载。辅助进行断点下载。
+        if (checkIsDownAll()) {
             urlConn.disconnect();
             urlConn = null;
             // notify download completed
-            sendDownloadComplete(target);
+            sendDownloadComplete(original);
             return;
         }
-        RandomAccessFile raf = supportBreakpointDownload(target, httpUrl, url);
-        if (contentLength > 0) {
-            UpdatePreference.saveDownloadTotalSize(url,contentLength);
-        }
 
-        long offset = target.exists() ? (int) target.length() : 0;
+        createBakFile();
+        FileOutputStream writer = supportBreakpointDownload(httpUrl);
+
+        long offset = bak.length();
         InputStream inputStream = urlConn.getInputStream();
         byte[] buffer = new byte[8 * 1024];
         int length;
         long start = System.currentTimeMillis();
         while ((length = inputStream.read(buffer)) != -1) {
-            raf.write(buffer, 0, length);
+            writer.write(buffer, 0, length);
             offset += length;
             long end = System.currentTimeMillis();
             if (end - start > 1000) {
                 sendDownloadProgress(offset,contentLength);
                 start = System.currentTimeMillis();
             }
-            UpdatePreference.saveDownloadSize(url,offset);
         }
 
         urlConn.disconnect();
-        raf.close();
+        writer.close();
         urlConn = null;
 
         // notify download completed
-        sendDownloadComplete(target);
+        renameAndNotifyCompleted();
     }
 
-    private boolean checkIsDownAll(File target,String url,long contentLength) {
-        long lastDownSize = UpdatePreference.getLastDownloadSize(url);
-        long length = target.length();
-        long lastTotalSize = UpdatePreference.getLastDownloadTotalSize(url);
-        return lastDownSize == length
-                && lastTotalSize == lastDownSize
-                && lastDownSize != 0
-                && lastDownSize == contentLength;
+    private boolean checkIsDownAll() {
+        return original.length() == contentLength
+                && contentLength > 0;
     }
 
-    private RandomAccessFile supportBreakpointDownload(File target, URL httpUrl, String url) throws IOException {
+    private FileOutputStream supportBreakpointDownload(URL httpUrl) throws IOException {
 
         String range = urlConn.getHeaderField("Accept-Ranges");
         if (TextUtils.isEmpty(range) || !range.startsWith("bytes")) {
-            target.delete();
-            return new RandomAccessFile(target,"rw");
+            bak.delete();
+            return new FileOutputStream(bak, false);
         }
 
-        long lastDownSize = UpdatePreference.getLastDownloadSize(url);
-        long length = target.length();
-        long lastTotalSize = UpdatePreference.getLastDownloadTotalSize(url);
-        long contentLength = Long.parseLong(urlConn.getHeaderField("Content-Length"));
-        UpdatePreference.saveDownloadTotalSize(url,contentLength);
-        if (lastTotalSize != contentLength
-                || lastDownSize != length
-                || lastDownSize > contentLength) {
-            target.delete();
-            return new RandomAccessFile(target,"rw");
-        }
+        long length = bak.length();
+
         urlConn.disconnect();
         urlConn = (HttpURLConnection) httpUrl.openConnection();
 
@@ -128,10 +119,8 @@ public class DefaultDownloadWorker extends DownloadWorker {
         if (responseCode < 200 || responseCode >= 300) {
             throw new HttpException(responseCode,urlConn.getResponseMessage());
         }
-        RandomAccessFile raf = new RandomAccessFile(target,"rw");
-        raf.seek(length);
 
-        return raf;
+        return new FileOutputStream(bak, true);
     }
 
     private void setDefaultProperties() throws IOException {
@@ -140,4 +129,14 @@ public class DefaultDownloadWorker extends DownloadWorker {
         urlConn.setConnectTimeout(10000);
     }
 
+    // 创建bak文件。
+    private void createBakFile() {
+        bak = new File(String.format("%s_%s", original.getAbsolutePath(), contentLength));
+    }
+
+    private void renameAndNotifyCompleted() {
+        original.delete();
+        bak.renameTo(original);
+        sendDownloadComplete(original);
+    }
 }

@@ -32,7 +32,7 @@ import java.util.Map;
  *
  * 实现：通过原生api访问网络。并将网络返回数据直接返回。提供给框架内进行使用
  *
- * <p>若需定制。则可通过 {@link UpdateBuilder#setCheckWorker(CheckWorker)}或者 {@link UpdateConfig#setCheckWorker(CheckWorker)}进行定制
+ * <p>若需定制。则可通过 {@link UpdateBuilder#setCheckWorker(Class)}或者 {@link UpdateConfig#setCheckWorker(Class)}进行定制
  *
  * @author haoge
  */

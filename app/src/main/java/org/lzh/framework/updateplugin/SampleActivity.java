@@ -117,7 +117,7 @@ public class SampleActivity extends Activity {
                         update.setForced(true);
                         // 是否显示忽略此次版本更新按钮
                         update.setIgnore(object.optBoolean("ignore_able",false));
-                        update.setMd5("Hello world");
+                        update.setMd5("211117732C307BEA1188965E6CA41443");
                         return update;
                     }
                 });
