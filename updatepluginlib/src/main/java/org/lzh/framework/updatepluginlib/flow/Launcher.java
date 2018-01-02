@@ -70,8 +70,6 @@ public final class Launcher {
      * @param builder 更新任务实例
      */
     public void launchDownload(Update update, UpdateBuilder builder) {
-
-
         // 定义一个默认的下载状态回调监听。用于接收文件下载任务所发出的通知。并链接下载后续流程
         DefaultDownloadCallback downloadCB = new DefaultDownloadCallback();
         downloadCB.setBuilder(builder);

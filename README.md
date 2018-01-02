@@ -55,6 +55,10 @@ dependencies {
 
 请通过下载此[demo.apk](https://raw.githubusercontent.com/yjfnypeu/UpdatePlugin/master/screenshots/app-debug.apk)进行体验
 
+### 流程图
+
+![flow chart](./screenshots/flow chart.png)
+
 ### 使用方式：
 [请访问wiki查看具体使用方法](https://github.com/yjfnypeu/UpdatePlugin/wiki)
 
