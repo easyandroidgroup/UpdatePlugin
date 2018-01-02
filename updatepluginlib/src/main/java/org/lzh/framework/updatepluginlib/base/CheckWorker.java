@@ -108,7 +108,7 @@ public abstract class CheckWorker implements Runnable {
      */
     public final void onResponse(String response) {
         try {
-            UpdateParser jsonParser = builder.getJsonParser();
+            UpdateParser jsonParser = builder.getUpdateParser();
             Update update = jsonParser.parse(response);
             if (update == null) {
                 throw new IllegalArgumentException(String.format(

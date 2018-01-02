@@ -41,6 +41,7 @@ public class NotificationDownloadCreator implements DownloadNotifier {
                     .setSmallIcon(activity.getApplicationInfo().icon)
                     .setAutoCancel(false)
                     .setContentText("下载中...")
+                    .setContentText("UpdatePlugin")
                     .build();
             id = Math.abs(UUID.randomUUID().hashCode());
         }

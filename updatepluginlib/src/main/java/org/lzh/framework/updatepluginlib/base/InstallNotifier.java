@@ -87,8 +87,8 @@ public abstract class InstallNotifier {
      * 请求取消更新任务
      */
     public final void sendUserCancel() {
-        if (builder.getCheckCB() != null) {
-            builder.getCheckCB().onUserCancel();
+        if (builder.getCheckCallback() != null) {
+            builder.getCheckCallback().onUserCancel();
         }
 
     }
@@ -97,8 +97,8 @@ public abstract class InstallNotifier {
      * 请求将此版本加入版本忽略列表
      */
     public final void sendCheckIgnore() {
-        if (builder.getCheckCB() != null) {
-            builder.getCheckCB().onCheckIgnore(update);
+        if (builder.getCheckCallback() != null) {
+            builder.getCheckCallback().onCheckIgnore(update);
         }
         UpdatePreference.saveIgnoreVersion(update.getVersionCode());
     }

@@ -29,28 +29,6 @@ public class UpdatePreference {
 
     private static final String PREF_NAME = "update_preference";
 
-    public static long getLastDownloadSize(String url) {
-        SharedPreferences sp = getUpdatePref();
-        return sp.getLong(url,0);
-    }
-
-    public static long getLastDownloadTotalSize (String url) {
-        SharedPreferences sp = getUpdatePref();
-        return sp.getLong(url + "_total_size",0);
-    }
-
-    public static void saveDownloadSize (String url,long size) {
-        SharedPreferences.Editor editor = getUpdatePref().edit();
-        editor.putLong(url,size);
-        editor.apply();
-    }
-
-    public static void saveDownloadTotalSize(String url, long totalSize) {
-        SharedPreferences.Editor editor = getUpdatePref().edit();
-        editor.putLong(url + "_total_size",totalSize);
-        editor.apply();
-    }
-
     public static Set<String> getIgnoreVersions () {
         return getUpdatePref().getStringSet("ignoreVersions", new HashSet<String>());
     }

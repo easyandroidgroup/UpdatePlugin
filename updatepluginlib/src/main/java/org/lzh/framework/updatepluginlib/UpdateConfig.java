@@ -47,8 +47,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
- * 此类用于提供一些默认使用的更新配置。在进行更新任务时，当{@link UpdateBuilder} 中未设置对应的配置时。
- * 将从此配置类中读取默认的配置进行使用
+ * 此类用于提供一些默认使用的更新配置。
+ *
+ * <p>在进行更新任务时，当{@link UpdateBuilder} 中未设置对应的配置时。将从此配置类中读取默认的配置进行使用
  *
  * @author haoge
  */
@@ -58,10 +59,10 @@ public final class UpdateConfig {
     private Class<? extends DownloadWorker> downloadWorker;
     private CheckEntity entity;
     private UpdateStrategy updateStrategy;
-    private CheckNotifier updateDialogCreator;
-    private InstallNotifier installDialogCreator;
-    private DownloadNotifier downloadDialogCreator;
-    private UpdateParser jsonParser;
+    private CheckNotifier checkNotifier;
+    private InstallNotifier installNotifier;
+    private DownloadNotifier downloadNotifier;
+    private UpdateParser updateParser;
     private FileCreator fileCreator;
     private UpdateChecker updateChecker;
     private FileChecker fileChecker;
@@ -193,12 +194,12 @@ public final class UpdateConfig {
 
     /**
      * 配置更新数据解析器。
-     * @param jsonParser 解析器
+     * @param updateParser 解析器
      * @return itself
      * @see UpdateParser
      */
-    public UpdateConfig setUpdateParser(UpdateParser jsonParser) {
-        this.jsonParser = jsonParser;
+    public UpdateConfig setUpdateParser(UpdateParser updateParser) {
+        this.updateParser = updateParser;
         return this;
     }
 
@@ -215,35 +216,35 @@ public final class UpdateConfig {
 
     /**
      * 配置下载进度通知创建器 默认参考{@link DefaultDownloadNotifier}
-     * @param downloadDialogCreator 下载进度通知创建器
+     * @param notifier 下载进度通知创建器
      * @return itself
      * @see DownloadNotifier
      */
-    public UpdateConfig setDownloadNotifier(DownloadNotifier downloadDialogCreator) {
-        this.downloadDialogCreator = downloadDialogCreator;
+    public UpdateConfig setDownloadNotifier(DownloadNotifier notifier) {
+        this.downloadNotifier = notifier;
         return this;
     }
 
     /**
      * 配置启动安装任务前通知创建器 默认参考{@link DefaultInstallNotifier}
      *
-     * @param installDialogCreator 下载完成后。启动安装前的通知创建器
+     * @param notifier 下载完成后。启动安装前的通知创建器
      * @return itself
      * @see InstallNotifier
      */
-    public UpdateConfig setInstallNotifier(InstallNotifier installDialogCreator) {
-        this.installDialogCreator = installDialogCreator;
+    public UpdateConfig setInstallNotifier(InstallNotifier notifier) {
+        this.installNotifier = notifier;
         return this;
     }
 
     /**
      * 配置检查到有更新时的通知创建器 默认参考{@link DefaultUpdateNotifier}
-     * @param updateDialogCreator 通知创建器
+     * @param notifier 通知创建器
      * @return itself
      * @see CheckNotifier
      */
-    public UpdateConfig setCheckNotifier(CheckNotifier updateDialogCreator) {
-        this.updateDialogCreator = updateDialogCreator;
+    public UpdateConfig setCheckNotifier(CheckNotifier notifier) {
+        this.checkNotifier = notifier;
         return this;
     }
 
@@ -286,18 +287,18 @@ public final class UpdateConfig {
         return this.entity;
     }
 
-    public CheckNotifier getUpdateDialogCreator() {
-        if (updateDialogCreator == null) {
-            updateDialogCreator = new DefaultUpdateNotifier();
+    public CheckNotifier getCheckNotifier() {
+        if (checkNotifier == null) {
+            checkNotifier = new DefaultUpdateNotifier();
         }
-        return updateDialogCreator;
+        return checkNotifier;
     }
 
-    public InstallNotifier getInstallDialogCreator() {
-        if (installDialogCreator == null) {
-            installDialogCreator = new DefaultInstallNotifier();
+    public InstallNotifier getInstallNotifier() {
+        if (installNotifier == null) {
+            installNotifier = new DefaultInstallNotifier();
         }
-        return installDialogCreator;
+        return installNotifier;
     }
 
     public UpdateChecker getUpdateChecker() {
@@ -314,18 +315,18 @@ public final class UpdateConfig {
         return fileChecker;
     }
 
-    public DownloadNotifier getDownloadDialogCreator() {
-        if (downloadDialogCreator == null) {
-            downloadDialogCreator = new DefaultDownloadNotifier();
+    public DownloadNotifier getDownloadNotifier() {
+        if (downloadNotifier == null) {
+            downloadNotifier = new DefaultDownloadNotifier();
         }
-        return downloadDialogCreator;
+        return downloadNotifier;
     }
 
-    public UpdateParser getJsonParser() {
-        if (jsonParser == null) {
+    public UpdateParser getUpdateParser() {
+        if (updateParser == null) {
             throw new IllegalStateException("update parser is null");
         }
-        return jsonParser;
+        return updateParser;
     }
 
     public Class<? extends CheckWorker> getCheckWorker() {

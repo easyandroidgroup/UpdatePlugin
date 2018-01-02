@@ -23,7 +23,7 @@ import android.util.Log;
 
 import org.lzh.framework.updatepluginlib.R;
 import org.lzh.framework.updatepluginlib.base.CheckNotifier;
-import org.lzh.framework.updatepluginlib.util.SafeDialogOper;
+import org.lzh.framework.updatepluginlib.util.SafeDialogHandle;
 
 /**
  * 默认使用的在检查到有更新时的通知创建器：创建一个弹窗提示用户当前有新版本需要更新。
@@ -50,7 +50,7 @@ public class DefaultUpdateNotifier extends CheckNotifier {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         sendDownloadRequest();
-                        SafeDialogOper.safeDismissDialog((Dialog) dialog);
+                        SafeDialogHandle.safeDismissDialog((Dialog) dialog);
                     }
                 });
         if (update.isIgnore() && !update.isForced()) {
@@ -58,7 +58,7 @@ public class DefaultUpdateNotifier extends CheckNotifier {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     sendUserIgnore();
-                    SafeDialogOper.safeDismissDialog((Dialog) dialog);
+                    SafeDialogHandle.safeDismissDialog((Dialog) dialog);
                 }
             });
         }
@@ -68,7 +68,7 @@ public class DefaultUpdateNotifier extends CheckNotifier {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     sendUserCancel();
-                    SafeDialogOper.safeDismissDialog((Dialog) dialog);
+                    SafeDialogHandle.safeDismissDialog((Dialog) dialog);
                 }
             });
         }

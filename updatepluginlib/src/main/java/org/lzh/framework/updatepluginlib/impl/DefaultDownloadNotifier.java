@@ -22,7 +22,7 @@ import android.util.Log;
 import org.lzh.framework.updatepluginlib.base.DownloadNotifier;
 import org.lzh.framework.updatepluginlib.base.DownloadCallback;
 import org.lzh.framework.updatepluginlib.model.Update;
-import org.lzh.framework.updatepluginlib.util.SafeDialogOper;
+import org.lzh.framework.updatepluginlib.util.SafeDialogHandle;
 
 import java.io.File;
 
@@ -43,7 +43,7 @@ public class DefaultDownloadNotifier implements DownloadNotifier {
         dialog.setProgress(0);
         dialog.setCancelable(false);
         dialog.setCanceledOnTouchOutside(false);
-        SafeDialogOper.safeShowDialog(dialog);
+        SafeDialogHandle.safeShowDialog(dialog);
         return new DownloadCallback() {
             @Override
             public void onDownloadStart() {
@@ -51,7 +51,7 @@ public class DefaultDownloadNotifier implements DownloadNotifier {
 
             @Override
             public void onDownloadComplete(File file) {
-                SafeDialogOper.safeDismissDialog(dialog);
+                SafeDialogHandle.safeDismissDialog(dialog);
             }
 
             @Override
@@ -62,7 +62,7 @@ public class DefaultDownloadNotifier implements DownloadNotifier {
 
             @Override
             public void onDownloadError(Throwable t) {
-                SafeDialogOper.safeDismissDialog(dialog);
+                SafeDialogHandle.safeDismissDialog(dialog);
             }
         };
     }

@@ -25,7 +25,7 @@ import android.view.ContextThemeWrapper;
  * 用于安全的进行Dialog显示隐藏的工具类
  * @author haoge
  */
-public class SafeDialogOper {
+public class SafeDialogHandle {
 
     public static void safeShowDialog(Dialog dialog) {
         if (dialog == null || dialog.isShowing()) {

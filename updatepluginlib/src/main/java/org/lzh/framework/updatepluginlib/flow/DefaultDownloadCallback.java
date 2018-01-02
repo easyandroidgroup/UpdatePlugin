@@ -24,7 +24,7 @@ import org.lzh.framework.updatepluginlib.base.DownloadWorker;
 import org.lzh.framework.updatepluginlib.base.InstallNotifier;
 import org.lzh.framework.updatepluginlib.model.Update;
 import org.lzh.framework.updatepluginlib.util.ActivityManager;
-import org.lzh.framework.updatepluginlib.util.SafeDialogOper;
+import org.lzh.framework.updatepluginlib.util.SafeDialogHandle;
 import org.lzh.framework.updatepluginlib.util.Utils;
 
 import java.io.File;
@@ -38,14 +38,14 @@ public final class DefaultDownloadCallback implements DownloadCallback {
 
     private UpdateBuilder builder;
     // 通过UpdateConfig或者UpdateBuilder所设置的下载回调监听。通过此监听器进行通知用户下载状态
-    private DownloadCallback downloadCB;
+    private DownloadCallback callback;
     private Update update;
     // 通过DownloadCreator所创建的回调监听，通过此监听器进行下载通知的UI更新
     private DownloadCallback innerCB;
 
     public void setBuilder(UpdateBuilder builder) {
         this.builder = builder;
-        downloadCB = builder.getDownloadCB();
+        callback = builder.getDownloadCallback();
     }
 
     public void setUpdate(Update update) {
@@ -55,8 +55,8 @@ public final class DefaultDownloadCallback implements DownloadCallback {
     @Override
     public void onDownloadStart() {
         try {
-            if (downloadCB != null) {
-                downloadCB.onDownloadStart();
+            if (callback != null) {
+                callback.onDownloadStart();
             }
             innerCB = getInnerCB();
             if (innerCB != null) {
@@ -73,15 +73,15 @@ public final class DefaultDownloadCallback implements DownloadCallback {
         }
 
         Activity current = ActivityManager.get().topActivity();
-        innerCB = builder.getDownloadDialogCreator().create(update,current);
+        innerCB = builder.getDownloadNotifier().create(update,current);
         return innerCB;
     }
 
     @Override
     public void onDownloadComplete(File file) {
         try {
-            if (downloadCB != null) {
-                downloadCB.onDownloadComplete(file);
+            if (callback != null) {
+                callback.onDownloadComplete(file);
             }
 
             if (innerCB != null) {
@@ -97,16 +97,16 @@ public final class DefaultDownloadCallback implements DownloadCallback {
         Utils.getMainHandler().post(new Runnable() {
             @Override
             public void run() {
-                InstallNotifier creator = updateBuilder.getInstallDialogCreator();
-                creator.setBuilder(updateBuilder);
-                creator.setUpdate(update);
-                creator.setFile(file);
+                InstallNotifier notifier = updateBuilder.getInstallNotifier();
+                notifier.setBuilder(updateBuilder);
+                notifier.setUpdate(update);
+                notifier.setFile(file);
                 if (updateBuilder.getUpdateStrategy().isAutoInstall()) {
-                    creator.sendToInstall();
+                    notifier.sendToInstall();
                 } else {
                     final Activity current = ActivityManager.get().topActivity();
-                    Dialog dialog = creator.create(current);
-                    SafeDialogOper.safeShowDialog(dialog);
+                    Dialog dialog = notifier.create(current);
+                    SafeDialogHandle.safeShowDialog(dialog);
                 }
             }
         });
@@ -116,8 +116,8 @@ public final class DefaultDownloadCallback implements DownloadCallback {
     @Override
     public void onDownloadProgress(long current, long total) {
         try {
-            if (downloadCB != null) {
-                downloadCB.onDownloadProgress(current,total);
+            if (callback != null) {
+                callback.onDownloadProgress(current,total);
             }
 
             if (innerCB != null) {
@@ -132,8 +132,8 @@ public final class DefaultDownloadCallback implements DownloadCallback {
     @Override
     public void onDownloadError(Throwable t) {
         try {
-            if (downloadCB != null) {
-                downloadCB.onDownloadError(t);
+            if (callback != null) {
+                callback.onDownloadError(t);
             }
             if (innerCB != null) {
                 innerCB.onDownloadError(t);

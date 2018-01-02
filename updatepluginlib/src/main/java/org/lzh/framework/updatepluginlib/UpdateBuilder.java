@@ -41,9 +41,11 @@ import org.lzh.framework.updatepluginlib.model.CheckEntity;
  *      2. 通过{@link #create(UpdateConfig)}指定使用某个特殊的更新配置。<br>
  *
  * <p>此Builder中的所有配置项，均在{@link UpdateConfig}中有对应的相同方法名的配置函数。此两者的关系为：
- * 在更新流程中，当Builder中未设置对应的配置，将会使用在{@link UpdateConfig}更新配置中所提供的默认配置进行使用
+ * 在更新流程中：当Builder中未设置对应的配置，将会使用在{@link UpdateConfig}更新配置中所提供的默认配置。
  *
- * <p>正常启动：调用{@link #check()}进行启动。
+ * <p>正常启动：调用{@link #check()}
+ *
+ * <p>后台启动：调用{@link #checkWithDaemon(long)}
  *
  * @author haoge
  */
@@ -54,10 +56,10 @@ public class UpdateBuilder {
     private Class<? extends DownloadWorker> downloadWorker;
     private CheckEntity entity;
     private UpdateStrategy updateStrategy;
-    private CheckNotifier updateDialogCreator;
-    private InstallNotifier installDialogCreator;
-    private DownloadNotifier downloadDialogCreator;
-    private UpdateParser jsonParser;
+    private CheckNotifier checkNotifier;
+    private InstallNotifier installNotifier;
+    private DownloadNotifier downloadNotifier;
+    private UpdateParser updateParser;
     private FileCreator fileCreator;
     private UpdateChecker updateChecker;
     private FileChecker fileChecker;
@@ -65,10 +67,11 @@ public class UpdateBuilder {
     private UpdateConfig config;
 
     private RetryCallback retryCallback;
-    private CallbackDelegate callbackDelegate = new CallbackDelegate();
+    private CallbackDelegate callbackDelegate;
     
     private UpdateBuilder(UpdateConfig config) {
         this.config = config;
+        callbackDelegate = new CallbackDelegate();
         callbackDelegate.setCheckDelegate(config.getCheckCallback());
         callbackDelegate.setDownloadDelegate(config.getDownloadCallback());
     }
@@ -98,8 +101,8 @@ public class UpdateBuilder {
     }
 
     /**
-     * 启动后台更新任务。此任务特性：当检查更新失败或者当前无更新。则等待指定时间之后，自动重启更新任务。
-     * @param retryTime 重试时间间隔
+     * 启动后台更新任务。特性：当检查更新失败或者当前无更新时。等待指定时间之后，自动重启更新任务。
+     * @param retryTime 重启时间间隔
      */
     public void checkWithDaemon(long retryTime) {
         RetryCallback retryCallback = getRetryCallback();
@@ -157,8 +160,8 @@ public class UpdateBuilder {
         return this;
     }
 
-    public UpdateBuilder setUpdateParser(UpdateParser jsonParser) {
-        this.jsonParser = jsonParser;
+    public UpdateBuilder setUpdateParser(UpdateParser updateParser) {
+        this.updateParser = updateParser;
         return this;
     }
 
@@ -167,18 +170,18 @@ public class UpdateBuilder {
         return this;
     }
 
-    public UpdateBuilder setDownloadNotifier(DownloadNotifier downloadDialogCreator) {
-        this.downloadDialogCreator = downloadDialogCreator;
+    public UpdateBuilder setDownloadNotifier(DownloadNotifier downloadNotifier) {
+        this.downloadNotifier = downloadNotifier;
         return this;
     }
 
-    public UpdateBuilder setInstallNotifier(InstallNotifier installDialogCreator) {
-        this.installDialogCreator = installDialogCreator;
+    public UpdateBuilder setInstallNotifier(InstallNotifier installNotifier) {
+        this.installNotifier = installNotifier;
         return this;
     }
 
-    public UpdateBuilder setCheckNotifier(CheckNotifier updateDialogCreator) {
-        this.updateDialogCreator = updateDialogCreator;
+    public UpdateBuilder setCheckNotifier(CheckNotifier checkNotifier) {
+        this.checkNotifier = checkNotifier;
         return this;
     }
 
@@ -218,32 +221,32 @@ public class UpdateBuilder {
         return fileChecker != null ? fileChecker : config.getFileChecker();
     }
 
-    public CheckNotifier getUpdateDialogCreator() {
-        if (updateDialogCreator == null) {
-            updateDialogCreator = config.getUpdateDialogCreator();
+    public CheckNotifier getCheckNotifier() {
+        if (checkNotifier == null) {
+            checkNotifier = config.getCheckNotifier();
         }
-        return updateDialogCreator;
+        return checkNotifier;
     }
 
-    public InstallNotifier getInstallDialogCreator() {
-        if (installDialogCreator == null) {
-            installDialogCreator = config.getInstallDialogCreator();
+    public InstallNotifier getInstallNotifier() {
+        if (installNotifier == null) {
+            installNotifier = config.getInstallNotifier();
         }
-        return installDialogCreator;
+        return installNotifier;
     }
 
-    public DownloadNotifier getDownloadDialogCreator() {
-        if (downloadDialogCreator == null) {
-            downloadDialogCreator = config.getDownloadDialogCreator();
+    public DownloadNotifier getDownloadNotifier() {
+        if (downloadNotifier == null) {
+            downloadNotifier = config.getDownloadNotifier();
         }
-        return downloadDialogCreator;
+        return downloadNotifier;
     }
 
-    public UpdateParser getJsonParser() {
-        if (jsonParser == null) {
-            jsonParser = config.getJsonParser();
+    public UpdateParser getUpdateParser() {
+        if (updateParser == null) {
+            updateParser = config.getUpdateParser();
         }
-        return jsonParser;
+        return updateParser;
     }
 
     public Class<? extends CheckWorker> getCheckWorker() {
@@ -267,11 +270,11 @@ public class UpdateBuilder {
         return fileCreator;
     }
 
-    public CheckCallback getCheckCB() {
+    public CheckCallback getCheckCallback() {
         return callbackDelegate;
     }
 
-    public DownloadCallback getDownloadCB() {
+    public DownloadCallback getDownloadCallback() {
         return callbackDelegate;
     }
 
@@ -290,7 +293,7 @@ public class UpdateBuilder {
         return isDaemon;
     }
 
-    public RetryCallback getRetryCallback() {
+    RetryCallback getRetryCallback() {
         if (retryCallback == null) {
             retryCallback = new RetryCallback(this);
         }

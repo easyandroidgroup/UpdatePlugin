@@ -46,10 +46,10 @@ public abstract class CheckNotifier {
 
     protected UpdateBuilder builder;
     protected Update update;
-    private CheckCallback checkCB;
+    private CheckCallback callback;
     public final void setBuilder(UpdateBuilder builder) {
         this.builder = builder;
-        this.checkCB = builder.getCheckCB();
+        this.callback = builder.getCheckCallback();
     }
 
     public void setUpdate(Update update) {
@@ -82,8 +82,8 @@ public abstract class CheckNotifier {
      * 当用户手动取消此次更新任务时，通过此方法进行取消并通知用户
      */
     protected final void sendUserCancel() {
-        if (this.checkCB != null) {
-            this.checkCB.onUserCancel();
+        if (this.callback != null) {
+            this.callback.onUserCancel();
         }
     }
 
@@ -91,8 +91,8 @@ public abstract class CheckNotifier {
      * 当用户指定需要忽略此版本的更新请求时：通过此方法进行取消并忽略此版本的后续更新请求。
      */
     protected final void sendUserIgnore() {
-        if (this.checkCB != null) {
-            this.checkCB.onCheckIgnore(update);
+        if (this.callback != null) {
+            this.callback.onCheckIgnore(update);
         }
         UpdatePreference.saveIgnoreVersion(update.getVersionCode());
     }

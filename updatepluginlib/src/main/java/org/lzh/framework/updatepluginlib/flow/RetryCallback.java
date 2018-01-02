@@ -9,16 +9,15 @@ import org.lzh.framework.updatepluginlib.model.Update;
 import org.lzh.framework.updatepluginlib.util.Utils;
 
 import java.io.File;
-import java.util.concurrent.TimeUnit;
 
 /**
+ * 用于进行后台定时重启更新任务的回调。
  * @author haoge on 2017/12/26.
  */
-
 public final class RetryCallback implements CheckCallback, DownloadCallback, Runnable{
 
     private UpdateBuilder builder;
-    private long retryTime = TimeUnit.HOURS.toHours(2);// 当失败或取消后的重启间隔时间。
+    private long retryTime;// 当失败或取消后的重启间隔时间。
 
     public RetryCallback(UpdateBuilder builder) {
         this.builder = builder;

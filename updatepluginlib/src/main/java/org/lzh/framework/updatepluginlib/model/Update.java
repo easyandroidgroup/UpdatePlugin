@@ -36,7 +36,7 @@ public class Update {
     private String md5;
 
     /**
-     * <p>指定是否要求展示忽略此版本更新按钮：
+     * <p>指定是否展示忽略此版本更新按钮：
      *
      * <p>此属性为非必须属性。即框架核心操作层并未依赖此属性。此属性只用于提供的默认弹窗通知中：{@link DefaultInstallNotifier} 和 {@link DefaultUpdateNotifier}
      *

@@ -23,7 +23,7 @@ import android.util.Log;
 
 import org.lzh.framework.updatepluginlib.R;
 import org.lzh.framework.updatepluginlib.base.InstallNotifier;
-import org.lzh.framework.updatepluginlib.util.SafeDialogOper;
+import org.lzh.framework.updatepluginlib.util.SafeDialogHandle;
 
 /**
  * 默认使用的下载完成后的通知创建器：创建一个弹窗提示用户已下载完成。可直接安装。
@@ -48,7 +48,7 @@ public class DefaultInstallNotifier extends InstallNotifier {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if (!update.isForced()) {
-                            SafeDialogOper.safeDismissDialog((Dialog) dialog);
+                            SafeDialogHandle.safeDismissDialog((Dialog) dialog);
                         }
                         sendToInstall();
                     }
@@ -59,7 +59,7 @@ public class DefaultInstallNotifier extends InstallNotifier {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     sendCheckIgnore();
-                    SafeDialogOper.safeDismissDialog((Dialog) dialog);
+                    SafeDialogHandle.safeDismissDialog((Dialog) dialog);
                 }
             });
         }
@@ -69,7 +69,7 @@ public class DefaultInstallNotifier extends InstallNotifier {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     sendUserCancel();
-                    SafeDialogOper.safeDismissDialog((Dialog) dialog);
+                    SafeDialogHandle.safeDismissDialog((Dialog) dialog);
                 }
             });
         }

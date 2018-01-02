@@ -24,7 +24,7 @@ import org.lzh.framework.updatepluginlib.base.CheckNotifier;
 import org.lzh.framework.updatepluginlib.base.CheckWorker;
 import org.lzh.framework.updatepluginlib.model.Update;
 import org.lzh.framework.updatepluginlib.util.ActivityManager;
-import org.lzh.framework.updatepluginlib.util.SafeDialogOper;
+import org.lzh.framework.updatepluginlib.util.SafeDialogHandle;
 
 /**
  * <p><b>核心操作类</b>
@@ -35,18 +35,18 @@ import org.lzh.framework.updatepluginlib.util.SafeDialogOper;
  */
 public final class DefaultCheckCallback implements CheckCallback {
     private UpdateBuilder builder;
-    private CheckCallback checkCB;
+    private CheckCallback callback;
 
     public void setBuilder (UpdateBuilder builder) {
         this.builder = builder;
-        this.checkCB = builder.getCheckCB();
+        this.callback = builder.getCheckCallback();
     }
 
     @Override
     public void onCheckStart() {
         try {
-            if (checkCB != null) {
-                checkCB.onCheckStart();
+            if (callback != null) {
+                callback.onCheckStart();
             }
         } catch (Throwable t) {
             onCheckError(t);
@@ -56,22 +56,22 @@ public final class DefaultCheckCallback implements CheckCallback {
     @Override
     public void hasUpdate(Update update) {
         try {
-            if (checkCB != null) {
-                checkCB.hasUpdate(update);
+            if (callback != null) {
+                callback.hasUpdate(update);
             }
 
-            CheckNotifier creator = builder.getUpdateDialogCreator();
-            creator.setBuilder(builder);
-            creator.setUpdate(update);
+            CheckNotifier notifier = builder.getCheckNotifier();
+            notifier.setBuilder(builder);
+            notifier.setUpdate(update);
 
             if (!builder.getUpdateStrategy().isShowUpdateDialog(update)) {
-                creator.sendDownloadRequest();
+                notifier.sendDownloadRequest();
                 return;
             }
 
             Activity current = ActivityManager.get().topActivity();
-            Dialog dialog = creator.create(current);
-            SafeDialogOper.safeShowDialog(dialog);
+            Dialog dialog = notifier.create(current);
+            SafeDialogHandle.safeShowDialog(dialog);
         } catch (Throwable t) {
             onCheckError(t);
         }
@@ -80,8 +80,8 @@ public final class DefaultCheckCallback implements CheckCallback {
     @Override
     public void noUpdate() {
         try {
-            if (checkCB != null) {
-                checkCB.noUpdate();
+            if (callback != null) {
+                callback.noUpdate();
             }
         } catch (Throwable t) {
             onCheckError(t);
@@ -92,8 +92,8 @@ public final class DefaultCheckCallback implements CheckCallback {
     @Override
     public void onCheckError(Throwable t) {
         try {
-            if (checkCB != null) {
-                checkCB.onCheckError(t);
+            if (callback != null) {
+                callback.onCheckError(t);
             }
         } catch (Throwable ignore) {
             ignore.printStackTrace();
@@ -103,8 +103,8 @@ public final class DefaultCheckCallback implements CheckCallback {
     @Override
     public void onUserCancel() {
         try {
-            if (checkCB != null) {
-                checkCB.onUserCancel();
+            if (callback != null) {
+                callback.onUserCancel();
             }
         } catch (Throwable t) {
             onCheckError(t);
@@ -115,8 +115,8 @@ public final class DefaultCheckCallback implements CheckCallback {
     @Override
     public void onCheckIgnore(Update update) {
         try {
-            if (checkCB != null) {
-                checkCB.onCheckIgnore(update);
+            if (callback != null) {
+                callback.onCheckIgnore(update);
             }
         } catch (Throwable t) {
             onCheckError(t);
