@@ -57,7 +57,7 @@ dependencies {
 
 ### 流程图
 
-![flow chart](./screenshots/flow chart.png)
+![flow chart](./screenshots/flow_chart.png)
 
 ### 使用方式：
 [请访问wiki查看具体使用方法](https://github.com/yjfnypeu/UpdatePlugin/wiki)
