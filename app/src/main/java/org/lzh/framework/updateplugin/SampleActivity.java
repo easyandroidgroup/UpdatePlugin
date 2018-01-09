@@ -15,6 +15,7 @@ import org.lzh.framework.updateplugin.update.NotificationInstallCreator;
 import org.lzh.framework.updateplugin.update.NotificationUpdateCreator;
 import org.lzh.framework.updateplugin.update.OkhttpCheckWorker;
 import org.lzh.framework.updateplugin.update.OkhttpDownloadWorker;
+import org.lzh.framework.updateplugin.update.ToastCallback;
 import org.lzh.framework.updateplugin.widget.CheckedView;
 import org.lzh.framework.updatepluginlib.UpdateBuilder;
 import org.lzh.framework.updatepluginlib.UpdateConfig;
@@ -36,12 +37,14 @@ public class SampleActivity extends Activity {
     @BindView(R.id.download_worker) CheckedView downloadWorker;                     // 选择使用的apk下载网络任务
     @BindView(R.id.create_new_config) CheckedView newConfig;                     // 选择使用的apk下载网络任务
     boolean isPermissionGrant;// 程序是否被允许持有写入权限
+    ToastCallback callback;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         requestStoragePermission();
+        callback = new ToastCallback(this);
     }
 
     /** 请求文件读写权限。*/
@@ -69,6 +72,9 @@ public class SampleActivity extends Activity {
     @NonNull
     private UpdateBuilder createBuilder() {
         UpdateBuilder builder = UpdateBuilder.create();
+        // 配置toast通知的回调
+        builder.setDownloadCallback(callback);
+        builder.setCheckCallback(callback);
         if (!newConfig.isDefaultSelected()) {
             builder = UpdateBuilder.create(createNewConfig());
         }
