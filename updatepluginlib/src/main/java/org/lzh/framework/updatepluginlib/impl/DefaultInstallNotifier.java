@@ -36,10 +36,6 @@ public class DefaultInstallNotifier extends InstallNotifier {
 
     @Override
     public Dialog create(Activity activity) {
-        if (activity == null || activity.isFinishing()) {
-            Log.e("DownDialogCreator--->","show install dialog failed:activity was recycled or finished");
-            return null;
-        }
         String updateContent = activity.getText(R.string.update_version_name)
                 + ": " + update.getVersionName() + "\n\n\n"
                 + update.getUpdateContent();

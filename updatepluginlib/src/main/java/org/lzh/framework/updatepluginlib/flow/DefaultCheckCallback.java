@@ -25,6 +25,7 @@ import org.lzh.framework.updatepluginlib.base.CheckWorker;
 import org.lzh.framework.updatepluginlib.model.Update;
 import org.lzh.framework.updatepluginlib.util.ActivityManager;
 import org.lzh.framework.updatepluginlib.util.SafeDialogHandle;
+import org.lzh.framework.updatepluginlib.util.Utils;
 
 /**
  * <p><b>核心操作类</b>
@@ -63,15 +64,15 @@ public final class DefaultCheckCallback implements CheckCallback {
             CheckNotifier notifier = builder.getCheckNotifier();
             notifier.setBuilder(builder);
             notifier.setUpdate(update);
-
-            if (!builder.getUpdateStrategy().isShowUpdateDialog(update)) {
-                notifier.sendDownloadRequest();
-                return;
-            }
-
             Activity current = ActivityManager.get().topActivity();
-            Dialog dialog = notifier.create(current);
-            SafeDialogHandle.safeShowDialog(dialog);
+
+            if (Utils.isValid(current)
+                    && builder.getUpdateStrategy().isShowUpdateDialog(update)) {
+                Dialog dialog = notifier.create(current);
+                SafeDialogHandle.safeShowDialog(dialog);
+            } else {
+                notifier.sendDownloadRequest();
+            }
         } catch (Throwable t) {
             onCheckError(t);
         }

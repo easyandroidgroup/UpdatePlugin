@@ -33,7 +33,7 @@ public class SafeDialogHandle {
         }
         Activity bindAct = getActivity(dialog);
 
-        if (bindAct == null || bindAct.isFinishing()) {
+        if (!Utils.isValid(bindAct)) {
             Log.d("Dialog shown failed:","The Dialog bind's Activity was recycled or finished!");
             return;
         }

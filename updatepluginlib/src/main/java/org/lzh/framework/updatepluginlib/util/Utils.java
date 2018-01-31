@@ -15,6 +15,7 @@
  */
 package org.lzh.framework.updatepluginlib.util;
 
+import android.app.Activity;
 import android.os.Handler;
 import android.os.Looper;
 
@@ -32,5 +33,7 @@ public class Utils {
         return handler;
     }
 
-
+    public static boolean isValid(Activity activity) {
+        return activity != null && !activity.isFinishing();
+    }
 }

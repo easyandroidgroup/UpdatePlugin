@@ -33,10 +33,6 @@ import java.io.File;
 public class DefaultDownloadNotifier implements DownloadNotifier {
     @Override
     public DownloadCallback create(Update update, Activity activity) {
-        if (activity == null || activity.isFinishing()) {
-            Log.e("DownDialogCreator--->","show download dialog failed:activity was recycled or finished");
-            return null;
-        }
         final ProgressDialog dialog = new ProgressDialog(activity);
         dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
         dialog.setMax(100);

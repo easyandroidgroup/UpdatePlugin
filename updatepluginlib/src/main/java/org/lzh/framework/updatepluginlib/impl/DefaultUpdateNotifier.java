@@ -34,12 +34,6 @@ import org.lzh.framework.updatepluginlib.util.SafeDialogHandle;
 public class DefaultUpdateNotifier extends CheckNotifier {
     @Override
     public Dialog create(Activity activity) {
-
-        if (activity == null || activity.isFinishing()) {
-            Log.e("CheckNotifier--->","Activity was recycled or finished,dialog shown failed!");
-            return null;
-        }
-
         String updateContent = activity.getText(R.string.update_version_name)
                 + ": " + update.getVersionName() + "\n\n\n"
                 + update.getUpdateContent();

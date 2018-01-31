@@ -73,7 +73,9 @@ public final class DefaultDownloadCallback implements DownloadCallback {
         }
 
         Activity current = ActivityManager.get().topActivity();
-        innerCB = builder.getDownloadNotifier().create(update,current);
+        if (Utils.isValid(current)) {
+            innerCB = builder.getDownloadNotifier().create(update,current);
+        }
         return innerCB;
     }
 
@@ -101,16 +103,16 @@ public final class DefaultDownloadCallback implements DownloadCallback {
                 notifier.setBuilder(updateBuilder);
                 notifier.setUpdate(update);
                 notifier.setFile(file);
-                if (updateBuilder.getUpdateStrategy().isAutoInstall()) {
-                    notifier.sendToInstall();
-                } else {
-                    final Activity current = ActivityManager.get().topActivity();
+                Activity current = ActivityManager.get().topActivity();
+                if (Utils.isValid(current)
+                        && !builder.getUpdateStrategy().isAutoInstall()) {
                     Dialog dialog = notifier.create(current);
                     SafeDialogHandle.safeShowDialog(dialog);
+                } else {
+                    notifier.sendToInstall();
                 }
             }
         });
-
     }
 
     @Override
