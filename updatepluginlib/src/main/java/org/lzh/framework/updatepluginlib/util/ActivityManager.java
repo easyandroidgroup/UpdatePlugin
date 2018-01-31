@@ -92,12 +92,4 @@ public final class ActivityManager implements Application.ActivityLifecycleCallb
         this.applicationContext = context.getApplicationContext();
     }
 
-    public void finishAll() {
-        while (!stack.isEmpty()) {
-            Activity pop = stack.pop();
-            if (!pop.isFinishing()) {
-                pop.finish();
-            }
-        }
-    }
 }

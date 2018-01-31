@@ -25,6 +25,8 @@ import org.lzh.framework.updatepluginlib.R;
 import org.lzh.framework.updatepluginlib.base.InstallNotifier;
 import org.lzh.framework.updatepluginlib.util.SafeDialogHandle;
 
+import java.lang.reflect.Field;
+
 /**
  * 默认使用的下载完成后的通知创建器：创建一个弹窗提示用户已下载完成。可直接安装。
  *
@@ -47,7 +49,9 @@ public class DefaultInstallNotifier extends InstallNotifier {
                 .setPositiveButton(R.string.install_immediate, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        if (!update.isForced()) {
+                        if (update.isForced()) {
+                            preventDismissDialog(dialog);
+                        } else {
                             SafeDialogHandle.safeDismissDialog((Dialog) dialog);
                         }
                         sendToInstall();
@@ -77,6 +81,20 @@ public class DefaultInstallNotifier extends InstallNotifier {
         installDialog.setCancelable(false);
         installDialog.setCanceledOnTouchOutside(false);
         return installDialog;
+    }
+
+    /**
+     * 通过反射 阻止自动关闭对话框
+     */
+    private void preventDismissDialog(DialogInterface dialog) {
+        try {
+            Field field = dialog.getClass().getSuperclass().getDeclaredField("mShowing");
+            field.setAccessible(true);
+            //设置mShowing值，欺骗android系统
+            field.set(dialog, false);
+        } catch (Exception e) {
+            // ignore
+        }
     }
 
 }

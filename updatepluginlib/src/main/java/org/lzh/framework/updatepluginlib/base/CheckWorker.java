@@ -171,7 +171,7 @@ public abstract class CheckWorker implements Runnable {
         // 当需要进行强制更新时。覆盖替换更新策略，且关闭忽略功能
         if (update.isForced()) {
             update.setIgnore(false);
-            builder.setUpdateStrategy(new ForcedUpdateStrategy());
+            builder.setUpdateStrategy(new ForcedUpdateStrategy(builder.getUpdateStrategy()));
         }
         return update;
     }

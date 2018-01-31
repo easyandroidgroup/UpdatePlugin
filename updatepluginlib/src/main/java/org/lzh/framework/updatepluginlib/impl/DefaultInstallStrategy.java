@@ -49,41 +49,13 @@ public class DefaultInstallStrategy implements InstallStrategy {
         Uri uri;
         if (Build.VERSION.SDK_INT >= 24) {
             // Adaptive with api version 24+
-            uri = UpdateInstallProvider.getUriByFile(pluginFile, getAuthor(context), new Runnable() {
-                @Override
-                public void run() {
-                    exitIfForceUpdate(update);
-                }
-            });
+            uri = UpdateInstallProvider.getUriByFile(pluginFile, getAuthor(context));
             intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         } else {
             uri = Uri.fromFile(pluginFile);
-            exitIfForceUpdate(update);
         }
         intent.setDataAndType(uri, type);
         context.startActivity(intent);
-
-    }
-
-    /**
-     * 进行判断是否是强制更新：若是则强制退出应用。
-     * @param update 更新实体数据
-     */
-    protected void exitIfForceUpdate(Update update) {
-        if (!update.isForced()) {
-            return;
-        }
-        // 延迟强制更新时的退出操作。因为部分机型上安装程序读取安装包的时机有延迟。
-        Utils.getMainHandler().post(new Runnable() {
-            @Override
-            public void run() {
-                // 释放Activity资源。避免进程被杀后导致自动重启
-                ActivityManager.get().finishAll();
-                // 两种kill进程方式一起使用。双管齐下！
-                Process.killProcess(Process.myPid());
-                System.exit(0);
-            }
-        });
 
     }
 

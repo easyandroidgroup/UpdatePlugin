@@ -39,7 +39,6 @@ import java.util.Map;
 public class UpdateInstallProvider extends ContentProvider {
 
     static Map<Uri, File> mCache = new HashMap<>();
-    static Map<Uri, Runnable> tasks = new HashMap<>();
     Context applicationContext;
 
     @Override
@@ -84,21 +83,15 @@ public class UpdateInstallProvider extends ContentProvider {
         File file = mCache.get(uri);
         final int fileMode = modeToMode(mode);
 
-        if (tasks.containsKey(uri)) {
-            tasks.get(uri).run();
-            tasks.remove(uri);
-        }
-
         return ParcelFileDescriptor.open(file, fileMode);
     }
 
     /**
      * @param file 需要被安装的文件
      * @param author 标识信息
-     * @param notify 指定此文件被通过{@link #openFile(Uri, String)}方法打开时。触发此任务
      * @return 被创建的uri
      */
-    public static Uri getUriByFile (File file, String author, Runnable notify) {
+    public static Uri getUriByFile (File file, String author) {
         String path;
         try {
             path = file.getCanonicalPath();
@@ -108,9 +101,7 @@ public class UpdateInstallProvider extends ContentProvider {
         Uri uri =  new Uri.Builder().scheme("content")
                 .authority(author).encodedPath(path).build();
         mCache.put(uri,file);
-        if (notify != null) {
-            tasks.put(uri, notify);
-        }
+
         return uri;
     }
 
