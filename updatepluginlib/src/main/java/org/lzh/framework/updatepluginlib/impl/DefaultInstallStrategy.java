@@ -19,19 +19,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Process;
 import android.text.TextUtils;
 
 import org.lzh.framework.updatepluginlib.base.InstallStrategy;
 import org.lzh.framework.updatepluginlib.model.Update;
-import org.lzh.framework.updatepluginlib.util.ActivityManager;
 import org.lzh.framework.updatepluginlib.util.UpdateInstallProvider;
-import org.lzh.framework.updatepluginlib.util.Utils;
 
 import java.io.File;
 
 /**
- * 默认的安装策略实现类. 适配Android 7.0安装方案。且对强制更新逻辑进行适配：若为强制更新。启动安装任务后强制退出当前应用
+ * 默认的安装策略实现类. 适配Android 7.0安装方案。
  *
  * @author haoge
  */
