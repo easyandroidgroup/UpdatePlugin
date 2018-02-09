@@ -45,7 +45,7 @@ public final class CallbackDelegate implements CheckCallback, DownloadCallback {
 
     @Override
     public void onDownloadComplete(File file) {
-        log(String.format("Download completed with file [%s]", file.getAbsoluteFile()));
+        log(String.format("Download completed to file [%s]", file.getAbsoluteFile()));
         if (downloadProxy != null) {
             downloadProxy.onDownloadComplete(file);
         }
@@ -69,10 +69,7 @@ public final class CallbackDelegate implements CheckCallback, DownloadCallback {
 
     @Override
     public void onDownloadError(Throwable t) {
-        log(t.getMessage());
-        if (ENABLE) {
-            t.printStackTrace();
-        }
+        loge(String.format("Download task has occurs error: %s", t.getMessage()), t);
         if (downloadProxy != null) {
             downloadProxy.onDownloadError(t);
         }
@@ -81,7 +78,6 @@ public final class CallbackDelegate implements CheckCallback, DownloadCallback {
             retryCallback.onDownloadError(t);
         }
     }
-
     @Override
     public void onCheckStart() {
         log("starting check update task.");
@@ -96,7 +92,7 @@ public final class CallbackDelegate implements CheckCallback, DownloadCallback {
 
     @Override
     public void hasUpdate(Update update) {
-        log(String.format("Checkout a new version apk is exist: update is %s", update));
+        log(String.format("Checkout that new version apk is exist: update is %s", update));
         if (checkProxy != null) {
             checkProxy.hasUpdate(update);
         }
@@ -108,7 +104,7 @@ public final class CallbackDelegate implements CheckCallback, DownloadCallback {
 
     @Override
     public void noUpdate() {
-        log("no new version exist");
+        log("There are no new version exist");
         if (checkProxy != null) {
             checkProxy.noUpdate();
         }
@@ -120,10 +116,7 @@ public final class CallbackDelegate implements CheckCallback, DownloadCallback {
 
     @Override
     public void onCheckError(Throwable t) {
-        log("check update failed: cause by : " + t.getMessage());
-        if (ENABLE) {
-            t.printStackTrace();
-        }
+        loge("check update failed: cause by : " + t.getMessage(), t);
         if (checkProxy != null) {
             checkProxy.onCheckError(t);
         }
@@ -135,7 +128,7 @@ public final class CallbackDelegate implements CheckCallback, DownloadCallback {
 
     @Override
     public void onUserCancel() {
-        log("canceled update by user");
+        log("update task has canceled by user");
         if (checkProxy != null) {
             checkProxy.onUserCancel();
         }
@@ -160,6 +153,12 @@ public final class CallbackDelegate implements CheckCallback, DownloadCallback {
     private void log(String message) {
         if (ENABLE && !TextUtils.isEmpty(message)) {
             Log.d(TAG, message);
+        }
+    }
+
+    private void loge(String message, Throwable t) {
+        if (ENABLE && t != null) {
+            Log.e(TAG, message, t);
         }
     }
 

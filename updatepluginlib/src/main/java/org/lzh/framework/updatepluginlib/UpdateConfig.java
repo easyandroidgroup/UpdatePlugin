@@ -282,7 +282,7 @@ public final class UpdateConfig {
 
     public CheckEntity getCheckEntity () {
         if (this.entity == null || TextUtils.isEmpty(this.entity.getUrl())) {
-            throw new IllegalArgumentException("Do not set setUrl in CheckEntity");
+            throw new IllegalArgumentException("Do not set url in CheckEntity");
         }
         return this.entity;
     }
