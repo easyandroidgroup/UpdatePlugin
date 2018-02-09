@@ -1,11 +1,10 @@
 package org.lzh.framework.updatepluginlib.flow;
 
-import android.util.Log;
-
 import org.lzh.framework.updatepluginlib.UpdateBuilder;
 import org.lzh.framework.updatepluginlib.base.CheckCallback;
 import org.lzh.framework.updatepluginlib.base.DownloadCallback;
 import org.lzh.framework.updatepluginlib.model.Update;
+import org.lzh.framework.updatepluginlib.util.L;
 import org.lzh.framework.updatepluginlib.util.Utils;
 
 import java.io.File;
@@ -24,7 +23,7 @@ public final class RetryCallback implements CheckCallback, DownloadCallback, Run
     }
 
     public void setRetryTime(long retryTime) {
-        this.retryTime = retryTime;
+        this.retryTime = Math.max(1, retryTime);
     }
 
     @Override
@@ -78,12 +77,12 @@ public final class RetryCallback implements CheckCallback, DownloadCallback, Run
 
     private synchronized void retry() {
         Utils.getMainHandler().removeCallbacks(this);
-        Utils.getMainHandler().postDelayed(this, retryTime);
+        Utils.getMainHandler().postDelayed(this, retryTime * 1000);
     }
 
     @Override
     public void run() {
-        Log.d(CallbackDelegate.TAG, "Restart update for daemon");
+        L.d("Restart update for daemon");
         builder.checkWithDaemon(retryTime);
     }
 }

@@ -1,11 +1,9 @@
 package org.lzh.framework.updatepluginlib.flow;
 
-import android.text.TextUtils;
-import android.util.Log;
-
 import org.lzh.framework.updatepluginlib.base.CheckCallback;
 import org.lzh.framework.updatepluginlib.base.DownloadCallback;
 import org.lzh.framework.updatepluginlib.model.Update;
+import org.lzh.framework.updatepluginlib.util.L;
 
 import java.io.File;
 
@@ -16,11 +14,8 @@ import java.io.File;
  */
 public final class CallbackDelegate implements CheckCallback, DownloadCallback {
 
-    static final String TAG = "UpdatePluginLog";
-    public boolean ENABLE = true;
-
-    public CheckCallback checkProxy;
-    public DownloadCallback downloadProxy;
+    private CheckCallback checkProxy;
+    private DownloadCallback downloadProxy;
     private RetryCallback retryCallback;
 
     public void setCheckDelegate(CheckCallback checkProxy) {
@@ -33,7 +28,7 @@ public final class CallbackDelegate implements CheckCallback, DownloadCallback {
 
     @Override
     public void onDownloadStart() {
-        log("start downloading。。。");
+        L.d("start downloading。。。");
         if (downloadProxy != null) {
             downloadProxy.onDownloadStart();
         }
@@ -45,7 +40,7 @@ public final class CallbackDelegate implements CheckCallback, DownloadCallback {
 
     @Override
     public void onDownloadComplete(File file) {
-        log(String.format("Download completed to file [%s]", file.getAbsoluteFile()));
+        L.d("Download completed to file [%s]", file.getAbsoluteFile());
         if (downloadProxy != null) {
             downloadProxy.onDownloadComplete(file);
         }
@@ -57,7 +52,7 @@ public final class CallbackDelegate implements CheckCallback, DownloadCallback {
 
     @Override
     public void onDownloadProgress(long current, long total) {
-        log(String.format("Downloading... current is %s and total is %s", current, total));
+        L.d("Downloading... current is %s and total is %s", current, total);
         if (downloadProxy != null) {
             downloadProxy.onDownloadProgress(current, total);
         }
@@ -69,7 +64,7 @@ public final class CallbackDelegate implements CheckCallback, DownloadCallback {
 
     @Override
     public void onDownloadError(Throwable t) {
-        loge(String.format("Download task has occurs error: %s", t.getMessage()), t);
+        L.e(t, "Download task has occurs error: %s", t.getMessage());
         if (downloadProxy != null) {
             downloadProxy.onDownloadError(t);
         }
@@ -80,7 +75,7 @@ public final class CallbackDelegate implements CheckCallback, DownloadCallback {
     }
     @Override
     public void onCheckStart() {
-        log("starting check update task.");
+        L.d("starting check update task.");
         if (checkProxy != null) {
             checkProxy.onCheckStart();
         }
@@ -92,7 +87,7 @@ public final class CallbackDelegate implements CheckCallback, DownloadCallback {
 
     @Override
     public void hasUpdate(Update update) {
-        log(String.format("Checkout that new version apk is exist: update is %s", update));
+        L.d("Checkout that new version apk is exist: update is %s", update);
         if (checkProxy != null) {
             checkProxy.hasUpdate(update);
         }
@@ -104,7 +99,7 @@ public final class CallbackDelegate implements CheckCallback, DownloadCallback {
 
     @Override
     public void noUpdate() {
-        log("There are no new version exist");
+        L.d("There are no new version exist");
         if (checkProxy != null) {
             checkProxy.noUpdate();
         }
@@ -116,7 +111,7 @@ public final class CallbackDelegate implements CheckCallback, DownloadCallback {
 
     @Override
     public void onCheckError(Throwable t) {
-        loge("check update failed: cause by : " + t.getMessage(), t);
+        L.e(t, "check update failed: cause by : %s", t.getMessage());
         if (checkProxy != null) {
             checkProxy.onCheckError(t);
         }
@@ -128,7 +123,7 @@ public final class CallbackDelegate implements CheckCallback, DownloadCallback {
 
     @Override
     public void onUserCancel() {
-        log("update task has canceled by user");
+        L.d("update task has canceled by user");
         if (checkProxy != null) {
             checkProxy.onUserCancel();
         }
@@ -140,25 +135,13 @@ public final class CallbackDelegate implements CheckCallback, DownloadCallback {
 
     @Override
     public void onCheckIgnore(Update update) {
-        log("ignored for this update: " + update);
+        L.d("ignored for this update: " + update);
         if (checkProxy != null) {
             checkProxy.onCheckIgnore(update);
         }
 
         if (retryCallback != null) {
             retryCallback.onCheckIgnore(update);
-        }
-    }
-
-    private void log(String message) {
-        if (ENABLE && !TextUtils.isEmpty(message)) {
-            Log.d(TAG, message);
-        }
-    }
-
-    private void loge(String message, Throwable t) {
-        if (ENABLE && t != null) {
-            Log.e(TAG, message, t);
         }
     }
 

@@ -18,7 +18,6 @@ package org.lzh.framework.updatepluginlib.util;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
-import android.util.Log;
 import android.view.ContextThemeWrapper;
 
 /**
@@ -34,7 +33,7 @@ public class SafeDialogHandle {
         Activity bindAct = getActivity(dialog);
 
         if (!Utils.isValid(bindAct)) {
-            Log.d("Dialog shown failed:","The Dialog bind's Activity was recycled or finished!");
+            L.d("Dialog shown failed:%s", "The Dialog bind's Activity was recycled or finished!");
             return;
         }
 

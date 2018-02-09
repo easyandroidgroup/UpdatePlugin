@@ -17,10 +17,9 @@ package org.lzh.framework.updatepluginlib.impl;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.util.Log;
 
-import org.lzh.framework.updatepluginlib.base.DownloadNotifier;
 import org.lzh.framework.updatepluginlib.base.DownloadCallback;
+import org.lzh.framework.updatepluginlib.base.DownloadNotifier;
 import org.lzh.framework.updatepluginlib.model.Update;
 import org.lzh.framework.updatepluginlib.util.SafeDialogHandle;
 

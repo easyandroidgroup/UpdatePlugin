@@ -19,7 +19,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.util.Log;
 
 import org.lzh.framework.updatepluginlib.R;
 import org.lzh.framework.updatepluginlib.base.InstallNotifier;

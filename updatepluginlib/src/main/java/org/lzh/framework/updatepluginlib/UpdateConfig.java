@@ -42,6 +42,7 @@ import org.lzh.framework.updatepluginlib.impl.DefaultUpdateNotifier;
 import org.lzh.framework.updatepluginlib.impl.ForcedUpdateStrategy;
 import org.lzh.framework.updatepluginlib.impl.WifiFirstStrategy;
 import org.lzh.framework.updatepluginlib.model.CheckEntity;
+import org.lzh.framework.updatepluginlib.util.L;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -372,6 +373,8 @@ public final class UpdateConfig {
         return downloadCallback;
     }
 
-
+    public static void LogEnable(boolean enable) {
+        L.ENABLE = enable;
+    }
 }
 

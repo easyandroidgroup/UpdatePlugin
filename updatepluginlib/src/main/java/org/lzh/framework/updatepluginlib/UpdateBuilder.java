@@ -102,7 +102,7 @@ public class UpdateBuilder {
 
     /**
      * 启动后台更新任务。特性：当检查更新失败或者当前无更新时。等待指定时间之后，自动重启更新任务。
-     * @param retryTime 重启时间间隔
+     * @param retryTime 重启时间间隔，单位为秒
      */
     public void checkWithDaemon(long retryTime) {
         RetryCallback retryCallback = getRetryCallback();
