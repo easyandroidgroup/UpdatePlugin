@@ -20,7 +20,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 
-import org.lzh.framework.updatepluginlib.R;
 import org.lzh.framework.updatepluginlib.base.InstallNotifier;
 import org.lzh.framework.updatepluginlib.util.SafeDialogHandle;
 
@@ -35,13 +34,12 @@ public class DefaultInstallNotifier extends InstallNotifier {
 
     @Override
     public Dialog create(Activity activity) {
-        String updateContent = activity.getText(R.string.update_version_name)
-                + ": " + update.getVersionName() + "\n\n\n"
-                + update.getUpdateContent();
+        String updateContent = String.format("版本号：%s\n\n%s",
+                update.getVersionName(), update.getUpdateContent());
         AlertDialog.Builder builder = new AlertDialog.Builder(activity)
-                .setTitle(R.string.install_title)
+                .setTitle("安装包已就绪，是否安装？")
                 .setMessage(updateContent)
-                .setPositiveButton(R.string.install_immediate, new DialogInterface.OnClickListener() {
+                .setPositiveButton("立即安装", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if (update.isForced()) {
@@ -54,7 +52,7 @@ public class DefaultInstallNotifier extends InstallNotifier {
                 });
 
         if (!update.isForced() && update.isIgnore()) {
-            builder.setNeutralButton(R.string.update_ignore, new DialogInterface.OnClickListener() {
+            builder.setNeutralButton("忽略此版本", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     sendCheckIgnore();
@@ -64,7 +62,7 @@ public class DefaultInstallNotifier extends InstallNotifier {
         }
 
         if (!update.isForced()) {
-            builder.setNegativeButton(R.string.update_cancel, new DialogInterface.OnClickListener() {
+            builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     sendUserCancel();
