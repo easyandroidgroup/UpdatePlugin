@@ -64,7 +64,7 @@ public class DefaultFileChecker extends FileChecker {
 
     private void checkByMD5() throws Exception{
         String md5 = getMD5(file);
-        if (!update.getMd5().equals(md5)) {
+        if (!update.getMd5().equalsIgnoreCase(md5)) {
             throw new RuntimeException(
                     String.format("The md5 not matched between apk and update entity. apk is %s but update is %s",
                             md5, update.getMd5())
