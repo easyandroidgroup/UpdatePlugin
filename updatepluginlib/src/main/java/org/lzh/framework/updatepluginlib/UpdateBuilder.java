@@ -25,12 +25,13 @@ import org.lzh.framework.updatepluginlib.base.FileChecker;
 import org.lzh.framework.updatepluginlib.base.FileCreator;
 import org.lzh.framework.updatepluginlib.base.InstallNotifier;
 import org.lzh.framework.updatepluginlib.base.InstallStrategy;
+import org.lzh.framework.updatepluginlib.base.RestartHandler;
 import org.lzh.framework.updatepluginlib.base.UpdateChecker;
 import org.lzh.framework.updatepluginlib.base.UpdateParser;
 import org.lzh.framework.updatepluginlib.base.UpdateStrategy;
 import org.lzh.framework.updatepluginlib.flow.CallbackDelegate;
 import org.lzh.framework.updatepluginlib.flow.Launcher;
-import org.lzh.framework.updatepluginlib.flow.RetryCallback;
+import org.lzh.framework.updatepluginlib.impl.DefaultRestartHandler;
 import org.lzh.framework.updatepluginlib.model.CheckEntity;
 
 /**
@@ -65,8 +66,8 @@ public class UpdateBuilder {
     private FileChecker fileChecker;
     private InstallStrategy installStrategy;
     private UpdateConfig config;
+    private RestartHandler restartHandler;
 
-    private RetryCallback retryCallback;
     private CallbackDelegate callbackDelegate;
     
     private UpdateBuilder(UpdateConfig config) {
@@ -101,13 +102,13 @@ public class UpdateBuilder {
     }
 
     /**
-     * 启动后台更新任务。特性：当检查更新失败或者当前无更新时。等待指定时间之后，自动重启更新任务。
+     * 启动后台更新任务。特性：当检查更新失败、当前无更新或者用户取消当前更新时。等待指定时间之后，自动重启更新任务。
      * @param retryTime 重启时间间隔，单位为秒
      */
     public void checkWithDaemon(long retryTime) {
-        RetryCallback retryCallback = getRetryCallback();
-        retryCallback.setRetryTime(retryTime);
-        this.callbackDelegate.setRetryCallback(retryCallback);
+        RestartHandler handler = getRestartHandler();
+        handler.attach(this, retryTime);
+        this.callbackDelegate.setRestartHandler(handler);
         isDaemon = true;
         Launcher.getInstance().launchCheck(this);
     }
@@ -195,6 +196,10 @@ public class UpdateBuilder {
         return this;
     }
 
+    public UpdateBuilder setRestartHandler(RestartHandler restartHandler) {
+        this.restartHandler = restartHandler;
+        return this;
+    }
 
     public UpdateStrategy getUpdateStrategy() {
         if (updateStrategy == null) {
@@ -285,6 +290,13 @@ public class UpdateBuilder {
         return installStrategy;
     }
 
+    public RestartHandler getRestartHandler() {
+        if (restartHandler == null) {
+            restartHandler = new DefaultRestartHandler();
+        }
+        return restartHandler;
+    }
+
     public final UpdateConfig getConfig() {
         return config;
     }
@@ -303,19 +315,9 @@ public class UpdateBuilder {
      * <p>请注意此方法并不会让当前的更新任务停止，而是停止更新失败后的自动重启功能。</p>
      */
     public void stopDaemon() {
-        if (isDaemon && retryCallback != null) {
-            retryCallback.detach();
-            retryCallback = null;
+        if (isDaemon) {
+            restartHandler.detach();
         }
     }
-
-    RetryCallback getRetryCallback() {
-        if (retryCallback == null) {
-            retryCallback = new RetryCallback(this);
-        }
-        return retryCallback;
-    }
-
-
 
 }

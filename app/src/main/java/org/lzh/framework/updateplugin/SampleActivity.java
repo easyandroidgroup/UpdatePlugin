@@ -63,13 +63,6 @@ public class SampleActivity extends Activity {
     @OnClick(R.id.start_daemon_update)
     void onDaemonStartClick() {
         daemonTask = createBuilder();
-        daemonTask.setUpdateParser(new UpdateParser() {
-            @Override
-            public Update parse(String response) throws Exception {
-                // 设置个无效错误的解析器，使得更新任务失败，以触发后台任务重启逻辑
-                return null;
-            }
-        });
         daemonTask.checkWithDaemon(5);// 后台更新时间间隔设置为5秒。
     }
 

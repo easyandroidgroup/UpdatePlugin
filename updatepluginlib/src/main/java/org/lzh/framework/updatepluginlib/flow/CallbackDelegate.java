@@ -2,6 +2,7 @@ package org.lzh.framework.updatepluginlib.flow;
 
 import org.lzh.framework.updatepluginlib.base.CheckCallback;
 import org.lzh.framework.updatepluginlib.base.DownloadCallback;
+import org.lzh.framework.updatepluginlib.base.RestartHandler;
 import org.lzh.framework.updatepluginlib.model.Update;
 import org.lzh.framework.updatepluginlib.util.L;
 
@@ -16,7 +17,7 @@ public final class CallbackDelegate implements CheckCallback, DownloadCallback {
 
     private CheckCallback checkProxy;
     private DownloadCallback downloadProxy;
-    private RetryCallback retryCallback;
+    private RestartHandler restartHandler;
 
     public void setCheckDelegate(CheckCallback checkProxy) {
         this.checkProxy = checkProxy;
@@ -33,8 +34,8 @@ public final class CallbackDelegate implements CheckCallback, DownloadCallback {
             downloadProxy.onDownloadStart();
         }
 
-        if (retryCallback != null) {
-            retryCallback.onDownloadStart();
+        if (restartHandler != null) {
+            restartHandler.onDownloadStart();
         }
     }
 
@@ -45,8 +46,8 @@ public final class CallbackDelegate implements CheckCallback, DownloadCallback {
             downloadProxy.onDownloadComplete(file);
         }
 
-        if (retryCallback != null) {
-            retryCallback.onDownloadComplete(file);
+        if (restartHandler != null) {
+            restartHandler.onDownloadComplete(file);
         }
     }
 
@@ -57,8 +58,8 @@ public final class CallbackDelegate implements CheckCallback, DownloadCallback {
             downloadProxy.onDownloadProgress(current, total);
         }
 
-        if (retryCallback != null) {
-            retryCallback.onDownloadProgress(current, total);
+        if (restartHandler != null) {
+            restartHandler.onDownloadProgress(current, total);
         }
     }
 
@@ -69,8 +70,8 @@ public final class CallbackDelegate implements CheckCallback, DownloadCallback {
             downloadProxy.onDownloadError(t);
         }
 
-        if (retryCallback != null) {
-            retryCallback.onDownloadError(t);
+        if (restartHandler != null) {
+            restartHandler.onDownloadError(t);
         }
     }
     @Override
@@ -80,8 +81,8 @@ public final class CallbackDelegate implements CheckCallback, DownloadCallback {
             checkProxy.onCheckStart();
         }
 
-        if (retryCallback != null) {
-            retryCallback.onCheckStart();
+        if (restartHandler != null) {
+            restartHandler.onCheckStart();
         }
     }
 
@@ -92,8 +93,8 @@ public final class CallbackDelegate implements CheckCallback, DownloadCallback {
             checkProxy.hasUpdate(update);
         }
 
-        if (retryCallback != null) {
-            retryCallback.hasUpdate(update);
+        if (restartHandler != null) {
+            restartHandler.hasUpdate(update);
         }
     }
 
@@ -104,8 +105,8 @@ public final class CallbackDelegate implements CheckCallback, DownloadCallback {
             checkProxy.noUpdate();
         }
 
-        if (retryCallback != null) {
-            retryCallback.noUpdate();
+        if (restartHandler != null) {
+            restartHandler.noUpdate();
         }
     }
 
@@ -116,8 +117,8 @@ public final class CallbackDelegate implements CheckCallback, DownloadCallback {
             checkProxy.onCheckError(t);
         }
 
-        if (retryCallback != null) {
-            retryCallback.onCheckError(t);
+        if (restartHandler != null) {
+            restartHandler.onCheckError(t);
         }
     }
 
@@ -128,8 +129,8 @@ public final class CallbackDelegate implements CheckCallback, DownloadCallback {
             checkProxy.onUserCancel();
         }
 
-        if (retryCallback != null) {
-            retryCallback.onUserCancel();
+        if (restartHandler != null) {
+            restartHandler.onUserCancel();
         }
     }
 
@@ -140,12 +141,12 @@ public final class CallbackDelegate implements CheckCallback, DownloadCallback {
             checkProxy.onCheckIgnore(update);
         }
 
-        if (retryCallback != null) {
-            retryCallback.onCheckIgnore(update);
+        if (restartHandler != null) {
+            restartHandler.onCheckIgnore(update);
         }
     }
 
-    public void setRetryCallback(RetryCallback retryCallback) {
-        this.retryCallback = retryCallback;
+    public void setRestartHandler(RestartHandler restartHandler) {
+        this.restartHandler = restartHandler;
     }
 }
