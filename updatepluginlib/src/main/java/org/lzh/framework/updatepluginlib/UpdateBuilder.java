@@ -302,7 +302,7 @@ public class UpdateBuilder {
      *
      * <p>请注意此方法并不会让当前的更新任务停止，而是停止更新失败后的自动重启功能。</p>
      */
-    public void shutdown() {
+    public void stopDaemon() {
         if (isDaemon && retryCallback != null) {
             retryCallback.detach();
             retryCallback = null;

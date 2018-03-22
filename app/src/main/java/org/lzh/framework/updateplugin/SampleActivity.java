@@ -35,7 +35,7 @@ public class SampleActivity extends Activity {
     @BindView(R.id.has_update_notice) CheckedView hasUpdateNotice;                  // 选择使用的检测到有更新时的提示
     @BindView(R.id.download_complete_notice) CheckedView downloadCompleteNotice;    // 选择使用的下载完成后的提示
     @BindView(R.id.download_worker) CheckedView downloadWorker;                     // 选择使用的apk下载网络任务
-    @BindView(R.id.create_new_config) CheckedView newConfig;                     // 选择使用的apk下载网络任务
+    @BindView(R.id.create_new_config) CheckedView newConfig;                        // 选择使用的apk下载网络任务
     boolean isPermissionGrant;// 程序是否被允许持有写入权限
     ToastCallback callback;
     UpdateBuilder daemonTask;
@@ -63,6 +63,13 @@ public class SampleActivity extends Activity {
     @OnClick(R.id.start_daemon_update)
     void onDaemonStartClick() {
         daemonTask = createBuilder();
+        daemonTask.setUpdateParser(new UpdateParser() {
+            @Override
+            public Update parse(String response) throws Exception {
+                // 设置个无效错误的解析器，使得更新任务失败，以触发后台任务重启逻辑
+                return null;
+            }
+        });
         daemonTask.checkWithDaemon(5);// 后台更新时间间隔设置为5秒。
     }
 
@@ -74,7 +81,7 @@ public class SampleActivity extends Activity {
     @OnClick(R.id.stop_daemon_update)
     void onStopDaemonClick() {
         if (daemonTask != null) {
-            daemonTask.shutdown();
+            daemonTask.stopDaemon();
             daemonTask = null;
         }
     }
