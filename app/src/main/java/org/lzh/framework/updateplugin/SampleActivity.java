@@ -38,6 +38,7 @@ public class SampleActivity extends Activity {
     @BindView(R.id.create_new_config) CheckedView newConfig;                     // 选择使用的apk下载网络任务
     boolean isPermissionGrant;// 程序是否被允许持有写入权限
     ToastCallback callback;
+    UpdateBuilder daemonTask;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,12 +62,21 @@ public class SampleActivity extends Activity {
 
     @OnClick(R.id.start_daemon_update)
     void onDaemonStartClick() {
-        createBuilder().checkWithDaemon(1000 * 5);// 后台更新时间间隔设置为5秒。
+        daemonTask = createBuilder();
+        daemonTask.checkWithDaemon(5);// 后台更新时间间隔设置为5秒。
     }
 
     @OnClick(R.id.start_update)
     void onStartClick () {
         createBuilder().check();
+    }
+
+    @OnClick(R.id.stop_daemon_update)
+    void onStopDaemonClick() {
+        if (daemonTask != null) {
+            daemonTask.shutdown();
+            daemonTask = null;
+        }
     }
 
     @NonNull

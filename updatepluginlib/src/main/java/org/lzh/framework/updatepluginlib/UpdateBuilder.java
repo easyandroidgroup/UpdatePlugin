@@ -289,8 +289,24 @@ public class UpdateBuilder {
         return config;
     }
 
+    /**
+     * 判断当前所运行的任务是否是后台更新任务
+     * @return True表示当前以后台更新模式执行
+     */
     public boolean isDaemon() {
         return isDaemon;
+    }
+
+    /**
+     * 停止后台任务：此方法只在当前为后台任务，且后台更新任务正在执行时启用。
+     *
+     * <p>请注意此方法并不会让当前的更新任务停止，而是停止更新失败后的自动重启功能。</p>
+     */
+    public void shutdown() {
+        if (isDaemon && retryCallback != null) {
+            retryCallback.detach();
+            retryCallback = null;
+        }
     }
 
     RetryCallback getRetryCallback() {

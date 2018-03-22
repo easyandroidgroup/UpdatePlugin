@@ -71,5 +71,10 @@
         android:text="@string/start_daemon_update"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+    <Button
+        android:id="@+id/stop_daemon_update"
+        android:text="停止后台任务"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

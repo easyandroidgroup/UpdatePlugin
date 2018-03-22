@@ -26,6 +26,10 @@ public final class RetryCallback implements CheckCallback, DownloadCallback, Run
         this.retryTime = Math.max(1, retryTime);
     }
 
+    public void detach() {
+        this.builder = null;
+    }
+
     @Override
     public void onDownloadStart() {
 
@@ -76,13 +80,18 @@ public final class RetryCallback implements CheckCallback, DownloadCallback, Run
     }
 
     private synchronized void retry() {
+        if (builder == null) {
+            return;
+        }
         Utils.getMainHandler().removeCallbacks(this);
         Utils.getMainHandler().postDelayed(this, retryTime * 1000);
     }
 
     @Override
     public void run() {
-        L.d("Restart update for daemon");
-        builder.checkWithDaemon(retryTime);
+        if (builder != null) {
+            L.d("Restart update for daemon");
+            builder.checkWithDaemon(retryTime);
+        }
     }
 }
