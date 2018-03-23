@@ -1,7 +1,7 @@
-# UpdatePlugin [![](https://jitpack.io/v/yjfnypeu/UpdatePlugin.svg)](https://jitpack.io/#yjfnypeu/UpdatePlugin)   <a href="http://www.methodscount.com/?lib=org.lzh.nonview.updateplugin%3AUpdatePlugin%3A0.7.1"><img src="https://img.shields.io/badge/Methods and size-402 | 48 KB-e91e63.svg"/></a>
+# UpdatePlugin [![](https://jitpack.io/v/yjfnypeu/UpdatePlugin.svg)](https://jitpack.io/#yjfnypeu/UpdatePlugin)
 
 
-可任意定制的app更新组件。
+UpdatePlugin是一款用来进行app更新升级的框架。
 
 ### 原理
 UpdatePlugin主要基于对整个更新流程的梳理，针对更新流程中可能的被用户需要定制的节点。提供对应的定制接口出来提供用户进行各种定制；
@@ -50,17 +50,57 @@ dependencies {
 }
 ```
 
-
-### 效果展示
-
-请通过下载此[demo.apk](https://raw.githubusercontent.com/yjfnypeu/UpdatePlugin/master/screenshots/app-debug.apk)进行体验
-
 ### 流程图
 
 ![flow chart](./screenshots/flow_chart.png)
 
 ### 使用方式：
-[请访问wiki查看具体使用方法](https://github.com/yjfnypeu/UpdatePlugin/wiki)
+
+#### 创建更新配置类：
+
+```java
+UpdateConfig.getConfig()
+		.setUrl(url)// 配置检查更新的API接口
+		.setUpdateParser(new UpdateParser() {
+			@Override
+			public void Update parse(String response) throws Exception {
+				// TODO 此处的response数据为上方检查更新接口所返回回来的数据。
+				// 需要在此对response数据进行解析，并创建出对应的update实体类数据
+				// 提供给框架内部进行使用
+				return update;
+			}
+		});
+```
+
+#### 启动更新任务
+
+框架提供两种更新任务启动方式，分别对应于不同的场景下进行使用：
+
+##### 1. 普通更新任务
+
+```java
+// 使用无参构造的create方法进行任务创建。将使用上面默认的UpdateConfig实例进行更新配置
+UpdateBuilder.create()
+	.check();// 启动更新任务
+```
+普通更新任务主要用于设置页中，由用户点击检查更新时所主动触发的更新任务。
+##### 2. 后台更新任务
+
+后台更新任务主要是提供出来，采用后台轮询更新的机制，便于及时检查到新发布的APK进行版本更新
+
+```java
+UpdateBuilder task = UpdateBuilder.create()
+
+// 启动后台更新任务，retryTime为重启时间间隔，单位为秒。
+// 即通过此方法所启动的更新任务。将会在'无更新'，'更新失败'等条件下：
+// 延迟指定的时间间隔后，自动重新启动。
+task.checkForDaemon(retryTime);
+...
+// 可使用此方法，停止后台更新任务的重启机制。
+task.stopDaemon();
+```
+
+[更多使用方法请参考此处WIKI文档](https://github.com/yjfnypeu/UpdatePlugin/wiki)
 
 ### 联系作者
 email: 470368500@qq.com
