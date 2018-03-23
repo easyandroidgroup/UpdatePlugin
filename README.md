@@ -20,6 +20,7 @@ UpdatePlugin主要基于对整个更新流程的梳理，针对更新流程中�
 - 支持定制各种更新策略。比如默认使用的WIFI下默认直接下载后再通知更新，非WIFI下先通知更新再启动下载等。
 - 支持定制安装策略。比如在插件化、热修复环境下进行定制使用
 - 支持任意定制更新流程中的各种通知：检查到有更新时的通知、下载时的进度条通知、下载完成后安装之前的通知。
+- 支持定制后台任务重启逻辑
 
 ### 引入方式：
 
@@ -52,7 +53,7 @@ dependencies {
 
 #### 创建更新配置类：
 
-```java
+```
 UpdateConfig.getConfig()
 		.setUrl(url)// 配置检查更新的API接口
 		.setUpdateParser(new UpdateParser() {
@@ -72,7 +73,7 @@ UpdateConfig.getConfig()
 
 ##### 1. 普通更新任务
 
-```java
+```
 // 使用无参构造的create方法进行任务创建。将使用上面默认的UpdateConfig实例进行更新配置
 UpdateBuilder.create()
 	.check();// 启动更新任务
@@ -82,7 +83,7 @@ UpdateBuilder.create()
 
 后台更新任务主要是提供出来，采用后台轮询更新的机制，便于及时检查到新发布的APK进行版本更新
 
-```java
+```
 UpdateBuilder task = UpdateBuilder.create()
 
 // 启动后台更新任务，retryTime为重启时间间隔，单位为秒。
