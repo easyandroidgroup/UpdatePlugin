@@ -74,7 +74,6 @@ UpdateConfig.getConfig()
 ##### 1. 普通更新任务
 
 ```
-// 使用无参构造的create方法进行任务创建。将使用上面默认的UpdateConfig实例进行更新配置
 UpdateBuilder.create()
 	.check();// 启动更新任务
 ```
