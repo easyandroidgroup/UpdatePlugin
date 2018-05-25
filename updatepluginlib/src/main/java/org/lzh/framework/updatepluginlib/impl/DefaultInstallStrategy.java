@@ -41,17 +41,16 @@ public class DefaultInstallStrategy implements InstallStrategy {
         Intent intent = new Intent();
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.setAction(Intent.ACTION_VIEW);
-        String type = "application/vnd.android.package-archive";
-        File pluginFile = new File(filename);
+        File apkFile = new File(filename);
         Uri uri;
         if (Build.VERSION.SDK_INT >= 24) {
             // Adaptive with api version 24+
-            uri = UpdateInstallProvider.getUriByFile(pluginFile, getAuthor(context));
-            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            uri = UpdateInstallProvider.getUriByFile(apkFile, getAuthor(context));
+            intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION|Intent.FLAG_GRANT_WRITE_URI_PERMISSION);
         } else {
-            uri = Uri.fromFile(pluginFile);
+            uri = Uri.fromFile(apkFile);
         }
-        intent.setDataAndType(uri, type);
+        intent.setDataAndType(uri, "application/vnd.android.package-archive");
         context.startActivity(intent);
 
     }
