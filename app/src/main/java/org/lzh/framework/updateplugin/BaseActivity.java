@@ -9,8 +9,6 @@ import android.widget.Button;
  */
 public abstract class BaseActivity extends Activity {
 
-    protected Button startUpdate;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
