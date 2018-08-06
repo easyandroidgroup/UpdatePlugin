@@ -71,23 +71,25 @@ public class DefaultDownloadNotifier extends DownloadNotifier {
     private void createRestartDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(ActivityManager.get().topActivity())
                 .setCancelable(!update.isForced())
-                .setMessage("下载apk失败。是否重新下载？")
+                .setTitle("下载apk失败")
+                .setMessage("是否重新下载？")
+                .setNeutralButton(update.isForced() ? "退出" : "取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (update.isForced()) {
+                            System.exit(0);
+                            Process.killProcess(Process.myPid());
+                        } else {
+                            dialog.dismiss();
+                        }
+                    }
+                })
                 .setNegativeButton("确定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         restartDownload();
                     }
                 });
-
-        if (!update.isForced()) {
-            builder.setNeutralButton("退出", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    System.exit(0);
-                    Process.killProcess(Process.myPid());
-                }
-            });
-        }
 
         builder.show();
     }
