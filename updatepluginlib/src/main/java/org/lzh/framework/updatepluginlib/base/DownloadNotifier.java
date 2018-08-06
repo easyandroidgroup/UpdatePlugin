@@ -19,6 +19,7 @@ import android.app.Activity;
 
 import org.lzh.framework.updatepluginlib.UpdateBuilder;
 import org.lzh.framework.updatepluginlib.UpdateConfig;
+import org.lzh.framework.updatepluginlib.flow.Launcher;
 import org.lzh.framework.updatepluginlib.impl.DefaultDownloadNotifier;
 import org.lzh.framework.updatepluginlib.model.Update;
 import org.lzh.framework.updatepluginlib.util.ActivityManager;
@@ -34,7 +35,20 @@ import org.lzh.framework.updatepluginlib.util.ActivityManager;
  *
  * @author haoge
  */
-public interface DownloadNotifier {
+public abstract class DownloadNotifier {
+
+    protected Update update;
+    protected UpdateBuilder builder;
+
+    public final DownloadNotifier bind(UpdateBuilder builder, Update update) {
+        this.update = update;
+        this.builder = builder;
+        return this;
+    }
+
+    protected final void restartDownload() {
+        Launcher.getInstance().launchDownload(update, builder);
+    }
 
     /**
      * 创建一个下载任务的下载进度回调。此回调将用于接收下载任务的状态并更新UI。
@@ -43,5 +57,7 @@ public interface DownloadNotifier {
      * @param activity 顶部的Activity实例。通过{@link ActivityManager#topActivity()}进行获取
      * @return 被创建的回调器。允许为null。
      */
-    DownloadCallback create(Update update, Activity activity);
+    public abstract DownloadCallback create(Update update, Activity activity);
+
+
 }

@@ -20,7 +20,6 @@ import android.text.TextUtils;
 import org.lzh.framework.updatepluginlib.UpdateBuilder;
 import org.lzh.framework.updatepluginlib.UpdateConfig;
 import org.lzh.framework.updatepluginlib.base.DownloadWorker;
-import org.lzh.framework.updatepluginlib.util.UpdatePreference;
 
 import java.io.File;
 import java.io.FileOutputStream;

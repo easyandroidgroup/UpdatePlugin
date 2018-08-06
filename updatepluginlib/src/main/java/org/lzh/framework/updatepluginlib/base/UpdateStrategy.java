@@ -17,8 +17,8 @@ package org.lzh.framework.updatepluginlib.base;
 
 import org.lzh.framework.updatepluginlib.UpdateBuilder;
 import org.lzh.framework.updatepluginlib.UpdateConfig;
-import org.lzh.framework.updatepluginlib.model.Update;
 import org.lzh.framework.updatepluginlib.impl.WifiFirstStrategy;
+import org.lzh.framework.updatepluginlib.model.Update;
 
 /**
  * 此接口用于定制更新时各节点通知的显示逻辑。
@@ -37,7 +37,7 @@ import org.lzh.framework.updatepluginlib.impl.WifiFirstStrategy;
  *
  * @author haoge
  */
-public interface UpdateStrategy {
+public abstract class UpdateStrategy {
 
     /**
      * 当通过{@link UpdateChecker}检测到需要更新时。是否显示界面更新通知
@@ -46,7 +46,7 @@ public interface UpdateStrategy {
      * @return True代表需要显示更新。False代表不进行界面更新通知。直接调起后续流程(启动apk文件下载任务)
      * @see CheckNotifier
      */
-    boolean isShowUpdateDialog(Update update);
+    public abstract boolean isShowUpdateDialog(Update update);
 
     /**
      * 在使用{@link DownloadWorker}执行文件下载任务时。是否显示界面进度条通知
@@ -54,7 +54,7 @@ public interface UpdateStrategy {
      * @return True代表需要显示下载进度通知，
      * @see DownloadNotifier
      */
-    boolean isShowDownloadDialog();
+    public abstract boolean isShowDownloadDialog();
 
     /**
      * 是否在下载完成后。跳过下载完成的界面通知。直接自动启动安装任务
@@ -62,5 +62,5 @@ public interface UpdateStrategy {
      * @return True代表将跳过展示apk下载完成的通知。自动进行安装。
      * @see InstallNotifier
      */
-    boolean isAutoInstall();
+    public abstract boolean isAutoInstall();
 }

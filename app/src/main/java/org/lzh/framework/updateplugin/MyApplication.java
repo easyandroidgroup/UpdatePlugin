@@ -5,8 +5,8 @@ import android.app.Application;
 import org.json.JSONObject;
 import org.lzh.framework.updateplugin.widget.ToastTool;
 import org.lzh.framework.updatepluginlib.UpdateConfig;
-import org.lzh.framework.updatepluginlib.model.Update;
 import org.lzh.framework.updatepluginlib.base.UpdateParser;
+import org.lzh.framework.updatepluginlib.model.Update;
 
 /**
  * @author Administrator

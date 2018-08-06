@@ -19,8 +19,8 @@ import android.content.Context;
 
 import org.lzh.framework.updatepluginlib.UpdateBuilder;
 import org.lzh.framework.updatepluginlib.UpdateConfig;
-import org.lzh.framework.updatepluginlib.model.Update;
 import org.lzh.framework.updatepluginlib.impl.DefaultInstallStrategy;
+import org.lzh.framework.updatepluginlib.model.Update;
 
 /**
  * 提供一个安装策略。便于针对不同的应用场景。定制不同的安装策略实现。
@@ -31,7 +31,7 @@ import org.lzh.framework.updatepluginlib.impl.DefaultInstallStrategy;
  *
  * @author haoge
  */
-public interface InstallStrategy {
+public abstract class InstallStrategy {
 
     /**
      * 在此定制你自己的安装策略。如：
@@ -42,5 +42,5 @@ public interface InstallStrategy {
      * @param filename The apk filename
      * @param update 更新数据实体类
      */
-    void install(Context context, String filename, Update update);
+    public abstract void install(Context context, String filename, Update update);
 }

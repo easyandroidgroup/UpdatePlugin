@@ -33,7 +33,7 @@ import org.lzh.framework.updatepluginlib.util.UpdatePreference;
  *
  * @author haoge
  */
-public class DefaultUpdateChecker implements UpdateChecker {
+public class DefaultUpdateChecker extends UpdateChecker {
     @Override
     public boolean check(Update update) throws Exception{
         int curVersion = getApkVersion(ActivityManager.get().getApplicationContext());

@@ -29,7 +29,7 @@ import org.lzh.framework.updatepluginlib.model.Update;
  *
  * @author haoge
  */
-public interface UpdateChecker {
+public abstract class UpdateChecker {
 
     /**
      * 对提供的更新实体类进行检查。判断是否需要进行更新。
@@ -37,5 +37,5 @@ public interface UpdateChecker {
      * @return True代表检查通过。此版本需要被更新
      * @throws Exception error occurs.
      */
-    boolean check(Update update) throws Exception;
+    public abstract boolean check(Update update) throws Exception;
 }

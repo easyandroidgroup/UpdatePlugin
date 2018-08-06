@@ -1,14 +1,14 @@
 package org.lzh.framework.updateplugin.update;
 
+import org.lzh.framework.updatepluginlib.base.UpdateStrategy;
 import org.lzh.framework.updatepluginlib.impl.WifiFirstStrategy;
 import org.lzh.framework.updatepluginlib.model.Update;
-import org.lzh.framework.updatepluginlib.base.UpdateStrategy;
 
 /**
  * 自定义强制显示所有Dialog策略，
  * 默认使用参考 {@link WifiFirstStrategy}
  */
-public class AllDialogShowStrategy implements UpdateStrategy {
+public class AllDialogShowStrategy extends UpdateStrategy {
     /** 指定是否在判断出有需要更新的版本时。弹出更新提醒弹窗
      * @param update 需要更新的版本信息
      * @return true 显示弹窗

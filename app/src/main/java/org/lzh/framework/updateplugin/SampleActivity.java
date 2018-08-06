@@ -19,8 +19,8 @@ import org.lzh.framework.updateplugin.update.ToastCallback;
 import org.lzh.framework.updateplugin.widget.CheckedView;
 import org.lzh.framework.updatepluginlib.UpdateBuilder;
 import org.lzh.framework.updatepluginlib.UpdateConfig;
-import org.lzh.framework.updatepluginlib.model.Update;
 import org.lzh.framework.updatepluginlib.base.UpdateParser;
+import org.lzh.framework.updatepluginlib.model.Update;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

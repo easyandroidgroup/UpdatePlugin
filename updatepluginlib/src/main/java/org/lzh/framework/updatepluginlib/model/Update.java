@@ -15,8 +15,8 @@
  */
 package org.lzh.framework.updatepluginlib.model;
 
-import org.lzh.framework.updatepluginlib.impl.DefaultUpdateChecker;
 import org.lzh.framework.updatepluginlib.impl.DefaultInstallNotifier;
+import org.lzh.framework.updatepluginlib.impl.DefaultUpdateChecker;
 import org.lzh.framework.updatepluginlib.impl.DefaultUpdateNotifier;
 import org.lzh.framework.updatepluginlib.impl.ForcedUpdateStrategy;
 

@@ -32,7 +32,7 @@ import java.io.File;
  *
  * @author haoge
  */
-public class DefaultInstallStrategy implements InstallStrategy {
+public class DefaultInstallStrategy extends InstallStrategy {
 
     private static String DEFAULT_AUTHOR = null;
 

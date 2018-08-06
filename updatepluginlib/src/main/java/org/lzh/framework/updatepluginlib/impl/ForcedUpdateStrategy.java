@@ -26,7 +26,7 @@ import org.lzh.framework.updatepluginlib.model.Update;
  *
  * @author haoge on 2017/9/25.
  */
-public class ForcedUpdateStrategy implements UpdateStrategy {
+public class ForcedUpdateStrategy extends UpdateStrategy {
 
     private UpdateStrategy delegate;
 

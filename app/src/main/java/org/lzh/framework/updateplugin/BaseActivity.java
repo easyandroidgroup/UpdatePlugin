@@ -2,7 +2,6 @@ package org.lzh.framework.updateplugin;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.widget.Button;
 
 /**
  * Created by admin on 16-6-21.

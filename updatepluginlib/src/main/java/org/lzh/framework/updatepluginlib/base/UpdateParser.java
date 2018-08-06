@@ -26,7 +26,7 @@ import org.lzh.framework.updatepluginlib.model.Update;
  *
  * @author haoge
  */
-public interface UpdateParser {
+public abstract class UpdateParser {
 
     /**
      * 当更新api网络任务请求成功时。将会触发到此，在此根据网络数据解析创建出对应的更新数据实体类并返回给框架层使用。
@@ -35,5 +35,5 @@ public interface UpdateParser {
      * @return 被创建的更新数据实体类。不能为null
      * @throws Exception 捕获异常。防止crash并统一异常流程
      */
-    Update parse(String response) throws Exception;
+    public abstract Update parse(String response) throws Exception;
 }

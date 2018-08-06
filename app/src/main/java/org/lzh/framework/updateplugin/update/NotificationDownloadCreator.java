@@ -20,7 +20,7 @@ import java.util.UUID;
  *     默认使用参考：{@link DefaultDownloadNotifier}
  * </p>
  */
-public class NotificationDownloadCreator implements DownloadNotifier {
+public class NotificationDownloadCreator extends DownloadNotifier {
     @Override
     public DownloadCallback create(Update update, Activity activity) {
         // 返回一个UpdateDownloadCB对象用于下载时使用来更新界面。

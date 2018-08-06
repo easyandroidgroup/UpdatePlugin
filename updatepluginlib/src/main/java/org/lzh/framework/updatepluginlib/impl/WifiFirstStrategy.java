@@ -28,7 +28,7 @@ import org.lzh.framework.updatepluginlib.util.ActivityManager;
  * 1. 当处于wifi环境时，只展示下载完成后的通知
  * 2. 当处于非wifi环境是：只展示有新版本更新及下载进度的通知。
  */
-public class WifiFirstStrategy implements UpdateStrategy {
+public class WifiFirstStrategy extends UpdateStrategy {
 
     private boolean isWifi;
 

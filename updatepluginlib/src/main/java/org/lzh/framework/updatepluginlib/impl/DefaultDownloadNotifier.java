@@ -16,11 +16,16 @@
 package org.lzh.framework.updatepluginlib.impl;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.os.Process;
 
 import org.lzh.framework.updatepluginlib.base.DownloadCallback;
 import org.lzh.framework.updatepluginlib.base.DownloadNotifier;
 import org.lzh.framework.updatepluginlib.model.Update;
+import org.lzh.framework.updatepluginlib.util.ActivityManager;
 import org.lzh.framework.updatepluginlib.util.SafeDialogHandle;
 
 import java.io.File;
@@ -29,7 +34,7 @@ import java.io.File;
  * 默认使用的下载进度通知创建器: 在此创建Dialog弹窗显示并根据下载回调通知进行进度条更新
  * @author haoge
  */
-public class DefaultDownloadNotifier implements DownloadNotifier {
+public class DefaultDownloadNotifier extends DownloadNotifier {
     @Override
     public DownloadCallback create(Update update, Activity activity) {
         final ProgressDialog dialog = new ProgressDialog(activity);
@@ -58,7 +63,32 @@ public class DefaultDownloadNotifier implements DownloadNotifier {
             @Override
             public void onDownloadError(Throwable t) {
                 SafeDialogHandle.safeDismissDialog(dialog);
+                createRestartDialog();
             }
         };
+    }
+
+    private void createRestartDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(ActivityManager.get().topActivity())
+                .setCancelable(!update.isForced())
+                .setMessage("下载apk失败。是否重新下载？")
+                .setNegativeButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        restartDownload();
+                    }
+                });
+
+        if (!update.isForced()) {
+            builder.setNeutralButton("退出", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    System.exit(0);
+                    Process.killProcess(Process.myPid());
+                }
+            });
+        }
+
+        builder.show();
     }
 }

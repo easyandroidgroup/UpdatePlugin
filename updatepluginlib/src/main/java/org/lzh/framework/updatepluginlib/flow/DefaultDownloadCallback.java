@@ -74,7 +74,7 @@ public final class DefaultDownloadCallback implements DownloadCallback {
 
         Activity current = ActivityManager.get().topActivity();
         if (Utils.isValid(current)) {
-            innerCB = builder.getDownloadNotifier().create(update,current);
+            innerCB = builder.getDownloadNotifier().bind(builder, update).create(update,current);
         }
         return innerCB;
     }
