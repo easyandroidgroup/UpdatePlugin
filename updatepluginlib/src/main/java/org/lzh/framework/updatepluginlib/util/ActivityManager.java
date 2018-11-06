@@ -19,6 +19,7 @@ import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Process;
 
 import java.util.LinkedList;
 
@@ -92,4 +93,14 @@ public final class ActivityManager implements Application.ActivityLifecycleCallb
         this.applicationContext = context.getApplicationContext();
     }
 
+    public void exit() {
+        Activity activity;
+        while ((activity = stack.pop()) != null) {
+            if (!activity.isFinishing()) {
+                activity.finish();
+            }
+        }
+        System.exit(0);
+        Process.killProcess(Process.myPid());
+    }
 }

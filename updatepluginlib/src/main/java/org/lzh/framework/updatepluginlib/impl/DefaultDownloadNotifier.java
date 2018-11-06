@@ -18,9 +18,7 @@ package org.lzh.framework.updatepluginlib.impl;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
-import android.os.Process;
 
 import org.lzh.framework.updatepluginlib.base.DownloadCallback;
 import org.lzh.framework.updatepluginlib.base.DownloadNotifier;
@@ -77,8 +75,7 @@ public class DefaultDownloadNotifier extends DownloadNotifier {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if (update.isForced()) {
-                            System.exit(0);
-                            Process.killProcess(Process.myPid());
+                            ActivityManager.get().exit();
                         } else {
                             dialog.dismiss();
                         }
