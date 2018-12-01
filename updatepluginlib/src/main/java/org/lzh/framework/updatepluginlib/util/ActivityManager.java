@@ -95,7 +95,8 @@ public final class ActivityManager implements Application.ActivityLifecycleCallb
 
     public void exit() {
         Activity activity;
-        while ((activity = stack.pop()) != null) {
+        while (!stack.isEmpty()) {
+            activity = stack.pop();
             if (!activity.isFinishing()) {
                 activity.finish();
             }
