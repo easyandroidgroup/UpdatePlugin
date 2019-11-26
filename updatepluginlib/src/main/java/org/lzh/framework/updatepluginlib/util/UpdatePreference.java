@@ -17,8 +17,12 @@ package org.lzh.framework.updatepluginlib.util;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.text.TextUtils;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -29,15 +33,20 @@ public class UpdatePreference {
 
     private static final String PREF_NAME = "update_preference";
 
-    public static Set<String> getIgnoreVersions () {
-        return getUpdatePref().getStringSet("ignoreVersions", new HashSet<String>());
+    public static List<String> getIgnoreVersions () {
+        String txt =  getUpdatePref().getString("ignoreVersions", "");
+        if(TextUtils.isEmpty(txt))return new ArrayList<>();
+        txt = txt.replace("[","").replace("]","");
+        String[] result = txt.split(",");
+        // 杜绝 java.lang.UnsupportedOperationException
+        return new ArrayList<>(Arrays.asList(result));
     }
 
     public static void saveIgnoreVersion(int versionCode) {
-        Set<String> ignoreVersions = getIgnoreVersions();
+        List<String> ignoreVersions = getIgnoreVersions();
         if (!ignoreVersions.contains(String.valueOf(versionCode))) {
             ignoreVersions.add(String.valueOf(versionCode));
-            getUpdatePref().edit().putStringSet("ignoreVersions",ignoreVersions).apply();
+            getUpdatePref().edit().putString("ignoreVersions",ignoreVersions.toString()).apply();
         }
     }
 
